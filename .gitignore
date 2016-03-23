@@ -1,0 +1,15 @@
+# Maven
+target
+
+# Netbeans
+nbactions.xml
+
+# IntelliJ
+.idea/
+*.iml
+
+# Generated
+test_*
+
+# MACOS
+.DS_Store
