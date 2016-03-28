@@ -44,28 +44,29 @@ public class UTMToLatLong {
     
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
-    private static final BigDecimal SOUTH_HEMISPHERE_SUBTRACTION = new BigDecimal(10000000);
     private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 10;
     
     
-    public static Coordinate convert(UTM utm, String datum) {
+    public static Coordinate convert(UTM utm, String datum) throws Exception {
         
         Datum datumInformation = Datum.valueOf(datum);
         
         BigDecimal flattening3D = new BigDecimal(datumInformation.getFlattening3D());
         
-        BigDecimal[] betaSeries = {
-            
-            KrugerSeries.beta1(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-            KrugerSeries.beta2(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-            KrugerSeries.beta3(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-            KrugerSeries.beta4(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-            KrugerSeries.beta5(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-            KrugerSeries.beta6(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-            KrugerSeries.beta7(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP)
-            
-        };
+        double[] betaSeries = datumInformation.getBetaSeries();
+        
+//        BigDecimal[] betaSeries = {
+//            
+//            KrugerSeries.beta1(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
+//            KrugerSeries.beta2(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
+//            KrugerSeries.beta3(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
+//            KrugerSeries.beta4(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
+//            KrugerSeries.beta5(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
+//            KrugerSeries.beta6(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
+//            KrugerSeries.beta7(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP)
+//            
+//        };
         
         char hemisphere = utm.getHemisphere();
         
@@ -141,7 +142,7 @@ public class UTMToLatLong {
     
     
     private static BigDecimal calcXiPrime(BigDecimal xiNorth, BigDecimal etaEast, 
-            BigDecimal[] betaSeries) {
+            double[] betaSeries) {
         
         double xiNorthDouble = xiNorth.doubleValue();
         double etaEastDouble = etaEast.doubleValue();
@@ -152,12 +153,12 @@ public class UTMToLatLong {
         BigDecimal subtrahend = new BigDecimal(0.0);
         int multiplicand = 2;
         
-        for(BigDecimal beta : betaSeries) {
+        for(double beta : betaSeries) {
             
             sinOfXiNorth = new BigDecimal(Math.sin(multiplicand * xiNorthDouble));
             coshOfEtaEast = new BigDecimal(Math.cosh(multiplicand * etaEastDouble));
             
-            subtrahend.add(beta.multiply(sinOfXiNorth).multiply(coshOfEtaEast));
+            subtrahend.add(new BigDecimal(beta).multiply(sinOfXiNorth).multiply(coshOfEtaEast));
             
             multiplicand += 2;
             
@@ -172,7 +173,7 @@ public class UTMToLatLong {
     
     
     private static BigDecimal calcEtaPrime(BigDecimal xiNorth, BigDecimal etaEast,
-            BigDecimal[] betaSeries) {
+            double[] betaSeries) {
         
         double xiNorthDouble = xiNorth.doubleValue();
         double etaEastDouble = etaEast.doubleValue();
@@ -183,12 +184,12 @@ public class UTMToLatLong {
         BigDecimal subtrahend = new BigDecimal(0.0);
         int multiplicand = 2;
         
-        for(BigDecimal beta : betaSeries) {
+        for(double beta : betaSeries) {
             
             cosOfXiNorth = new BigDecimal(Math.cos(multiplicand * xiNorthDouble));
             sinhOfEtaEast = new BigDecimal(Math.sinh(multiplicand * etaEastDouble));
             
-            subtrahend.add(beta.multiply(cosOfXiNorth).multiply(sinhOfEtaEast));
+            subtrahend.add(new BigDecimal(beta).multiply(cosOfXiNorth).multiply(sinhOfEtaEast));
             
             multiplicand += 2;
             

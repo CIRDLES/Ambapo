@@ -38,6 +38,7 @@ public class Coordinate implements Cloneable {
      * @param latitude latitude
      */
     public Coordinate(final String longitude, final String latitude) {
+       
         setLongitude(longitude);
         setLatitude(latitude);
     }
@@ -47,8 +48,25 @@ public class Coordinate implements Cloneable {
      *
      * @param longitude longitude
      * @param latitude latitude
+     * @throws java.lang.Exception
      */
-    public Coordinate(final BigDecimal longitude, final BigDecimal latitude) {
+    public Coordinate(final BigDecimal longitude, final BigDecimal latitude) throws Exception{
+        
+        if (longitude.compareTo(new BigDecimal(180)) > 0 || longitude.compareTo(
+            new BigDecimal(-180)) < 0) {
+            
+            throw new Exception("Longitude must be at or between -180 and 180"
+                    + "degrees");
+            
+        }
+        
+        if(latitude.compareTo(new BigDecimal(-90)) < 0 || latitude.compareTo(new
+            BigDecimal(90)) > 0) {
+            
+            throw new Exception("Latitude must be at or between 0 and 90 degrees");
+            
+        }
+        
         setLongitude(longitude);
         setLatitude(latitude);
     }

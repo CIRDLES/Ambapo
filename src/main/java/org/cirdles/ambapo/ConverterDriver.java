@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  */
 public class ConverterDriver {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         BigDecimal latitude = new BigDecimal(84);
         BigDecimal longitude = new BigDecimal(102);
@@ -37,7 +37,7 @@ public class ConverterDriver {
         UTM utm3 = new UTM(new BigDecimal(277438.2635456444), new BigDecimal(9889402.0265816805),
             'S', 18, 'M');
         
-        Coordinate latLong = UTMToLatLong.convert(utm3, "WGS84");
+        Coordinate latLong = org.cirdles.ambapo.UTMToLatLong.convert(utm3, "WGS84");
         
         System.out.println(latLong);
         

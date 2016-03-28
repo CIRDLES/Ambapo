@@ -5,8 +5,6 @@
  */
 package org.cirdles.ambapo;
 
-import org.cirdles.ambapo.LatLongToUTM;
-import org.cirdles.ambapo.UTM;
 import java.math.BigDecimal;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -41,9 +39,10 @@ public class LatLongToUTMTest {
 
     /**
      * Test of convert method, of class LatLongToUTM.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
-    public void testConvert_3args_1() {
+    public void testConvert_3args_1() throws Exception {
         System.out.println("convert");
         BigDecimal latitude = new BigDecimal(84.0);
         BigDecimal longitude = new BigDecimal(102.0);
@@ -69,9 +68,10 @@ public class LatLongToUTMTest {
 
     /**
      * Test of convert method, of class LatLongToUTM.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
-    public void testConvert_3args_2() {
+    public void testConvert_3args_2() throws Exception {
         System.out.println("convert");
         double latitude2 = 0.0;
         double longitude2 = 0.0;
@@ -97,9 +97,10 @@ public class LatLongToUTMTest {
     
     /**
      * Test of convert method, of class LatLongToUTM.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
-    public void testConvert_3args_3() {
+    public void testConvert_3args_3() throws Exception {
         System.out.println("convert");
         double latitude = -21.0;
         double longitude = 17.0;
@@ -125,9 +126,10 @@ public class LatLongToUTMTest {
     
     /**
      * Test of convert method, of class LatLongToUTM.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
-    public void testConvert_3args_4() {
+    public void testConvert_3args_4() throws Exception {
         System.out.println("convert");
         BigDecimal latitude = new BigDecimal(32.0);
         BigDecimal longitude = new BigDecimal(-122.0);
@@ -153,9 +155,10 @@ public class LatLongToUTMTest {
     
     /**
      * Test of convert method, of class LatLongToUTM.
+     * @throws java.lang.Exception
      */
     @org.junit.Test
-    public void testConvert_3args_5() {
+    public void testConvert_3args_5() throws Exception {
         System.out.println("convert");
         double latitude = -27.11667;
         double longitude = -109.36667;

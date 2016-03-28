@@ -60,7 +60,7 @@ public class LatLongToUTM {
      * Converts double latitude longitude to BigDecimal and converts it to UTM
      */
     
-    public static UTM convert(double latitude, double longitude, String datumName) {
+    public static UTM convert(double latitude, double longitude, String datumName) throws Exception {
         
         return convert(new BigDecimal(latitude), new BigDecimal(longitude), datumName);
         
@@ -75,7 +75,7 @@ public class LatLongToUTM {
      * 
      * Converts BigDecimal latitude longitude to UTM 
      */
-    public static UTM convert(BigDecimal latitude, BigDecimal longitude, String datumName){
+    public static UTM convert(BigDecimal latitude, BigDecimal longitude, String datumName) throws Exception{
         
         Datum datum = Datum.valueOf(datumName);
         
@@ -127,8 +127,9 @@ public class LatLongToUTM {
         char zoneLetter = calcZoneLetter(latitude);
         char hemisphere = calcHemisphere(latitude);
         
-        return new UTM(easting, northing, hemisphere, zoneNumber, zoneLetter);
+        UTM utm = new UTM(easting, northing, hemisphere, zoneNumber, zoneLetter);
         
+        return utm;
     }
     
 

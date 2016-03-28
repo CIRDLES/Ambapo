@@ -5,10 +5,6 @@
  */
 package org.cirdles.ambapo;
 
-import org.cirdles.ambapo.LatLongToUTM;
-import org.cirdles.ambapo.UTMToLatLong;
-import org.cirdles.ambapo.Coordinate;
-import org.cirdles.ambapo.UTM;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.junit.After;
@@ -49,7 +45,7 @@ public class UTMToLatLongTest {
      * One-way Conversion
      */
     @Test
-    public void testConvert() {
+    public void testConvert() throws Exception {
         System.out.println("convert");
         
         BigDecimal easting = new BigDecimal(465005.3449);
@@ -75,7 +71,7 @@ public class UTMToLatLongTest {
      * Two-way conversion
      */
     @Test
-    public void testConvert2() {
+    public void testConvert2() throws Exception {
         System.out.println("convert");
         
         UTM utm = LatLongToUTM.convert(84.0, 102.0, "WGS84");
@@ -97,7 +93,7 @@ public class UTMToLatLongTest {
      * One-way conversion
      */
     @Test
-    public void testConvert3() {
+    public void testConvert3() throws Exception {
         System.out.println("convert");
         
         BigDecimal easting = new BigDecimal(554084.381011733);
@@ -124,7 +120,7 @@ public class UTMToLatLongTest {
      * Two-way conversion
      */
     @Test
-    public void testConvert4() {
+    public void testConvert4() throws Exception {
         System.out.println("convert");
         
         UTM utm = LatLongToUTM.convert(-61.0, -164.0, "WGS84");
@@ -146,7 +142,7 @@ public class UTMToLatLongTest {
      * One-way conversion
      */
     @Test
-    public void testConvert5() {
+    public void testConvert5() throws Exception {
         System.out.println("convert");
         
         BigDecimal easting = new BigDecimal(707889.216072834);
@@ -174,7 +170,7 @@ public class UTMToLatLongTest {
      * Two-way conversion
      */
     @Test
-    public void testConvert6() {
+    public void testConvert6() throws Exception {
         System.out.println("convert");
         
         UTM utm = LatLongToUTM.convert(-21.0, 17.0, "WGS84");
@@ -196,7 +192,7 @@ public class UTMToLatLongTest {
      * One-way conversion
      */
     @Test
-    public void testConvert7() {
+    public void testConvert7() throws Exception {
         System.out.println("convert");
         
         BigDecimal easting = new BigDecimal(500000);
@@ -224,7 +220,7 @@ public class UTMToLatLongTest {
      * Two-way conversion
      */
     @Test
-    public void testConvert8() {
+    public void testConvert8() throws Exception {
         System.out.println("convert");
         
         UTM utm = LatLongToUTM.convert(74, -177, "WGS84");
