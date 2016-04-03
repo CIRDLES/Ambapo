@@ -57,7 +57,7 @@ public class UTMToLatLongTest {
         UTM utm = new UTM(easting, northing, hemisphere, zone, zoneLetter);
         String datum = "WGS84";
         Coordinate expResult = new Coordinate(new BigDecimal(84.0), 
-            new BigDecimal(102.0));
+            new BigDecimal(102.0), datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
         result.setLongitude(result.getLongitude().setScale(0, RoundingMode.HALF_UP));
@@ -78,7 +78,7 @@ public class UTMToLatLongTest {
         
         String datum = "WGS84";
         Coordinate expResult = new Coordinate(new BigDecimal(84.0), 
-            new BigDecimal(102.0));
+            new BigDecimal(102.0), datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
@@ -105,7 +105,8 @@ public class UTMToLatLongTest {
         UTM utm = new UTM(easting, northing, hemisphere, zone, zoneLetter);
         String datum = "WGS84";
         
-        Coordinate expResult = new Coordinate(new BigDecimal(-61),new BigDecimal(-164));
+        Coordinate expResult = new Coordinate(new BigDecimal(-61),new BigDecimal(-164),
+        datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
@@ -126,7 +127,8 @@ public class UTMToLatLongTest {
         UTM utm = LatLongToUTM.convert(-61.0, -164.0, "WGS84");
         
         String datum = "WGS84";
-        Coordinate expResult = new Coordinate(new BigDecimal(-61.0),new BigDecimal(-164.0));
+        Coordinate expResult = new Coordinate(new BigDecimal(-61.0),new BigDecimal(-164.0),
+        datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
@@ -154,7 +156,8 @@ public class UTMToLatLongTest {
         UTM utm = new UTM(easting, northing, hemisphere, zone, zoneLetter);
         String datum = "WGS84";
         
-        Coordinate expResult = new Coordinate(new BigDecimal(-21),new BigDecimal(17));
+        Coordinate expResult = new Coordinate(new BigDecimal(-21),new BigDecimal(17),
+        datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
@@ -176,7 +179,8 @@ public class UTMToLatLongTest {
         UTM utm = LatLongToUTM.convert(-21.0, 17.0, "WGS84");
         
         String datum = "WGS84";
-        Coordinate expResult = new Coordinate(new BigDecimal(-21.0),new BigDecimal(17.0));
+        Coordinate expResult = new Coordinate(new BigDecimal(-21.0),new BigDecimal(17.0),
+        datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
@@ -204,7 +208,8 @@ public class UTMToLatLongTest {
         UTM utm = new UTM(easting, northing, hemisphere, zone, zoneLetter);
         String datum = "WGS84";
         
-        Coordinate expResult = new Coordinate(new BigDecimal(74),new BigDecimal(-177));
+        Coordinate expResult = new Coordinate(new BigDecimal(74),new BigDecimal(-177),
+        datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));
@@ -226,7 +231,8 @@ public class UTMToLatLongTest {
         UTM utm = LatLongToUTM.convert(74, -177, "WGS84");
         
         String datum = "WGS84";
-        Coordinate expResult = new Coordinate(new BigDecimal(74.0),new BigDecimal(-177.0));
+        Coordinate expResult = new Coordinate(new BigDecimal(74.0),new BigDecimal(-177.0),
+        datum);
         Coordinate result = UTMToLatLong.convert(utm, datum);
         
         result.setLatitude(result.getLatitude().setScale(0, RoundingMode.HALF_UP));

@@ -29,13 +29,35 @@ public class UTM {
 
     
     private char hemisphere;
-    private int zone;
+    private int zoneNumber;
     private BigDecimal easting;
     private BigDecimal northing;
     private char zoneLetter;
     
-    public UTM(BigDecimal easting, BigDecimal northing, char hemisphere, int zone,
+    /**
+     * If you do not know the hemisphere or zone letter, denote it with an asterisk,
+     * but you must know one or the other. 
+     * @param easting
+     * @param northing
+     * @param hemisphere
+     * @param zoneNumber
+     * @param zoneLetter
+     * @throws Exception 
+     */
+    public UTM(BigDecimal easting, BigDecimal northing, char hemisphere, int zoneNumber,
             char zoneLetter) throws Exception{
+        
+        if(hemisphere == '*' && zoneLetter == '*') {
+            throw new Exception("You must have either a hemisphere or a zoneLetter");
+        }
+        
+        else if(hemisphere == '*') {
+            if((int)zoneLetter >= 80)
+                this.hemisphere = 'N';
+            else
+                this.hemisphere = 'S';  
+        }
+        
         
         zoneLetter = Character.toUpperCase(zoneLetter);
         hemisphere = Character.toUpperCase(hemisphere);
@@ -45,7 +67,7 @@ public class UTM {
             throw new Exception("Easting and Northing must be >= ZERO.");
         }
         
-        if(zone < 1 || zone > 60)
+        if(zoneNumber < 1 || zoneNumber > 60)
             throw new Exception("Zone number must fall in the range from 1 to 60.");
         
         if(Character.isLetter(zoneLetter) == false || zoneLetter == 'A' ||
@@ -61,7 +83,7 @@ public class UTM {
         this.easting = easting;
         this.northing = northing;
         this.hemisphere = hemisphere;
-        this.zone = zone;
+        this.zoneNumber = zoneNumber;
         this.zoneLetter = zoneLetter;
     }
     
@@ -74,7 +96,7 @@ public class UTM {
     }
     
     public int getZoneNumber() {
-        return zone;
+        return zoneNumber;
     }
     
     public char getZoneLetter() {

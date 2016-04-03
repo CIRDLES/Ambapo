@@ -32,8 +32,15 @@ Steven Dutch, Natural and Applied Sciences, University of Wisconsin - Green Bay
  */
 package org.cirdles.ambapo;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import org.apache.commons.math3.analysis.function.Asinh;
 import org.apache.commons.math3.analysis.function.Atanh;
 
@@ -50,14 +57,50 @@ public class LatLongToUTM {
     private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 10;
     
+    public static void bulkConvert(String inputFileName, String outputFileName) 
+        throws FileNotFoundException, IOException, Exception {
+         
+        CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFileName));
+        
+        CSVReader csvReader = new CSVReader(new FileReader(inputFileName));
+        List<String[]> listOfUTMs = csvReader.readAll();
+        
+        BigDecimal latitude;
+        BigDecimal longitude;
+        String datum;
+        UTM utm;
+        String[] lineToWrite;
+        
+        for(String[] latLongInfo : listOfUTMs) {
+            
+            latitude = new BigDecimal(latLongInfo[0]);
+            longitude = new BigDecimal(latLongInfo[1]);
+            datum = latLongInfo[2];
+            
+            utm = LatLongToUTM.convert(latitude, longitude, datum);
+            
+            lineToWrite = new String[]{utm.getEasting().toString(), 
+                utm.getNorthing().toString(), Character.toString(utm.getHemisphere()),
+                Integer.toString(utm.getZoneNumber()), 
+                Character.toString(utm.getZoneLetter()), datum
+            };
+            csvWriter.writeNext(lineToWrite);
+        }
+        
+        csvReader.close();
+        csvWriter.close();
+        
+    }
+    
     /**
+     * Converts double latitude longitude to BigDecimal and converts it to UTM
      * 
      * @param latitude
      * @param longitude
      * @param datumName
      * @return UTM
      * 
-     * Converts double latitude longitude to BigDecimal and converts it to UTM
+     * 
      */
     
     public static UTM convert(double latitude, double longitude, String datumName) throws Exception {
@@ -67,13 +110,14 @@ public class LatLongToUTM {
     }     
     
     /**
+     * Converts BigDecimal latitude longitude to UTM 
      * 
      * @param latitude
      * @param longitude
      * @param datumName
      * @return UTM
      * 
-     * Converts BigDecimal latitude longitude to UTM 
+     * 
      */
     public static UTM convert(BigDecimal latitude, BigDecimal longitude, String datumName) throws Exception{
         
@@ -135,11 +179,12 @@ public class LatLongToUTM {
 
     
     /**
+     * Returns the zone number that the longitude corresponds to on the UTM map
      * 
      * @param longitude
      * @return int zone number
      * 
-     * Returns the zone number that the longitude corresponds to on the UTM map
+     * 
      */
     private static int calcZoneNumber(BigDecimal longitude) {
         int zoneNumber;
@@ -164,11 +209,12 @@ public class LatLongToUTM {
     }
     
     /**
+     * Central meridian is the center of the zone on the UTM map
      * 
      * @param zoneNumber
      * @return BigDecimal central meridian
      * 
-     * Central meridian is the center of the zone on the UTM map
+     * 
      */
     private static BigDecimal calcZoneCentralMeridian(int zoneNumber) {
         
@@ -178,18 +224,21 @@ public class LatLongToUTM {
     }
     
     /**
+     * Eccentricity helps define the shape of the ellipsoidal representation of
+     * the earth
+     * 
+     * Conformal latitude gives an angle-preserving (conformal) transformation 
+     * to the sphere
+     * 
+     * It defines a transformation from the ellipsoid to a sphere 
+     * of arbitrary radius such that the angle of intersection between any two 
+     * lines on the ellipsoid is the same as the corresponding angle on the sphere.
      * 
      * @param eccentricity
      * @param latitudeRadians
      * @return BigDecimal conformal latitude
      * 
-     * Eccentricity helps define the shape of the ellipsoidal representation of
-     * the earth
-     * 
-     * Conformal latitude gives an angle-preserving (conformal) transformation 
-     * to the sphere. It defines a transformation from the ellipsoid to a sphere 
-     * of arbitrary radius such that the angle of intersection between any two 
-     * lines on the ellipsoid is the same as the corresponding angle on the sphere.
+     
      */
     private static BigDecimal calcConformalLatitude(BigDecimal eccentricity, BigDecimal latitudeRadians) {
         
@@ -213,14 +262,14 @@ public class LatLongToUTM {
     
 
     /**
+     * tau refers to the torsion of a curve
+     * xi refers to the north-south direction
      * 
      * @param changeInLongitudeRadians
      * @param tauPrime
      * @return BigDecimal xi prime
      * 
-     * tau refers to the torsion of a curve
      * 
-     * xi refers to the north-south direction
      */
     private static BigDecimal calcXiPrimeNorth(BigDecimal changeInLongitudeRadians,
             BigDecimal tauPrime) {
@@ -264,14 +313,12 @@ public class LatLongToUTM {
     
     
     /**
-     * 
+     * alpha series based on Krüger series, which entails mapping the ellipsoid 
+     * to the conformal sphere.
      * @param xiPrimeNorth
      * @param etaPrimeEast
      * @param alphaSeries
      * @return BigDecimal xi
-     * 
-     * alpha series based on Krüger series, which entails mapping the ellipsoid 
-     * to the conformal sphere.
      * 
      */
     private static BigDecimal calcXiNorth(BigDecimal xiPrimeNorth,
@@ -356,13 +403,10 @@ public class LatLongToUTM {
     }
     
     /**
-     * 
-     * @param latitude
-     * @return char zone letter
-     * 
      * Latitude corresponds to a zone letter on the UTM map. Match up zone letter
      * and zone number on UTM map to find the specific zone.
-     * 
+     * @param latitude
+     * @return char zone letter
      */
     private static char calcZoneLetter(BigDecimal latitude) {
         String letters = "CDEFGHJKLMNPQRSTUVWXX";
@@ -377,18 +421,17 @@ public class LatLongToUTM {
     } 
 
     /**
-     * 
+     * The meridian radius is based on the lines that run north-south on a map
+     * UTM easting coordinates are referenced to the center line of the zone 
+     * known as the central meridian
+     * The central meridian is assigned an 
+     * easting value of 500,000 meters East.
      * @param meridianRadius
      * @param etaEast
      * @param longitude
      * @param centralMeridian
      * @return BigDecimal easting
      * 
-     * The meridian radius is based on the lines that run north-south on a map.
-     * 
-     * UTM easting coordinates are referenced to the center line of the zone 
-     * known as the central meridian. The central meridian is assigned an 
-     * easting value of 500,000 meters East.
      */
     private static BigDecimal calcEasting(BigDecimal meridianRadius, BigDecimal
             etaEast, BigDecimal longitude, BigDecimal centralMeridian) { 
@@ -406,17 +449,15 @@ public class LatLongToUTM {
     }
     
     /**
-     * 
+     * UTM northing coordinates are measured relative to the equator
+     * For locations north of the equator the equator is assigned the northing 
+     * value of 0 meters North
+     * To avoid negative numbers, locations south of the equator are made with 
+     * the equator assigned a value of 10,000,000 meters North.
      * @param meridianRadius
      * @param xiNorth
      * @param latitude
      * @return BigDecimal northing
-     * 
-     * UTM northing coordinates are measured relative to the equator. For 
-     * locations north of the equator the equator is assigned the northing 
-     * value of 0 meters North. To avoid negative numbers, locations south of 
-     * the equator are made with the equator assigned a value of 10,000,000 
-     * meters North.
      */
     private static BigDecimal calcNorthing(BigDecimal meridianRadius, BigDecimal 
             xiNorth, BigDecimal latitude) {
@@ -432,12 +473,10 @@ public class LatLongToUTM {
     }
     
     /**
-     * 
+     * Returns whether the latitude indicates being in the southern or northern
+     * hemisphere. 
      * @param latitude
      * @return char Hemisphere
-     * 
-     * Returns whether the latitude indicates being in the southern or northern
-     * hemisphere
      */
     private static char calcHemisphere(BigDecimal latitude) {
         

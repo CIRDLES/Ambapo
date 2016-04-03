@@ -35,6 +35,10 @@ package org.cirdles.ambapo;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.apache.commons.math3.analysis.function.Atanh;
+import com.opencsv.*;
+import java.io.*;
+import java.util.List;
+
 
 /**
  *
@@ -47,26 +51,58 @@ public class UTMToLatLong {
     private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 10;
     
+    /**
+     * Bulk converts CSV files containing UTM data to their latitudes and longitudes
+     * @param inputFileName
+     * @param outputFileName
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws Exception 
+     */
+    public static void bulkConvert(String inputFileName, String outputFileName) 
+        throws FileNotFoundException, IOException, Exception {
+         
+        CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFileName));
+        
+        CSVReader csvReader = new CSVReader(new FileReader(inputFileName));
+        List<String[]> listOfUTMs = csvReader.readAll();
+        
+        Datum datum;
+        UTM utm;
+        Coordinate latAndLong;
+        String[] lineToWrite;
+        
+        for(String[] utmInfo : listOfUTMs) {
+            utm = new UTM(new BigDecimal(utmInfo[0]), new BigDecimal(utmInfo[1]),
+                utmInfo[2].trim().charAt(0), Integer.parseInt(utmInfo[3]), 
+                utmInfo[3].trim().charAt(0));
+            
+            datum = Datum.valueOf(utmInfo[4]);
+            
+            latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
+            lineToWrite = new String[]{latAndLong.getLatitude().toString(),
+                latAndLong.getLongitude().toString(), datum.getDatum()};
+            
+            csvWriter.writeNext(lineToWrite);
+        }
+        
+        csvReader.close();
+        csvWriter.close();
+        
+    }
     
+    /**
+     * 
+     * @param utm
+     * @param datum
+     * @return Coordinate
+     * @throws Exception 
+     */
     public static Coordinate convert(UTM utm, String datum) throws Exception {
         
         Datum datumInformation = Datum.valueOf(datum);
-        
-        BigDecimal flattening3D = new BigDecimal(datumInformation.getFlattening3D());
-        
+                
         double[] betaSeries = datumInformation.getBetaSeries();
-        
-//        BigDecimal[] betaSeries = {
-//            
-//            KrugerSeries.beta1(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-//            KrugerSeries.beta2(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-//            KrugerSeries.beta3(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-//            KrugerSeries.beta4(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-//            KrugerSeries.beta5(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-//            KrugerSeries.beta6(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP),
-//            KrugerSeries.beta7(flattening3D).setScale(PRECISION, RoundingMode.HALF_UP)
-//            
-//        };
         
         char hemisphere = utm.getHemisphere();
         
@@ -96,12 +132,19 @@ public class UTMToLatLong {
         
         BigDecimal longitude = calcLongitude(zoneCentralMeridian, etaPrime, xiPrime);
         
-        Coordinate latAndLong = new Coordinate(latitude, longitude);
+        Coordinate latAndLong = new Coordinate(latitude, longitude, datum);
         
         return latAndLong;
         
     }
     
+    /**
+     * 
+     * @param hemisphere
+     * @param meridianRadius
+     * @param northing
+     * @return xi north
+     */
     private static BigDecimal calcXiNorth(char hemisphere, BigDecimal 
             meridianRadius, BigDecimal northing) {
         
@@ -132,6 +175,12 @@ public class UTMToLatLong {
     }
     
     
+    /**
+     * 
+     * @param easting
+     * @param meridianRadius
+     * @return eta east
+     */
     private static BigDecimal calcEtaEast(BigDecimal easting, BigDecimal meridianRadius) {
         
         BigDecimal etaEast = (easting.subtract(FALSE_EASTING)).divide(
@@ -140,7 +189,13 @@ public class UTMToLatLong {
         return etaEast;
     }
     
-    
+    /**
+     * 
+     * @param xiNorth
+     * @param etaEast
+     * @param betaSeries
+     * @return xi prime
+     */
     private static BigDecimal calcXiPrime(BigDecimal xiNorth, BigDecimal etaEast, 
             double[] betaSeries) {
         
@@ -171,7 +226,13 @@ public class UTMToLatLong {
         
     }
     
-    
+    /**
+     * 
+     * @param xiNorth
+     * @param etaEast
+     * @param betaSeries
+     * @return eta prime
+     */
     private static BigDecimal calcEtaPrime(BigDecimal xiNorth, BigDecimal etaEast,
             double[] betaSeries) {
         
@@ -202,6 +263,12 @@ public class UTMToLatLong {
         
     }
     
+    /**
+     * 
+     * @param xiPrime
+     * @param etaPrime
+     * @return tau prime
+     */
     private static BigDecimal calcTauPrime(BigDecimal xiPrime, BigDecimal etaPrime) {
         
         double xiPrimeDouble = xiPrime.doubleValue();
@@ -219,6 +286,12 @@ public class UTMToLatLong {
         return tauPrime;
     }
     
+    /**
+     * 
+     * @param eccentricity
+     * @param tau
+     * @return sigma
+     */
     private static BigDecimal calcSigma(BigDecimal eccentricity, BigDecimal tau) {
         
         double eccentricityDouble = eccentricity.doubleValue();
@@ -235,7 +308,13 @@ public class UTMToLatLong {
         
     }
     
-    
+    /**
+     * 
+     * @param currentTau
+     * @param currentSigma
+     * @param originalTau
+     * @return function of tau
+     */
     private static BigDecimal functionOfTau(BigDecimal currentTau, BigDecimal
         currentSigma, BigDecimal originalTau) {
         
@@ -248,7 +327,13 @@ public class UTMToLatLong {
     }
     
 
-    
+    /**
+     * 
+     * @param eccentricity
+     * @param currentTau
+     * @param currentSigma
+     * @return change in tau
+     */
     private static BigDecimal changeInTau(BigDecimal eccentricity, BigDecimal 
         currentTau, BigDecimal currentSigma) {
         
@@ -264,7 +349,14 @@ public class UTMToLatLong {
         
     }
     
-    
+    /**
+     * 
+     * @param originalTau
+     * @param sigma
+     * @param eccentricity
+     * @param hemisphere
+     * @return latitude
+     */
     private static BigDecimal calcLatitude(BigDecimal originalTau, BigDecimal sigma, 
             BigDecimal eccentricity, char hemisphere) {
         
@@ -283,6 +375,13 @@ public class UTMToLatLong {
         
     }
     
+    /**
+     * 
+     * @param zoneCentralMeridian
+     * @param etaPrime
+     * @param xiPrime
+     * @return longitude
+     */
     private static BigDecimal calcLongitude(double zoneCentralMeridian, 
         BigDecimal etaPrime, BigDecimal xiPrime) {
         
