@@ -1,26 +1,12 @@
 
 package org.cirdles.ambapo;
 
-/*
- * This is not my class. It is from the yandex-maps-static-api version 1.0 library.
- * It is from the github user mvpotter and can be accessed at 
- * https://github.com/mvpotter/yandex-maps-static-api .
- * His header is as follows...
-
- * Created with IntelliJ IDEA.
- * User: michaelpotter
- * Date: 31/01/14
- * Time: 20:47
- */
 
 import java.math.BigDecimal;
-
 /**
  * Represents geographical coordinate.
  */
-public class Coordinate implements Cloneable {
-
-    private static final int HASHCODE_MULTIPLIER = 31;
+public class Coordinate {
 
     /**
      * Longitude.
@@ -30,17 +16,23 @@ public class Coordinate implements Cloneable {
      * Latitude.
      */
     private BigDecimal latitude;
+    
+    /**
+     * Datum.
+     */
+    private Datum datum;
 
     /**
      * Creates coordinate object.
      *
      * @param longitude longitude
      * @param latitude latitude
+     * @param datum datum
+     * @throws java.lang.Exception;
      */
-    public Coordinate(final String longitude, final String latitude) {
+    public Coordinate(final String longitude, final String latitude, final String datum) throws Exception {
        
-        setLongitude(longitude);
-        setLatitude(latitude);
+        new Coordinate(new BigDecimal(longitude), new BigDecimal(latitude), datum);
     }
 
     /**
@@ -48,9 +40,11 @@ public class Coordinate implements Cloneable {
      *
      * @param longitude longitude
      * @param latitude latitude
+     * @param datum datum
      * @throws java.lang.Exception
      */
-    public Coordinate(final BigDecimal longitude, final BigDecimal latitude) throws Exception{
+    public Coordinate(final BigDecimal longitude, final BigDecimal latitude,
+            String datum) throws Exception{
         
         if (longitude.compareTo(new BigDecimal(180)) > 0 || longitude.compareTo(
             new BigDecimal(-180)) < 0) {
@@ -67,8 +61,12 @@ public class Coordinate implements Cloneable {
             
         }
         
-        setLongitude(longitude);
-        setLatitude(latitude);
+        if (!Datum.containsDatum(datum))
+            throw new Exception("Datum doesn't exist.");
+        
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.datum = Datum.valueOf(datum);
     }
 
     /**
@@ -80,23 +78,6 @@ public class Coordinate implements Cloneable {
         return longitude;
     }
 
-    /**
-     * Sets longitude.
-     *
-     * @param longitude longitude
-     */
-    public void setLongitude(final String longitude) {
-        this.longitude = new BigDecimal(longitude);
-    }
-
-    /**
-     * Sets longitude.
-     *
-     * @param longitude longitude
-     */
-    public void setLongitude(final BigDecimal longitude) {
-        this.longitude = longitude;
-    }
 
     /**
      * Returns latitude.
@@ -106,56 +87,35 @@ public class Coordinate implements Cloneable {
     public BigDecimal getLatitude() {
         return latitude;
     }
-
+    
     /**
-     * Sets latitude.
-     *
-     * @param latitude latitude
+     * 
+     * @param latitude 
      */
-    public void setLatitude(final String latitude) {
-        this.latitude = new BigDecimal(latitude);
-    }
-
-    /**
-     * Sets latitude.
-     *
-     * @param latitude latitude
-     */
-    public void setLatitude(final BigDecimal latitude) {
+    public void setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
     }
+    
+    /**
+     * 
+     * @param longitude 
+     */
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
 
+    
+    /**
+     * 
+     * @return String
+     */
     @Override
     public String toString() {
         return String.format("(%f, %f)", longitude, latitude);
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    
 
-        final Coordinate that = (Coordinate) o;
 
-        if (latitude != null ? !latitude.equals(that.latitude) : that.latitude != null) {
-            return false;
-        }
-        if (longitude != null ? !longitude.equals(that.longitude) : that.longitude != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = longitude != null ? longitude.hashCode() : 0;
-        result = HASHCODE_MULTIPLIER * result + (latitude != null ? latitude.hashCode() : 0);
-        return result;
-    }
 
 }
