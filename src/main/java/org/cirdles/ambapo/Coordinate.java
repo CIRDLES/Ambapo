@@ -32,7 +32,7 @@ public class Coordinate {
      */
     public Coordinate(final String latitude, final String longitude, final String datum) throws Exception {
        
-        new Coordinate(new BigDecimal(longitude), new BigDecimal(latitude), datum);
+        this(new BigDecimal(longitude), new BigDecimal(latitude), datum);
     }
 
     /**
@@ -113,7 +113,46 @@ public class Coordinate {
     public String toString() {
         return String.format("(%f, %f)", longitude, latitude);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj)
+            return true;
+        
+        if(!((obj) instanceof Coordinate))
+            return false;
+        
+        boolean isEqual = true;
+        
+        if (((Coordinate)obj).getLatitude().compareTo(this.getLatitude()) != 0)
+            isEqual = false;
+        if (((Coordinate)obj).getLongitude().compareTo(this.getLongitude()) != 0)
+            isEqual = false;
+        if (((Coordinate)obj).getDatum().compareTo(this.getDatum()) != 0)
+            isEqual = false;
+        
+        return isEqual;
+        
+    }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the datum
+     */
+    public Datum getDatum() {
+        return datum;
+    }
+
+    /**
+     * @param datum the datum to set
+     */
+    public void setDatum(Datum datum) {
+        this.datum = datum;
+    }
     
 
 
