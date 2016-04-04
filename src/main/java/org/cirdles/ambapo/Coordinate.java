@@ -30,7 +30,7 @@ public class Coordinate {
      * @param datum datum
      * @throws java.lang.Exception;
      */
-    public Coordinate(final String longitude, final String latitude, final String datum) throws Exception {
+    public Coordinate(final String latitude, final String longitude, final String datum) throws Exception {
        
         new Coordinate(new BigDecimal(longitude), new BigDecimal(latitude), datum);
     }
@@ -43,7 +43,7 @@ public class Coordinate {
      * @param datum datum
      * @throws java.lang.Exception
      */
-    public Coordinate(final BigDecimal longitude, final BigDecimal latitude,
+    public Coordinate(final BigDecimal latitude, final BigDecimal longitude,
             String datum) throws Exception{
         
         if (longitude.compareTo(new BigDecimal(180)) > 0 || longitude.compareTo(
