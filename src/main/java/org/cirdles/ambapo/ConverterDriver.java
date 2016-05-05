@@ -5,6 +5,7 @@
  */
 package org.cirdles.ambapo;
 
+import java.io.File;
 import java.math.BigDecimal;
 
 /**
@@ -40,6 +41,16 @@ public class ConverterDriver {
         Coordinate latLong = org.cirdles.ambapo.UTMToLatLong.convert(utm3, "WGS84");
         
         System.out.println(latLong);
+        
+        UTM utm4 = new UTM(new BigDecimal(500000.9999), new BigDecimal(499961.8279),
+            'N', 25, 'N');
+        
+        Coordinate latLong2 = UTMToLatLong.convert(utm4, "WGS84");
+        System.out.println ("\nCoordinate=" + latLong2);
+        
+        System.out.println("\nBulk convert");
+        File file = new File("utmToLatLongBulk.csv");
+        UTMToLatLong.bulkConvert(file);
         
         
     }

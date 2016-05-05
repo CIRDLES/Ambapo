@@ -79,10 +79,13 @@ public class LatLongToUTM {
             
             utm = LatLongToUTM.convert(latitude, longitude, datum);
             
-            lineToWrite = new String[]{utm.getEasting().toString(), 
-                utm.getNorthing().toString(), Character.toString(utm.getHemisphere()),
+            lineToWrite = new String[]{
+                utm.getEasting().toString(), 
+                utm.getNorthing().toString(), 
+                Character.toString(utm.getHemisphere()),
                 Integer.toString(utm.getZoneNumber()), 
-                Character.toString(utm.getZoneLetter()), datum
+                Character.toString(utm.getZoneLetter()), 
+                datum
             };
             csvWriter.writeNext(lineToWrite);
         }
