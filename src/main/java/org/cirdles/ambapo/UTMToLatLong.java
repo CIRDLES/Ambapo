@@ -49,22 +49,22 @@ public class UTMToLatLong {
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal ONE = new BigDecimal(1);
-    private static final int PRECISION = 10;
+    private static final int PRECISION = 20;
     
     /**
      * Bulk converts CSV files containing UTM data to their latitudes and longitudes
-     * @param inputFileName
-     * @param outputFileName
+     * @param file
      * @throws FileNotFoundException
      * @throws IOException
      * @throws Exception 
      */
-    public static void bulkConvert(String inputFileName, String outputFileName) 
+    public static void bulkConvert(File file) 
         throws FileNotFoundException, IOException, Exception {
-         
-        CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFileName));
         
-        CSVReader csvReader = new CSVReader(new FileReader(inputFileName));
+        File outputFile = new File("outputLatLong.csv");
+        CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile));
+        
+        CSVReader csvReader = new CSVReader(new FileReader(file));
         List<String[]> listOfUTMs = csvReader.readAll();
         
         Datum datum;
@@ -73,11 +73,14 @@ public class UTMToLatLong {
         String[] lineToWrite;
         
         for(String[] utmInfo : listOfUTMs) {
-            utm = new UTM(new BigDecimal(utmInfo[0]), new BigDecimal(utmInfo[1]),
-                utmInfo[2].trim().charAt(0), Integer.parseInt(utmInfo[3]), 
-                utmInfo[3].trim().charAt(0));
+            utm = new UTM(
+                new BigDecimal(Double.parseDouble(utmInfo[0].trim())), 
+                new BigDecimal(Double.parseDouble(utmInfo[1].trim())),
+                utmInfo[2].trim().charAt(0), 
+                Integer.parseInt(utmInfo[3].trim()), 
+                utmInfo[4].trim().charAt(0));
             
-            datum = Datum.valueOf(utmInfo[4]);
+            datum = Datum.valueOf(utmInfo[5].trim());
             
             latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
             lineToWrite = new String[]{latAndLong.getLatitude().toString(),
@@ -128,9 +131,9 @@ public class UTMToLatLong {
         
         BigDecimal sigma = calcSigma(eccentricity, tauPrime);
         
-        BigDecimal latitude = calcLatitude(tauPrime, sigma, eccentricity, hemisphere);
-        
         BigDecimal longitude = calcLongitude(zoneCentralMeridian, etaPrime, xiPrime);
+        
+        BigDecimal latitude = calcLatitude(tauPrime, sigma, eccentricity, hemisphere);
         
         Coordinate latAndLong = new Coordinate(latitude, longitude, datum);
         
@@ -149,22 +152,22 @@ public class UTMToLatLong {
             meridianRadius, BigDecimal northing) {
         
         BigDecimal xiNorth;
-        
-        
+
         if(hemisphere == 'N') {
             
-            xiNorth = northing.divide(SCALE_FACTOR.multiply(meridianRadius), RoundingMode.HALF_UP).
-                    setScale(PRECISION, RoundingMode.HALF_UP);
+            BigDecimal divideByThis = SCALE_FACTOR.multiply(meridianRadius).setScale(
+                    PRECISION, RoundingMode.HALF_UP);
+            
+            xiNorth = northing.divide(divideByThis, PRECISION, RoundingMode.HALF_UP);
             
         }
         
         else {
             
-            BigDecimal minuend = new BigDecimal(10000000);
+            BigDecimal numerator = (new BigDecimal(10000000)).subtract(northing);
+            BigDecimal denominator = SCALE_FACTOR.multiply(meridianRadius);
             
-            xiNorth = (minuend.subtract(northing)).divide(
-                    SCALE_FACTOR.multiply(meridianRadius), PRECISION, 
-                    RoundingMode.HALF_UP);
+            xiNorth = numerator.divide(denominator, PRECISION, RoundingMode.HALF_UP);
             
         }
             
@@ -322,6 +325,7 @@ public class UTMToLatLong {
             currentSigma.pow(2).doubleValue()))).subtract(currentSigma.multiply(
             new BigDecimal(Math.sqrt(1 + currentTau.pow(2).doubleValue())))).subtract(originalTau);
         
+        
         return funcOfTau;
         
     }
@@ -337,12 +341,15 @@ public class UTMToLatLong {
     private static BigDecimal changeInTau(BigDecimal eccentricity, BigDecimal 
         currentTau, BigDecimal currentSigma) {
         
-        BigDecimal changeInTau = ((new BigDecimal(Math.sqrt((1 + currentSigma.pow(2).doubleValue()) * 
-            (1 + currentTau.pow(2).doubleValue())))).subtract(
-            currentSigma.multiply(currentTau))).multiply(new BigDecimal(1 - 
-            eccentricity.pow(2).doubleValue())).multiply(new BigDecimal(Math.sqrt(
-            1 + currentTau.pow(2).doubleValue()))).divide(ONE.add(
-            ONE.subtract(eccentricity.pow(2))).multiply(currentTau.pow(2)), PRECISION, RoundingMode.HALF_UP);
+
+        BigDecimal changeInTau = ((new BigDecimal(Math.sqrt((1 + 
+            currentSigma.pow(2).doubleValue()) * (1 + 
+            currentTau.pow(2).doubleValue())))).subtract(currentSigma.multiply(
+            currentTau))).multiply(new BigDecimal(1 - eccentricity.pow(
+            2).doubleValue())).multiply(new BigDecimal(Math.sqrt(1 + 
+            currentTau.pow(2).doubleValue()))).divide(ONE.add(ONE.subtract(
+            eccentricity.pow(2))).multiply(currentTau.pow(2)), PRECISION, 
+            RoundingMode.HALF_UP);
         
         
         return changeInTau;
@@ -360,8 +367,10 @@ public class UTMToLatLong {
     private static BigDecimal calcLatitude(BigDecimal originalTau, BigDecimal sigma, 
             BigDecimal eccentricity, char hemisphere) {
         
-        BigDecimal funcOfTau = functionOfTau(originalTau, sigma, originalTau);
+        BigDecimal funcOfTau = functionOfTau(originalTau, sigma, originalTau).setScale(PRECISION, RoundingMode.HALF_UP);
+        
         BigDecimal changeInTau = changeInTau(eccentricity, originalTau, sigma);
+        
         BigDecimal newTau = originalTau.subtract(funcOfTau.divide(changeInTau, 
             PRECISION, RoundingMode.HALF_UP));
           

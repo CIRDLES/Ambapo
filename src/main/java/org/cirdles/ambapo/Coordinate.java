@@ -111,7 +111,7 @@ public class Coordinate {
      */
     @Override
     public String toString() {
-        return String.format("(%f, %f)", longitude, latitude);
+        return String.format("(%f, %f)", latitude, longitude);
     }
     
     @Override
