@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.cirdles.ambapo.LatLongToUTMTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2016-09-08T00:58:43" hostname="Elainas-MBP" time="0.018">
+  <properties/>
+  <testcase name="testConvert_3args_1" classname="org.cirdles.ambapo.LatLongToUTMTest" time="0.014"/>
+  <testcase name="testConvert_3args_2" classname="org.cirdles.ambapo.LatLongToUTMTest" time="0.0"/>
+  <testcase name="testConvert_3args_3" classname="org.cirdles.ambapo.LatLongToUTMTest" time="0.001"/>
+  <testcase name="testConvert_3args_4" classname="org.cirdles.ambapo.LatLongToUTMTest" time="0.001"/>
+  <testcase name="testConvert_3args_5" classname="org.cirdles.ambapo.LatLongToUTMTest" time="0.001"/>
+  <system-out><![CDATA[convert
+Easting: 465005
+Northing: 9329005
+convert
+Easting: 166021
+Northing: 0
+convert
+Easting: 707889
+Northing: 7676551
+convert
+Easting: 594457
+Northing: 3540872
+convert
+Easting: 661896
+Northing: 6999590
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

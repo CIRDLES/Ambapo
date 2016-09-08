@@ -73,9 +73,9 @@ public class LatLongToUTM {
         
         for(String[] latLongInfo : listOfUTMs) {
             
-            latitude = new BigDecimal(latLongInfo[0]);
-            longitude = new BigDecimal(latLongInfo[1]);
-            datum = latLongInfo[2];
+            latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
+            longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
+            datum = latLongInfo[2].trim().replace("\"", "");
             
             utm = LatLongToUTM.convert(latitude, longitude, datum);
             
