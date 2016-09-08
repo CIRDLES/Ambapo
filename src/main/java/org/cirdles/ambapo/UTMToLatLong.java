@@ -74,13 +74,13 @@ public class UTMToLatLong {
         
         for(String[] utmInfo : listOfUTMs) {
             utm = new UTM(
-                new BigDecimal(Double.parseDouble(utmInfo[0].trim())), 
-                new BigDecimal(Double.parseDouble(utmInfo[1].trim())),
-                utmInfo[2].trim().charAt(0), 
-                Integer.parseInt(utmInfo[3].trim()), 
-                utmInfo[4].trim().charAt(0));
+                new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))), 
+                new BigDecimal(Double.parseDouble(utmInfo[1].trim().replace("\"", ""))),
+                utmInfo[2].trim().replace("\"", "").charAt(0), 
+                Integer.parseInt(utmInfo[3].replace("\"", "").trim()), 
+                utmInfo[4].trim().replace("\"", "").charAt(0));
             
-            datum = Datum.valueOf(utmInfo[5].trim());
+            datum = Datum.valueOf(utmInfo[5].trim().replace("\"", ""));
             
             latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
             lineToWrite = new String[]{latAndLong.getLatitude().toString(),

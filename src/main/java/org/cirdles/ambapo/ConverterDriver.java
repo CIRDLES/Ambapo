@@ -48,9 +48,13 @@ public class ConverterDriver {
         Coordinate latLong2 = UTMToLatLong.convert(utm4, "WGS84");
         System.out.println ("\nCoordinate=" + latLong2);
         
-        System.out.println("\nBulk convert");
+        System.out.println("\nBulk convert UTM to Lat Long");
         File file = new File("utmToLatLongBulk.csv");
         UTMToLatLong.bulkConvert(file);
+        
+        System.out.println("\nBulk convert Lat Long to UTM");
+        File file2 = new File("outputLatLong.csv");
+        LatLongToUTM.bulkConvert("outputLatLong.csv", "outputUTM.csv");
         
         
     }
