@@ -1,1 +1,3 @@
 rootProject.name = 'Ambapo'
+include "app", "core"
+include 'web'

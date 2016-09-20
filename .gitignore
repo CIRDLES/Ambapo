@@ -13,3 +13,6 @@ test_*
 
 # MACOS
 .DS_Store
+/app/.nb-gradle/
+/core/build/
+/app/build/
