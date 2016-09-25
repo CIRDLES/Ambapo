@@ -23,12 +23,16 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 /**
- *
+ * Calculates Alpha and Beta Series numbers for a datum using its flattening3D.
  * @author Elaina Cole
  */
 public class KrugerSeries {
     
-    
+    /**
+     * Returns first number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha1(BigDecimal flattening3D) {
         
         BigDecimal alpha1= new BigDecimal(1.0/2.0).multiply(flattening3D).subtract(
@@ -45,6 +49,11 @@ public class KrugerSeries {
         return alpha1;
     }
     
+    /**
+     * Returns second number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha2(BigDecimal flattening3D) {
 
         BigDecimal alpha2= new BigDecimal(13.0/48.0).multiply(flattening3D.pow(2)).subtract(
@@ -60,6 +69,11 @@ public class KrugerSeries {
         return alpha2;
     }
     
+    /**
+     * Returns third number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha3(BigDecimal flattening3D) {
         
         BigDecimal alpha3= new BigDecimal(61.0/240.0).multiply(flattening3D.pow(3)).subtract(
@@ -74,6 +88,11 @@ public class KrugerSeries {
         return alpha3;
     }
     
+    /**
+     * Returns fourth number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha4(BigDecimal flattening3D) {
         
         BigDecimal alpha4= new BigDecimal(49561.0/161280.0).multiply(flattening3D.pow(4)).subtract(
@@ -87,6 +106,11 @@ public class KrugerSeries {
         return alpha4;
     }
     
+    /**
+     * Returns fifth number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha5(BigDecimal flattening3D) {
         
         BigDecimal alpha5= new BigDecimal(34729.0/80640.0).multiply(flattening3D.pow(5)).subtract(
@@ -99,6 +123,11 @@ public class KrugerSeries {
         return alpha5;
     }
     
+    /**
+     * Returns sixth number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha6(BigDecimal flattening3D) {
         
         BigDecimal alpha6= new BigDecimal(212378941.0/319334400.0).multiply(flattening3D.pow(6)).subtract(
@@ -110,6 +139,11 @@ public class KrugerSeries {
         return alpha6;
     }
     
+    /**
+     * Returns seventh number in alpha series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal alpha7(BigDecimal flattening3D) {
         BigDecimal alpha7= new BigDecimal(1522256789.0/1383782400.0).multiply(flattening3D.pow(
                 7)).subtract(new BigDecimal(16759934899.0/3113510400.0).multiply(
@@ -120,7 +154,11 @@ public class KrugerSeries {
         return alpha7;
     }
     
-    
+    /**
+     * Returns first number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta1(BigDecimal flattening3D) {
         
         BigDecimal beta1 = (new BigDecimal(.5).multiply(flattening3D)).subtract(
@@ -139,8 +177,11 @@ public class KrugerSeries {
               
     }
     
-    
-    
+    /**
+     * Returns second number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta2(BigDecimal flattening3D) {
         
         BigDecimal beta2 = (new BigDecimal(1.0/48.0, MathContext.DECIMAL128)).multiply(flattening3D.pow(2)).add(
@@ -159,7 +200,11 @@ public class KrugerSeries {
     }
     
     
-    
+    /**
+     * Returns third number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta3(BigDecimal flattening3D) {
         
         BigDecimal beta3 = (new BigDecimal(17.0/480.0).multiply(flattening3D.pow(3))).subtract(
@@ -176,7 +221,11 @@ public class KrugerSeries {
         
     }
     
-
+    /**
+     * Returns fourth number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta4(BigDecimal flattening3D) {
         
         BigDecimal beta4 = (new BigDecimal(4397.0/16128.0).multiply(
@@ -193,7 +242,11 @@ public class KrugerSeries {
         
     }
     
-
+    /**
+     * Returns fifth number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta5(BigDecimal flattening3D) {
         
         BigDecimal beta5 = (new BigDecimal(4583.0/161280.0).multiply(
@@ -209,7 +262,11 @@ public class KrugerSeries {
         
     }
     
-
+    /**
+     * Returns sixth number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta6(BigDecimal flattening3D) {
         
         BigDecimal beta6 = (new BigDecimal(20648693.0/6386688000.0).multiply(
@@ -223,7 +280,11 @@ public class KrugerSeries {
         
     }
     
-    
+    /**
+     * Returns seventh number in beta series.
+     * @param flattening3D
+     * @return 
+     */
     public static BigDecimal beta7(BigDecimal flattening3D) {
         
         BigDecimal beta7 = (new BigDecimal(219941297.0/5535129600.0).multiply(

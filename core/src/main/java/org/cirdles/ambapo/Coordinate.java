@@ -89,7 +89,7 @@ public class Coordinate {
     }
     
     /**
-     * 
+     * Set the latitude.
      * @param latitude 
      */
     public void setLatitude(BigDecimal latitude) {
@@ -97,7 +97,7 @@ public class Coordinate {
     }
     
     /**
-     * 
+     * Set the longitude
      * @param longitude 
      */
     public void setLongitude(BigDecimal longitude) {
@@ -106,7 +106,7 @@ public class Coordinate {
 
     
     /**
-     * 
+     * Returns Coordinate in a string format of "(latitude, longitude)."
      * @return String
      */
     @Override
@@ -114,6 +114,10 @@ public class Coordinate {
         return String.format("(%f, %f)", latitude, longitude);
     }
     
+    /**
+     * Returns if Coordinate objects are equal.
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if(this == obj)
@@ -141,6 +145,7 @@ public class Coordinate {
     }
 
     /**
+     * Get the datum of the specific Coordinate.
      * @return the datum
      */
     public Datum getDatum() {
@@ -148,6 +153,7 @@ public class Coordinate {
     }
 
     /**
+     * Set the datum of a particular Coordinate.
      * @param datum the datum to set
      */
     public void setDatum(Datum datum) {

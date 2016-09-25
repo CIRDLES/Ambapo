@@ -52,7 +52,7 @@ public class UTMToLatLong {
     private static final int PRECISION = 20;
     
     /**
-     * Bulk converts CSV files containing UTM data to their latitudes and longitudes
+     * Converts a csv file of UTM to a csv file of converted Latitudes and Longitudes.
      * @param file
      * @throws FileNotFoundException
      * @throws IOException
@@ -62,40 +62,37 @@ public class UTMToLatLong {
         throws FileNotFoundException, IOException, Exception {
         
         File outputFile = new File("outputLatLong.csv");
-        CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile));
-        
-        CSVReader csvReader = new CSVReader(new FileReader(file));
-        List<String[]> listOfUTMs = csvReader.readAll();
-        
-        Datum datum;
-        UTM utm;
-        Coordinate latAndLong;
-        String[] lineToWrite;
-        
-        for(String[] utmInfo : listOfUTMs) {
-            utm = new UTM(
-                new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))), 
-                new BigDecimal(Double.parseDouble(utmInfo[1].trim().replace("\"", ""))),
-                utmInfo[2].trim().replace("\"", "").charAt(0), 
-                Integer.parseInt(utmInfo[3].replace("\"", "").trim()), 
-                utmInfo[4].trim().replace("\"", "").charAt(0));
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile)); CSVReader csvReader = new CSVReader(new FileReader(file))) {
+            List<String[]> listOfUTMs = csvReader.readAll();
             
-            datum = Datum.valueOf(utmInfo[5].trim().replace("\"", ""));
+            Datum datum;
+            UTM utm;
+            Coordinate latAndLong;
+            String[] lineToWrite;
             
-            latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
-            lineToWrite = new String[]{latAndLong.getLatitude().toString(),
-                latAndLong.getLongitude().toString(), datum.getDatum()};
+            for(String[] utmInfo : listOfUTMs) {
+                utm = new UTM(
+                        new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))),
+                        new BigDecimal(Double.parseDouble(utmInfo[1].trim().replace("\"", ""))),
+                        utmInfo[2].trim().replace("\"", "").charAt(0),
+                        Integer.parseInt(utmInfo[3].replace("\"", "").trim()),
+                        utmInfo[4].trim().replace("\"", "").charAt(0));
+                
+                datum = Datum.valueOf(utmInfo[5].trim().replace("\"", ""));
+                
+                latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
+                lineToWrite = new String[]{latAndLong.getLatitude().toString(),
+                    latAndLong.getLongitude().toString(), datum.getDatum()};
+                
+                csvWriter.writeNext(lineToWrite);
+            }
             
-            csvWriter.writeNext(lineToWrite);
         }
-        
-        csvReader.close();
-        csvWriter.close();
         
     }
     
     /**
-     * 
+     * Converts a UTM into a Coordinate of lat,long with a specific datum.
      * @param utm
      * @param datum
      * @return Coordinate
@@ -142,7 +139,7 @@ public class UTMToLatLong {
     }
     
     /**
-     * 
+     * Calculates the xi-north which refers to the north-south direction of the UTM.
      * @param hemisphere
      * @param meridianRadius
      * @param northing
@@ -179,7 +176,7 @@ public class UTMToLatLong {
     
     
     /**
-     * 
+     * Eta-east refers to the east west direction of the UTM.
      * @param easting
      * @param meridianRadius
      * @return eta east
