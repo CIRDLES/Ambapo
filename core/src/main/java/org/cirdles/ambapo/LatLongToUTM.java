@@ -46,7 +46,7 @@ import org.apache.commons.math3.analysis.function.Atanh;
 
 
 /**
- *
+ * Converts latitude and longitude coordinates to UTM.
  * @author Elaina Cole
  */
 public class LatLongToUTM {
@@ -57,41 +57,46 @@ public class LatLongToUTM {
     private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 10;
     
+    /**
+     * Converts a csv file of Latitude and Longitude to a csv file of converted UTM
+     * @param inputFileName
+     * @param outputFileName
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws Exception
+     */
     public static void bulkConvert(String inputFileName, String outputFileName) 
-        throws FileNotFoundException, IOException, Exception {
+        throws IOException, Exception {
          
-        CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFileName));
-        
-        CSVReader csvReader = new CSVReader(new FileReader(inputFileName));
-        List<String[]> listOfUTMs = csvReader.readAll();
-        
-        BigDecimal latitude;
-        BigDecimal longitude;
-        String datum;
-        UTM utm;
-        String[] lineToWrite;
-        
-        for(String[] latLongInfo : listOfUTMs) {
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFileName)); CSVReader csvReader = new CSVReader(new FileReader(inputFileName))) {
+            List<String[]> listOfUTMs = csvReader.readAll();
             
-            latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
-            longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
-            datum = latLongInfo[2].trim().replace("\"", "");
+            BigDecimal latitude;
+            BigDecimal longitude;
+            String datum;
+            UTM utm;
+            String[] lineToWrite;
             
-            utm = LatLongToUTM.convert(latitude, longitude, datum);
+            for(String[] latLongInfo : listOfUTMs) {
+                
+                latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
+                longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
+                datum = latLongInfo[2].trim().replace("\"", "");
+                
+                utm = LatLongToUTM.convert(latitude, longitude, datum);
+                
+                lineToWrite = new String[]{
+                    utm.getEasting().toString(),
+                    utm.getNorthing().toString(),
+                    Character.toString(utm.getHemisphere()),
+                    Integer.toString(utm.getZoneNumber()),
+                    Character.toString(utm.getZoneLetter()),
+                    datum
+                };
+                csvWriter.writeNext(lineToWrite);
+            }
             
-            lineToWrite = new String[]{
-                utm.getEasting().toString(), 
-                utm.getNorthing().toString(), 
-                Character.toString(utm.getHemisphere()),
-                Integer.toString(utm.getZoneNumber()), 
-                Character.toString(utm.getZoneLetter()), 
-                datum
-            };
-            csvWriter.writeNext(lineToWrite);
         }
-        
-        csvReader.close();
-        csvWriter.close();
         
     }
     
@@ -102,6 +107,7 @@ public class LatLongToUTM {
      * @param longitude
      * @param datumName
      * @return UTM
+     * @throws java.lang.Exception
      * 
      * 
      */
@@ -119,6 +125,7 @@ public class LatLongToUTM {
      * @param longitude
      * @param datumName
      * @return UTM
+     * @throws java.lang.Exception
      * 
      * 
      */

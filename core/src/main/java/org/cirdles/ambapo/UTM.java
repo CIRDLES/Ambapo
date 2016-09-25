@@ -87,22 +87,42 @@ public class UTM {
         this.zoneLetter = zoneLetter;
     }
     
+    /**
+     * 
+     * @return easting
+     */
     public BigDecimal getEasting() {
         return easting;  
     }
     
+    /**
+     * 
+     * @return northing
+     */
     public BigDecimal getNorthing() {
         return northing;
     }
     
+    /**
+     * 
+     * @return zone number
+     */
     public int getZoneNumber() {
         return zoneNumber;
     }
     
+    /**
+     * 
+     * @return zone letter
+     */
     public char getZoneLetter() {
         return zoneLetter;
     }
     
+    /**
+     * 
+     * @return hemisphere
+     */
     public char getHemisphere() {
         return hemisphere;
     }

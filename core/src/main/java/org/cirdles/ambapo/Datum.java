@@ -226,7 +226,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum.
      * @return datum
      */
     public String getDatum(){
@@ -234,7 +234,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's equatorial radius.
      * @return equatorialRadius
      */
     public double getEquatorialRadius(){
@@ -242,7 +242,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's polar radius.
      * @return polarRadius
      */
     public double getPolarRadius(){
@@ -250,7 +250,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's meridian radius.
      * @return meridianRadius
      */
     public double getMeridianRadius() {
@@ -258,7 +258,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's flattening 3D.
      * @return flattening3D
      */
     public double getFlattening3D() {
@@ -266,7 +266,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's eccentricity.
      * @return eccentricity
      */
     public double getEccentricity() {
@@ -274,7 +274,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's alpha series numbers calculated using a Krueger series.
      * @return alphaSeries
      */
     public double[] getAlphaSeries(){
@@ -282,7 +282,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * Get the datum's beta series numbers calculated using a Krueger series.
      * @return betaSeries
      */
     public double[] getBetaSeries() {
@@ -290,7 +290,7 @@ public enum Datum {
     }
     
     /**
-     * 
+     * See if enumeration contains a specific datum's information or not.
      * @param datumToFind
      * @return boolean
      */

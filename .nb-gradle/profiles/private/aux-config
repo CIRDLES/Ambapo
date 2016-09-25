@@ -8,7 +8,12 @@
     </open-files>
     <editor-bookmarks lastBookmarkId="0" xmlns="http://www.netbeans.org/ns/editor-bookmarks/2"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-      <group/>
+      <group>
+        <file>file:/Users/evc1996/NetBeansProjects/Ambapo/core/src/main/java/org/cirdles/ambapo/LatLongToUTM.java</file>
+        <file>file:/Users/evc1996/NetBeansProjects/Ambapo/core/src/main/java/org/cirdles/ambapo/ConverterDriver.java</file>
+        <file>file:/Users/evc1996/NetBeansProjects/Ambapo/core/src/main/java/org/cirdles/ambapo/UTMToLatLong.java</file>
+        <file>file:/Users/evc1996/NetBeansProjects/Ambapo/core/src/main/java/org/cirdles/ambapo/UTM.java</file>
+      </group>
     </open-files>
   </auxiliary>
 </gradle-project-properties>
