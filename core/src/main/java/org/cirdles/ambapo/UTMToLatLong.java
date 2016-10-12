@@ -60,8 +60,6 @@ public class UTMToLatLong {
      */
     public static void bulkConvert(File file) 
         throws FileNotFoundException, IOException, Exception {
-        
-        File outputFile = new File("outputLatLong.csv");
         try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile)); CSVReader csvReader = new CSVReader(new FileReader(file))) {
             List<String[]> listOfUTMs = csvReader.readAll();
             

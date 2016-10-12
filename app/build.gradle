@@ -1,0 +1,45 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: "application"
+
+mainClassName = "org.cirdles.ambapo.Ambapo"
+
+dependencies {
+    compile project(":core")
+    compile "org.netbeans.external:AbsoluteLayout:RELEASE731"
+    compile "com.apple:AppleJavaExtensions:1.4"
+    compile "org.netbeans.external:swing-layout-1.0.4:RELEASE80"
+    compile "com.github.cirdles:Commons:-SNAPSHOT"
+}
+
+repositories {
+    maven {
+        url "http://bits.netbeans.org/maven2/"
+        url "http://jcenter.bintray.com/"
+    }
+}
+
+
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+
+    baseName = 'Ambapo'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+def timestamp() {
+    new SimpleDateFormat("dd MMMM yyyy").format(new Date())
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+        "pom.version": version,
+        "timestamp": timestamp()
+    ]
+}
