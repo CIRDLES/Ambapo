@@ -5,8 +5,8 @@
  */
 package org.cirdles.ambapo;
 
-import java.io.File;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -49,13 +49,19 @@ public class ConverterDriver {
         System.out.println ("\nCoordinate=" + latLong2);
         
         System.out.println("\nBulk convert UTM to Lat Long");
-        File file = new File("utmToLatLongBulk.csv");
-        UTMToLatLong.bulkConvert(file);
+        String fileToConvert = "utmToLatLongBulk.csv";
+        String outputFileLatLong = "outputLatLong.csv";
+        
+        ConversionFileHandler fileHandler = new ConversionFileHandler(fileToConvert);
+        List<String[]> listOfDataToConvert = fileHandler.extractDataToConvert();
+        fileHandler.writeConversionsUTMToLatLong(listOfDataToConvert, outputFileLatLong);
+        
         
         System.out.println("\nBulk convert Lat Long to UTM");
-        File file2 = new File("outputLatLong.csv");
-        LatLongToUTM.bulkConvert("outputLatLong.csv", "outputUTM.csv");
-        
+        String outputFileUTM = "outputUTM.csv";
+        fileHandler.setCurrentFileLocation(outputFileLatLong);
+        List<String[]> listOfDataToConvert2 = fileHandler.extractDataToConvert();
+        fileHandler.writeConversionsLatLongToUTM(listOfDataToConvert2, outputFileUTM);
         
     }
     

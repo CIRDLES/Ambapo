@@ -50,45 +50,7 @@ public class UTMToLatLong {
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 20;
-    
-    /**
-     * Converts a csv file of UTM to a csv file of converted Latitudes and Longitudes.
-     * @param file
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws Exception 
-     */
-    public static void bulkConvert(File file) 
-        throws FileNotFoundException, IOException, Exception {
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile)); CSVReader csvReader = new CSVReader(new FileReader(file))) {
-            List<String[]> listOfUTMs = csvReader.readAll();
-            
-            Datum datum;
-            UTM utm;
-            Coordinate latAndLong;
-            String[] lineToWrite;
-            
-            for(String[] utmInfo : listOfUTMs) {
-                utm = new UTM(
-                        new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))),
-                        new BigDecimal(Double.parseDouble(utmInfo[1].trim().replace("\"", ""))),
-                        utmInfo[2].trim().replace("\"", "").charAt(0),
-                        Integer.parseInt(utmInfo[3].replace("\"", "").trim()),
-                        utmInfo[4].trim().replace("\"", "").charAt(0));
-                
-                datum = Datum.valueOf(utmInfo[5].trim().replace("\"", ""));
-                
-                latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
-                lineToWrite = new String[]{latAndLong.getLatitude().toString(),
-                    latAndLong.getLongitude().toString(), datum.getDatum()};
-                
-                csvWriter.writeNext(lineToWrite);
-            }
-            
-        }
-        
-    }
-    
+
     /**
      * Converts a UTM into a Coordinate of lat,long with a specific datum.
      * @param utm
