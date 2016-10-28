@@ -32,15 +32,8 @@ Steven Dutch, Natural and Applied Sciences, University of Wisconsin - Green Bay
  */
 package org.cirdles.ambapo;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import org.apache.commons.math3.analysis.function.Asinh;
 import org.apache.commons.math3.analysis.function.Atanh;
 

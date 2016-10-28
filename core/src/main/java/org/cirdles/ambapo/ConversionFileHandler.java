@@ -13,9 +13,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +28,7 @@ public class ConversionFileHandler {
     public ConversionFileHandler(String currentFileLocationToConvert){
         this.currentFileLocationToConvert = currentFileLocationToConvert;
     }
+
     public boolean currentFileLocationToConvertIsFile() {
         return new File(currentFileLocationToConvert).isFile();
     }
@@ -70,7 +70,8 @@ public class ConversionFileHandler {
             Coordinate latAndLong;
             String[] lineToWrite;
             
-            for(String[] utmInfo : dataToConvert) {
+            for (Iterator<String[]> it = dataToConvert.iterator(); it.hasNext();) {
+                String[] utmInfo = it.next();
                 if(utmInfo[0].charAt(0) != ';'){
                     utm = new UTM(
                             new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))),
