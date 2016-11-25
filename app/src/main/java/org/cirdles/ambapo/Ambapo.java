@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import org.cirdles.ambapo.userInterface.AmbapoUI;
 import org.cirdles.commons.util.ResourceExtractor;
 
 /**
@@ -33,14 +36,14 @@ public class Ambapo {
     public static final String RELEASE_DATE;
 
     static {
-        ResourceExtractor calamariResourceExtractor
-                = new ResourceExtractor(Ambapo.class);
+        /*ResourceExtractor ambapoResourceExtractor
+                = new ResourceExtractor(Ambapo.class);*/
 
-        String version;
-        String releaseDate;
+        String version = "0.1.0";
+        String releaseDate = "Nov. 25, 2016";
 
-        // get version number and release date written by pom.xml
-        Path resourcePath = calamariResourceExtractor.extractResourceAsPath("version.txt");
+        /* get version number and release date written by pom.xml
+        Path resourcePath = ambapoResourceExtractor.extractResourceAsPath("version.txt");
         Charset charset = Charset.forName("US-ASCII");
         try (BufferedReader reader = Files.newBufferedReader(resourcePath, charset)) {
             String[] versionText = reader.readLine().split("=");
@@ -53,7 +56,7 @@ public class Ambapo {
             releaseDate = "date";
 
             System.err.format("IOException: %s%n", x);
-        }
+        }*/
 
         VERSION = version;
         RELEASE_DATE = releaseDate;
@@ -74,10 +77,13 @@ public class Ambapo {
         defaultAmbapoConversionsFolder.mkdir();
         conversionFileHandler.setAFileLocationToWriteTo(defaultAmbapoConversionsFolder.getCanonicalPath());
         
-        /* Create and display the form */
-            java.awt.EventQueue.invokeLater(() -> {
-                new org.cirdles.ambapo.userInterface.AmbapoUI(conversionFileHandler).setVisible(true);
-            });
+        SwingUtilities.invokeLater(() -> {
+            AmbapoUI gui = new AmbapoUI(conversionFileHandler);
+            JFrame frame = new JFrame();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.getContentPane().add(gui);
+            frame.pack();
+            frame.setVisible(true);
+        });
     }
-    
 }

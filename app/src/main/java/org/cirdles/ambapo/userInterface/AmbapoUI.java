@@ -5,9 +5,16 @@
  */
 package org.cirdles.ambapo.userInterface;
 
+import com.apple.eawt.Application;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import org.cirdles.ambapo.AmbapoFileFilter;
 import org.cirdles.ambapo.ConversionFileHandler;
 
@@ -16,6 +23,10 @@ import org.cirdles.ambapo.ConversionFileHandler;
  * @author evc1996
  */
 public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customizer {
+
+    private static void setDefaultLookAndFeelDecorated(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     private Object bean;
     
@@ -39,13 +50,39 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
 
     /**
      * Creates new customizer AmbapoUI
+     * @param conversionFileHandler
      */
     public AmbapoUI(ConversionFileHandler conversionFileHandler) {
         this.conversionFileHandler = conversionFileHandler;
         initComponents();
-        //initUI();
+        initUI();
     }
     
+    private void initUI() {
+
+        this.setPreferredSize(new Dimension(700, 475));
+        //AmbapoUI.setDefaultLookAndFeelDecorated(true);
+        //UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("SansSerif", Font.PLAIN, 12));
+
+        // check for MacOS
+        String lcOSName = System.getProperty("os.name").toLowerCase();
+        boolean MAC_OS_X = lcOSName.startsWith("mac os x");
+        if (MAC_OS_X) {
+            Application myAboutHandler = new MacOSAboutHandler();
+        }
+
+        // center me
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        int w = this.getSize().width;
+        int h = this.getSize().height;
+        int x = (dim.width - w) / 2;
+        int y = (dim.height - h) / 2;
+
+        this.setLocation(x, y);
+    }
+    
+    @Override
     public void setObject(Object bean) {
         this.bean = bean;
     }
@@ -58,43 +95,39 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jInternalFrame1 = new javax.swing.JInternalFrame();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        easting = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        northing = new javax.swing.JTextField();
+        hemisphere = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        zoneNumber = new javax.swing.JTextField();
-        easting = new javax.swing.JTextField();
-        northing = new javax.swing.JTextField();
         zoneLetter = new javax.swing.JTextField();
-        hemisphere = new javax.swing.JComboBox();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        datumBulkConvert = new javax.swing.JComboBox();
-        latitude = new javax.swing.JTextField();
-        longitude = new javax.swing.JTextField();
-        bulkConvertButton = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        toUTMRadioButton = new javax.swing.JRadioButton();
-        toLatLongRadioButton = new javax.swing.JRadioButton();
-        inputfile = new javax.swing.JTextField();
-        browseButton = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        fromUTMRadioButton = new javax.swing.JRadioButton();
-        fromLatLongRadioButton = new javax.swing.JRadioButton();
+        zoneNumber = new javax.swing.JTextField();
         datumSoloConvert = new javax.swing.JComboBox();
         soloConvertButton = new javax.swing.JButton();
-        outputfile = new javax.swing.JTextField();
+        latitude = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        longitude = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        browseButton = new javax.swing.JButton();
+        fromUTMRadioButton = new javax.swing.JRadioButton();
+        fromLatLongRadioButton = new javax.swing.JRadioButton();
+        inputfile = new javax.swing.JTextField();
+        bulkConvertButton = new javax.swing.JButton();
+        datumBulkConvert = new javax.swing.JComboBox();
         exportFileButton = new javax.swing.JButton();
-        aboutButton = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        outputfile = new javax.swing.JTextField();
+        toUTMRadioButton = new javax.swing.JRadioButton();
+        toLatLongRadioButton = new javax.swing.JRadioButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
-
-        jInternalFrame1.setVisible(true);
 
         jLabel1.setFont(new java.awt.Font("AppleGothic", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(130, 15, 15));
@@ -107,11 +140,20 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel2.setText("Easting");
         jLayeredPane1.add(jLabel2);
         jLabel2.setBounds(30, 70, 60, 16);
+        jLayeredPane1.add(easting);
+        easting.setBounds(90, 70, 110, 20);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Northing");
         jLayeredPane1.add(jLabel3);
         jLabel3.setBounds(30, 100, 60, 16);
+        jLayeredPane1.add(northing);
+        northing.setBounds(90, 100, 110, 20);
+
+        hemisphere.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "N/A", "N", "S" }));
+        hemisphere.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLayeredPane1.add(hemisphere);
+        hemisphere.setBounds(240, 100, 80, 20);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Hemisphere");
@@ -122,53 +164,20 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel5.setText("Zone Letter");
         jLayeredPane1.add(jLabel5);
         jLabel5.setBounds(360, 70, 80, 16);
-
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Zone Number");
-        jLayeredPane1.add(jLabel6);
-        jLabel6.setBounds(350, 100, 90, 16);
-
-        zoneNumber.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoneNumberActionPerformed(evt);
-            }
-        });
+        jLayeredPane1.add(zoneLetter);
+        zoneLetter.setBounds(450, 70, 110, 20);
         jLayeredPane1.add(zoneNumber);
         zoneNumber.setBounds(450, 100, 110, 20);
 
-        easting.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eastingActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(easting);
-        easting.setBounds(90, 70, 110, 20);
+        datumSoloConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
+        jLayeredPane1.add(datumSoloConvert);
+        datumSoloConvert.setBounds(330, 140, 96, 27);
 
-        northing.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                northingActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(northing);
-        northing.setBounds(90, 100, 110, 20);
-
-        zoneLetter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoneLetterActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(zoneLetter);
-        zoneLetter.setBounds(450, 70, 110, 20);
-
-        hemisphere.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "N/A", "N", "S" }));
-        hemisphere.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        hemisphere.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hemisphereActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(hemisphere);
-        hemisphere.setBounds(240, 100, 80, 20);
+        soloConvertButton.setText("Convert");
+        jLayeredPane1.add(soloConvertButton);
+        soloConvertButton.setBounds(150, 140, 93, 29);
+        jLayeredPane1.add(latitude);
+        latitude.setBounds(110, 180, 130, 20);
 
         jLabel10.setText("Latitude");
         jLayeredPane1.add(jLabel10);
@@ -177,34 +186,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel11.setText("Longitude");
         jLayeredPane1.add(jLabel11);
         jLabel11.setBounds(330, 180, 70, 16);
-
-        datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
-        datumBulkConvert.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                datumBulkConvertActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(datumBulkConvert);
-        datumBulkConvert.setBounds(240, 300, 100, 20);
-
-        latitude.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                latitudeActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(latitude);
-        latitude.setBounds(110, 180, 130, 20);
         jLayeredPane1.add(longitude);
         longitude.setBounds(410, 180, 130, 20);
-
-        bulkConvertButton.setText("Convert");
-        bulkConvertButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bulkConvertButtonActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(bulkConvertButton);
-        bulkConvertButton.setBounds(240, 260, 93, 30);
 
         jLabel7.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -216,196 +199,59 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel8);
         jLabel8.setBounds(20, 250, 70, 16);
 
-        toUTMRadioButton.setText("UTM");
-        jLayeredPane1.add(toUTMRadioButton);
-        toUTMRadioButton.setBounds(400, 300, 70, 20);
-
-        toLatLongRadioButton.setText("LatLong");
-        toLatLongRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toLatLongRadioButtonActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(toLatLongRadioButton);
-        toLatLongRadioButton.setBounds(480, 300, 90, 20);
-
-        inputfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputfileActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(inputfile);
-        inputfile.setBounds(100, 270, 110, 28);
-
         browseButton.setText("Browse...");
-        browseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                browseButtonActionPerformed(evt);
-            }
-        });
         jLayeredPane1.add(browseButton);
         browseButton.setBounds(10, 270, 90, 29);
-
-        jLabel9.setText("Output File");
-        jLayeredPane1.add(jLabel9);
-        jLabel9.setBounds(380, 250, 80, 16);
 
         fromUTMRadioButton.setText("UTM");
         jLayeredPane1.add(fromUTMRadioButton);
         fromUTMRadioButton.setBounds(20, 300, 70, 23);
 
         fromLatLongRadioButton.setText("LatLong");
-        fromLatLongRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fromLatLongRadioButtonActionPerformed(evt);
-            }
-        });
         jLayeredPane1.add(fromLatLongRadioButton);
         fromLatLongRadioButton.setBounds(90, 300, 90, 23);
+        jLayeredPane1.add(inputfile);
+        inputfile.setBounds(100, 270, 110, 28);
 
-        datumSoloConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
-        datumSoloConvert.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                datumSoloConvertActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(datumSoloConvert);
-        datumSoloConvert.setBounds(330, 140, 96, 27);
+        bulkConvertButton.setText("Convert");
+        jLayeredPane1.add(bulkConvertButton);
+        bulkConvertButton.setBounds(240, 260, 93, 30);
 
-        soloConvertButton.setText("Convert");
-        soloConvertButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                soloConvertButtonActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(soloConvertButton);
-        soloConvertButton.setBounds(150, 140, 93, 29);
-
-        outputfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outputfileActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(outputfile);
-        outputfile.setBounds(470, 270, 120, 28);
+        datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
+        jLayeredPane1.add(datumBulkConvert);
+        datumBulkConvert.setBounds(240, 300, 100, 20);
 
         exportFileButton.setText("Export...");
-        exportFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportFileButtonActionPerformed(evt);
-            }
-        });
         jLayeredPane1.add(exportFileButton);
         exportFileButton.setBounds(370, 270, 97, 29);
 
-        aboutButton.setText("About");
-        aboutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutButtonActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(aboutButton);
-        aboutButton.setBounds(0, 0, 82, 29);
+        jLabel9.setText("Output File");
+        jLayeredPane1.add(jLabel9);
+        jLabel9.setBounds(380, 250, 80, 16);
+        jLayeredPane1.add(outputfile);
+        outputfile.setBounds(470, 270, 120, 28);
 
-        jInternalFrame1.getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
+        toUTMRadioButton.setText("UTM");
+        jLayeredPane1.add(toUTMRadioButton);
+        toUTMRadioButton.setBounds(400, 300, 70, 20);
 
-        add(jInternalFrame1, java.awt.BorderLayout.CENTER);
+        toLatLongRadioButton.setText("LatLong");
+        jLayeredPane1.add(toLatLongRadioButton);
+        toLatLongRadioButton.setBounds(480, 300, 90, 20);
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Zone Number");
+        jLayeredPane1.add(jLabel6);
+        jLabel6.setBounds(350, 100, 90, 16);
+
+        add(jLayeredPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void zoneNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoneNumberActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_zoneNumberActionPerformed
-
-    private void eastingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eastingActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_eastingActionPerformed
-
-    private void northingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_northingActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_northingActionPerformed
-
-    private void zoneLetterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoneLetterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_zoneLetterActionPerformed
-
-    private void hemisphereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hemisphereActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_hemisphereActionPerformed
-
-    private void datumBulkConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datumBulkConvertActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_datumBulkConvertActionPerformed
-
-    private void latitudeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latitudeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_latitudeActionPerformed
-
-    private void bulkConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulkConvertButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bulkConvertButtonActionPerformed
-
-    private void toLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toLatLongRadioButtonActionPerformed
-        // TODO add your handling code here:
-        toLatLong = true;
-    }//GEN-LAST:event_toLatLongRadioButtonActionPerformed
-
-    private void inputfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputfileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputfileActionPerformed
-
-    private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
-        // TODO add your handling code here:
-        /*String dialogTitle,
-            File locationIn,
-            final String fileExtension,
-            FileFilter nonMacFileFilter,
-            boolean allowMultipleSelect,
-            JFrame parentFrame*/
-        
-        File inputFileLocation = FileHelper.AllPlatformGetFile("Select file to convert",
-                new File(conversionFileHandler.getCurrentFileLocationToConvert()), 
-                "*.csv", new AmbapoFileFilter(), false, jLayeredPane1)[0];
-        if (inputFileLocation != null) {
-            try {
-                conversionFileHandler.setCurrentFileLocation(inputFileLocation.getCanonicalPath());
-                updateCurrentPrawnFileLocation();
-            } catch (IOException iOException) {
-            }
-        }
-    }//GEN-LAST:event_browseButtonActionPerformed
-
-    private void fromLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromLatLongRadioButtonActionPerformed
-        // TODO add your handling code here:
-        fromLatLong = true;
-    }//GEN-LAST:event_fromLatLongRadioButtonActionPerformed
-
-    private void datumSoloConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datumSoloConvertActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_datumSoloConvertActionPerformed
-
-    private void soloConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_soloConvertButtonActionPerformed
-
-    private void outputfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputfileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_outputfileActionPerformed
-
-    private void exportFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_exportFileButtonActionPerformed
-
-    private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
-        // TODO add your handling code here:
-        AboutBox.getInstance().setVisible(true);
-    }//GEN-LAST:event_aboutButtonActionPerformed
 
     private void updateCurrentPrawnFileLocation() {
         inputfile.setText(conversionFileHandler.getCurrentFileLocationToConvert());
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton aboutButton;
     private javax.swing.JButton browseButton;
     private javax.swing.JButton bulkConvertButton;
     private javax.swing.JComboBox datumBulkConvert;
@@ -416,7 +262,6 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JRadioButton fromUTMRadioButton;
     private javax.swing.JComboBox hemisphere;
     private javax.swing.JTextField inputfile;
-    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
