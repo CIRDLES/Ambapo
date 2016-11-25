@@ -19,6 +19,7 @@ import java.awt.Frame;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
@@ -101,7 +102,7 @@ public class FileHelper {
             final String fileExtension,
             FileFilter nonMacFileFilter,
             boolean allowMultipleSelect,
-            JFrame parentFrame) {
+            JLayeredPane parentFrame) {
 
         // Nov 2008 note: http://developer.apple.com/samplecode/FunWithFileDialogs/listing3.html
         File location = locationIn;

@@ -64,8 +64,7 @@ public class AboutBox extends javax.swing.JDialog {
         ambapoLabel = new javax.swing.JLabel();
         contributorLabel = new javax.swing.JLabel();
         warrantyLabel = new javax.swing.JLabel();
-
-        setLayout(new java.awt.BorderLayout());
+        buildDateLabel = new javax.swing.JLabel();
 
         jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
         jLayeredPane1.setMinimumSize(new java.awt.Dimension(400, 400));
@@ -81,7 +80,7 @@ public class AboutBox extends javax.swing.JDialog {
         versionLabel.setText("v. 0.1.0");
         versionLabel.setOpaque(true);
         jLayeredPane1.add(versionLabel);
-        versionLabel.setBounds(100, 60, 160, 40);
+        versionLabel.setBounds(100, 70, 160, 18);
 
         gitHubButton.setFont(new java.awt.Font("Shree Devanagari 714", 0, 16)); // NOI18N
         gitHubButton.setText("GitHub");
@@ -91,7 +90,7 @@ public class AboutBox extends javax.swing.JDialog {
             }
         });
         jLayeredPane1.add(gitHubButton);
-        gitHubButton.setBounds(100, 109, 160, 40);
+        gitHubButton.setBounds(100, 130, 160, 40);
 
         ambapoLabel.setBackground(new java.awt.Color(255, 255, 255));
         ambapoLabel.setFont(new java.awt.Font("AppleGothic", 0, 36)); // NOI18N
@@ -114,7 +113,16 @@ public class AboutBox extends javax.swing.JDialog {
         jLayeredPane1.add(warrantyLabel);
         warrantyLabel.setBounds(60, 220, 270, 100);
 
-        add(jLayeredPane1, java.awt.BorderLayout.CENTER);
+        buildDateLabel.setBackground(new java.awt.Color(255, 255, 255));
+        buildDateLabel.setFont(new java.awt.Font("AppleGothic", 0, 14)); // NOI18N
+        buildDateLabel.setForeground(new java.awt.Color(130, 15, 15));
+        buildDateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        buildDateLabel.setText("v. 0.1.0");
+        buildDateLabel.setOpaque(true);
+        jLayeredPane1.add(buildDateLabel);
+        buildDateLabel.setBounds(100, 100, 160, 18);
+
+        getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void gitHubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gitHubButtonActionPerformed
@@ -140,6 +148,7 @@ public class AboutBox extends javax.swing.JDialog {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ambapoLabel;
+    private javax.swing.JLabel buildDateLabel;
     private javax.swing.JLabel contributorLabel;
     private javax.swing.JButton gitHubButton;
     private javax.swing.JLayeredPane jLayeredPane1;

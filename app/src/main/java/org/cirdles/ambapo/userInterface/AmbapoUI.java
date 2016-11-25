@@ -5,6 +5,12 @@
  */
 package org.cirdles.ambapo.userInterface;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import org.cirdles.ambapo.AmbapoFileFilter;
+import org.cirdles.ambapo.ConversionFileHandler;
+
 /**
  *
  * @author evc1996
@@ -12,12 +18,32 @@ package org.cirdles.ambapo.userInterface;
 public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customizer {
     
     private Object bean;
+    
+    public int zonenumber_val;
+    public char zoneletter_val;
+    public char hemisphere_val;
+    public BigDecimal easting_val;
+    public BigDecimal northing_val;
+    public BigDecimal longitude_val;
+    public BigDecimal latitude_val;
+    
+    public ConversionFileHandler conversionFileHandler;
+    
+    public boolean toLatLong;
+    public boolean toUTM;
+    public boolean fromLatLong;
+    public boolean fromUTM;
+    
+    public String toDatum;
+    
 
     /**
      * Creates new customizer AmbapoUI
      */
-    public AmbapoUI() {
+    public AmbapoUI(ConversionFileHandler conversionFileHandler) {
+        this.conversionFileHandler = conversionFileHandler;
         initComponents();
+        //initUI();
     }
     
     public void setObject(Object bean) {
@@ -40,33 +66,31 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox();
+        zoneNumber = new javax.swing.JTextField();
+        easting = new javax.swing.JTextField();
+        northing = new javax.swing.JTextField();
+        zoneLetter = new javax.swing.JTextField();
+        hemisphere = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        datumBulkConvert = new javax.swing.JComboBox();
+        latitude = new javax.swing.JTextField();
+        longitude = new javax.swing.JTextField();
+        bulkConvertButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jTextField7 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        toUTMRadioButton = new javax.swing.JRadioButton();
+        toLatLongRadioButton = new javax.swing.JRadioButton();
+        inputfile = new javax.swing.JTextField();
+        browseButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jComboBox3 = new javax.swing.JComboBox();
-        jButton3 = new javax.swing.JButton();
-        jTextField8 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        fromUTMRadioButton = new javax.swing.JRadioButton();
+        fromLatLongRadioButton = new javax.swing.JRadioButton();
+        datumSoloConvert = new javax.swing.JComboBox();
+        soloConvertButton = new javax.swing.JButton();
+        outputfile = new javax.swing.JTextField();
+        exportFileButton = new javax.swing.JButton();
+        aboutButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -104,47 +128,47 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel6);
         jLabel6.setBounds(350, 100, 90, 16);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        zoneNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                zoneNumberActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField1);
-        jTextField1.setBounds(450, 100, 110, 20);
+        jLayeredPane1.add(zoneNumber);
+        zoneNumber.setBounds(450, 100, 110, 20);
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        easting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                eastingActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField2);
-        jTextField2.setBounds(90, 70, 110, 20);
+        jLayeredPane1.add(easting);
+        easting.setBounds(90, 70, 110, 20);
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        northing.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                northingActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField3);
-        jTextField3.setBounds(90, 100, 110, 20);
+        jLayeredPane1.add(northing);
+        northing.setBounds(90, 100, 110, 20);
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        zoneLetter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                zoneLetterActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField4);
-        jTextField4.setBounds(450, 70, 110, 20);
+        jLayeredPane1.add(zoneLetter);
+        zoneLetter.setBounds(450, 70, 110, 20);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "N/A", "N", "S" }));
-        jComboBox2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        hemisphere.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "N/A", "N", "S" }));
+        hemisphere.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        hemisphere.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                hemisphereActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jComboBox2);
-        jComboBox2.setBounds(240, 100, 80, 20);
+        jLayeredPane1.add(hemisphere);
+        hemisphere.setBounds(240, 100, 80, 20);
 
         jLabel10.setText("Latitude");
         jLayeredPane1.add(jLabel10);
@@ -154,33 +178,33 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel11);
         jLabel11.setBounds(330, 180, 70, 16);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
+        datumBulkConvert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                datumBulkConvertActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jComboBox1);
-        jComboBox1.setBounds(240, 300, 100, 20);
+        jLayeredPane1.add(datumBulkConvert);
+        datumBulkConvert.setBounds(240, 300, 100, 20);
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        latitude.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                latitudeActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField5);
-        jTextField5.setBounds(110, 180, 130, 20);
-        jLayeredPane1.add(jTextField6);
-        jTextField6.setBounds(410, 180, 130, 20);
+        jLayeredPane1.add(latitude);
+        latitude.setBounds(110, 180, 130, 20);
+        jLayeredPane1.add(longitude);
+        longitude.setBounds(410, 180, 130, 20);
 
-        jButton1.setText("Convert");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bulkConvertButton.setText("Convert");
+        bulkConvertButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bulkConvertButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jButton1);
-        jButton1.setBounds(240, 260, 93, 30);
+        jLayeredPane1.add(bulkConvertButton);
+        bulkConvertButton.setBounds(240, 260, 93, 30);
 
         jLabel7.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -192,174 +216,206 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel8);
         jLabel8.setBounds(20, 250, 70, 16);
 
-        jRadioButton1.setText("UTM");
-        jLayeredPane1.add(jRadioButton1);
-        jRadioButton1.setBounds(400, 300, 70, 20);
+        toUTMRadioButton.setText("UTM");
+        jLayeredPane1.add(toUTMRadioButton);
+        toUTMRadioButton.setBounds(400, 300, 70, 20);
 
-        jRadioButton2.setText("LatLong");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        toLatLongRadioButton.setText("LatLong");
+        toLatLongRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                toLatLongRadioButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jRadioButton2);
-        jRadioButton2.setBounds(480, 300, 90, 20);
+        jLayeredPane1.add(toLatLongRadioButton);
+        toLatLongRadioButton.setBounds(480, 300, 90, 20);
 
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        inputfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                inputfileActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField7);
-        jTextField7.setBounds(100, 270, 110, 28);
+        jLayeredPane1.add(inputfile);
+        inputfile.setBounds(100, 270, 110, 28);
 
-        jButton2.setText("Browse...");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        browseButton.setText("Browse...");
+        browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                browseButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jButton2);
-        jButton2.setBounds(10, 270, 90, 29);
+        jLayeredPane1.add(browseButton);
+        browseButton.setBounds(10, 270, 90, 29);
 
         jLabel9.setText("Output File");
         jLayeredPane1.add(jLabel9);
         jLabel9.setBounds(380, 250, 80, 16);
 
-        jRadioButton3.setText("UTM");
-        jLayeredPane1.add(jRadioButton3);
-        jRadioButton3.setBounds(20, 300, 70, 23);
+        fromUTMRadioButton.setText("UTM");
+        jLayeredPane1.add(fromUTMRadioButton);
+        fromUTMRadioButton.setBounds(20, 300, 70, 23);
 
-        jRadioButton4.setText("LatLong");
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+        fromLatLongRadioButton.setText("LatLong");
+        fromLatLongRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
+                fromLatLongRadioButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jRadioButton4);
-        jRadioButton4.setBounds(90, 300, 90, 23);
+        jLayeredPane1.add(fromLatLongRadioButton);
+        fromLatLongRadioButton.setBounds(90, 300, 90, 23);
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        datumSoloConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
+        datumSoloConvert.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                datumSoloConvertActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jComboBox3);
-        jComboBox3.setBounds(330, 140, 96, 27);
+        jLayeredPane1.add(datumSoloConvert);
+        datumSoloConvert.setBounds(330, 140, 96, 27);
 
-        jButton3.setText("Convert");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        soloConvertButton.setText("Convert");
+        soloConvertButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                soloConvertButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jButton3);
-        jButton3.setBounds(150, 140, 93, 29);
+        jLayeredPane1.add(soloConvertButton);
+        soloConvertButton.setBounds(150, 140, 93, 29);
 
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+        outputfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
+                outputfileActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jTextField8);
-        jTextField8.setBounds(470, 270, 120, 28);
+        jLayeredPane1.add(outputfile);
+        outputfile.setBounds(470, 270, 120, 28);
 
-        jButton4.setText("Export...");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        exportFileButton.setText("Export...");
+        exportFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                exportFileButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(jButton4);
-        jButton4.setBounds(370, 270, 97, 29);
+        jLayeredPane1.add(exportFileButton);
+        exportFileButton.setBounds(370, 270, 97, 29);
+
+        aboutButton.setText("About");
+        aboutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutButtonActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(aboutButton);
+        aboutButton.setBounds(0, 0, 82, 29);
 
         jInternalFrame1.getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
-
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        jInternalFrame1.setJMenuBar(jMenuBar1);
 
         add(jInternalFrame1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void zoneNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoneNumberActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_zoneNumberActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void eastingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eastingActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_eastingActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void northingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_northingActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_northingActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void zoneLetterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoneLetterActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_zoneLetterActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void hemisphereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hemisphereActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_hemisphereActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void datumBulkConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datumBulkConvertActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_datumBulkConvertActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void latitudeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latitudeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_latitudeActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bulkConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulkConvertButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bulkConvertButtonActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+    private void toLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toLatLongRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+        toLatLong = true;
+    }//GEN-LAST:event_toLatLongRadioButtonActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void inputfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputfileActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_inputfileActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        /*String dialogTitle,
+            File locationIn,
+            final String fileExtension,
+            FileFilter nonMacFileFilter,
+            boolean allowMultipleSelect,
+            JFrame parentFrame*/
+        
+        File inputFileLocation = FileHelper.AllPlatformGetFile("Select file to convert",
+                new File(conversionFileHandler.getCurrentFileLocationToConvert()), 
+                "*.csv", new AmbapoFileFilter(), false, jLayeredPane1)[0];
+        if (inputFileLocation != null) {
+            try {
+                conversionFileHandler.setCurrentFileLocation(inputFileLocation.getCanonicalPath());
+                updateCurrentPrawnFileLocation();
+            } catch (IOException iOException) {
+            }
+        }
+    }//GEN-LAST:event_browseButtonActionPerformed
 
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+    private void fromLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromLatLongRadioButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
+        fromLatLong = true;
+    }//GEN-LAST:event_fromLatLongRadioButtonActionPerformed
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+    private void datumSoloConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datumSoloConvertActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    }//GEN-LAST:event_datumSoloConvertActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void soloConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_soloConvertButtonActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void outputfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputfileActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_outputfileActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void exportFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_exportFileButtonActionPerformed
 
+    private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
+        // TODO add your handling code here:
+        AboutBox.getInstance().setVisible(true);
+    }//GEN-LAST:event_aboutButtonActionPerformed
 
+    private void updateCurrentPrawnFileLocation() {
+        inputfile.setText(conversionFileHandler.getCurrentFileLocationToConvert());
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JButton aboutButton;
+    private javax.swing.JButton browseButton;
+    private javax.swing.JButton bulkConvertButton;
+    private javax.swing.JComboBox datumBulkConvert;
+    private javax.swing.JComboBox datumSoloConvert;
+    private javax.swing.JTextField easting;
+    private javax.swing.JButton exportFileButton;
+    private javax.swing.JRadioButton fromLatLongRadioButton;
+    private javax.swing.JRadioButton fromUTMRadioButton;
+    private javax.swing.JComboBox hemisphere;
+    private javax.swing.JTextField inputfile;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -373,20 +429,14 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField latitude;
+    private javax.swing.JTextField longitude;
+    private javax.swing.JTextField northing;
+    private javax.swing.JTextField outputfile;
+    private javax.swing.JButton soloConvertButton;
+    private javax.swing.JRadioButton toLatLongRadioButton;
+    private javax.swing.JRadioButton toUTMRadioButton;
+    private javax.swing.JTextField zoneLetter;
+    private javax.swing.JTextField zoneNumber;
     // End of variables declaration//GEN-END:variables
 }

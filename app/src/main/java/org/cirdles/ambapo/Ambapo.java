@@ -19,13 +19,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import javax.xml.bind.JAXBException;
 import org.cirdles.commons.util.ResourceExtractor;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -65,58 +61,23 @@ public class Ambapo {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
-    public static void main(String args[]) {
-        // set up folder of example Prawn files
-        ResourceExtractor prawnFileResourceExtractor
-                = new ResourceExtractor(PrawnFile.class);
+    public static void main(String args[]) throws IOException {
 
-        PrawnFileHandler prawnFileHandler = new PrawnFileHandler();
+        org.cirdles.ambapo.ConversionFileHandler conversionFileHandler = new ConversionFileHandler();
 
-        Path listOfPrawnFiles = prawnFileResourceExtractor.extractResourceAsPath("listOfPrawnFiles.txt");
-        if (listOfPrawnFiles != null) {
-            File exampleFolder = new File("ExamplePrawnXMLFiles");
-            exampleFolder.mkdir();
-
-            try {
-                FileUtilities.recursiveDelete(exampleFolder.toPath());
-                exampleFolder.mkdir();
-                List<String> fileNames = Files.readAllLines(listOfPrawnFiles, ISO_8859_1);
-                for (int i = 0; i < fileNames.size(); i++) {
-                    // test for empty string
-                    if (fileNames.get(i).trim().length() > 0) {
-                        File prawnFileResource = prawnFileResourceExtractor.extractResourceAsFile(fileNames.get(i));
-                        File prawnFile = new File(exampleFolder.getCanonicalPath() + File.separator + fileNames.get(i));
-                        System.out.println("PrawnFile added: " + fileNames.get(i));
-                        prawnFileResource.renameTo(prawnFile);
-                    }
-                }
-
-                // point to directory, but no default choice
-                prawnFileHandler.setCurrentPrawnFileLocation(exampleFolder.getCanonicalPath());
-            } catch (IOException iOException) {
-            }
-        }
-
+        //Path listOfConversionFiles = conversionFileResourceExtractor.extractResourceAsPath("listOfPrawnFiles.txt");
+        
         // Set up default folder for reports
-        File defaultCalamariReportsFolder = new File("CalamariReports_v" + VERSION);
-        defaultCalamariReportsFolder.mkdir();
-        prawnFileHandler.getReportsEngine().setFolderToWriteCalamariReports(defaultCalamariReportsFolder);
-
-       
-        if (args.length == 3) {// remove 4th argument from properties dialog command line arguments to get commandline
-            System.out.println("Command line mode");
-            try {
-                prawnFileHandler.writeReportsFromPrawnFile(args[0], Boolean.valueOf(args[1]), Boolean.valueOf(args[2]), "T");
-            } catch (IOException | JAXBException | SAXException exception) {
-                System.out.println("Exception extracting data: " + exception.getStackTrace()[0].toString());
-            }
-        } else {
-            /* Create and display the form */
+        File defaultAmbapoConversionsFolder = new File("AmbapoConversions_v" + VERSION);
+        defaultAmbapoConversionsFolder.mkdir();
+        conversionFileHandler.setAFileLocationToWriteTo(defaultAmbapoConversionsFolder.getCanonicalPath());
+        
+        /* Create and display the form */
             java.awt.EventQueue.invokeLater(() -> {
-                new org.cirdles.calamari.userInterface.CalamariUI(prawnFileHandler).setVisible(true);
+                new org.cirdles.ambapo.userInterface.AmbapoUI(conversionFileHandler).setVisible(true);
             });
-        }
     }
     
 }

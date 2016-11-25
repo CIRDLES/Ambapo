@@ -22,11 +22,15 @@ import java.util.List;
  */
 public class ConversionFileHandler {
         private String currentFileLocationToConvert;
+        private String fileLocationToWriteTo;
         private final String[] HEADER_LAT_LONG = {";LATITUDE, LONGITUDE, DATUM\n"};
         private final String[] HEADER_UTM_FROM_LATLONG = {";EASTING, NORTHING, HEMISPHERE, ZONE NUMBER, ZONE LETTER, DATUM CONVERTED FROM"};
     
     public ConversionFileHandler(String currentFileLocationToConvert){
         this.currentFileLocationToConvert = currentFileLocationToConvert;
+    }
+    
+    public ConversionFileHandler(){
     }
 
     public boolean currentFileLocationToConvertIsFile() {
@@ -47,10 +51,17 @@ public class ConversionFileHandler {
         currentFileLocationToConvert = aCurrentFileLocationToConvert;
     }
     
-    public List<String[]> extractDataToConvert() throws FileNotFoundException, IOException{
+    /**
+     * @param aFileLocationToWriteTo to set a file location for the output file
+     */
+    public void setAFileLocationToWriteTo(String aFileLocationToWriteTo) {
+        fileLocationToWriteTo = aFileLocationToWriteTo;
+    }
+    
+    private List<String[]> extractDataToConvert() throws FileNotFoundException, IOException{
         List<String[]> listOfDataToConvert = null;
         
-        try (CSVReader csvReader = new CSVReader(new FileReader(currentFileLocationToConvert))) {
+        try (CSVReader csvReader = new CSVReader(new FileReader(new File(currentFileLocationToConvert)))) {
             listOfDataToConvert = csvReader.readAll();
         } catch(Exception e){
             System.out.println("\nUnable to extract data from file.");
@@ -61,9 +72,10 @@ public class ConversionFileHandler {
         
     }
     
-    public void writeConversionsUTMToLatLong(List<String[]> dataToConvert, String outputFileName) throws IOException, Exception {
-        File outputFile = new File(outputFileName);
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))){
+    public void writeConversionsUTMToLatLong(String outputFileName) throws IOException, Exception {
+        List<String[]> dataToConvert = extractDataToConvert();
+        
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(outputFileName)))){
             csvWriter.writeNext(HEADER_LAT_LONG);
             Datum datum;
             UTM utm;
@@ -93,8 +105,9 @@ public class ConversionFileHandler {
         
     }
     
-    public void writeConversionsLatLongToUTM(List<String[]> dataToConvert, String outputFileName) throws IOException, Exception
+    public void writeConversionsLatLongToUTM(String outputFileName) throws IOException, Exception
     {
+        List<String[]> dataToConvert = extractDataToConvert();
             File outputFile = new File(outputFileName);
             BigDecimal latitude;
             BigDecimal longitude;
