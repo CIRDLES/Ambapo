@@ -7,15 +7,8 @@ package org.cirdles.ambapo.userInterface;
 
 import com.apple.eawt.Application;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import org.cirdles.ambapo.AmbapoFileFilter;
 import org.cirdles.ambapo.ConversionFileHandler;
 
 /**

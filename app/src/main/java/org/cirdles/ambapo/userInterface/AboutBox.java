@@ -18,7 +18,6 @@ package org.cirdles.ambapo.userInterface;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JDialog;
-import javax.swing.*;
 import org.cirdles.ambapo.Ambapo;
 /**
  *
@@ -34,7 +33,7 @@ public class AboutBox extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    private AboutBox(JFrame parent, boolean modal) {
+    private AboutBox(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         initInstance();
@@ -43,8 +42,8 @@ public class AboutBox extends javax.swing.JDialog {
 
     private void initInstance() {
         setSizeAndCenter(400, 400);
-        versionLabel1.setText(Ambapo.VERSION);
-        //buildDateLabel.setText(Ambapo.RELEASE_DATE);
+        versionLabel.setText(Ambapo.VERSION);
+        buildDateLabel.setText(Ambapo.RELEASE_DATE);
     }
     
     public static JDialog getInstance() {
@@ -61,68 +60,54 @@ public class AboutBox extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLayeredPane1 = new javax.swing.JLayeredPane();
-        gitHubButton = new javax.swing.JButton();
-        ambapoLabel = new javax.swing.JLabel();
-        contributorLabel = new javax.swing.JLabel();
-        warrantyLabel = new javax.swing.JLabel();
-        versionLabel1 = new javax.swing.JLabel();
+        jLayeredPane2 = new javax.swing.JLayeredPane();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        versionLabel = new javax.swing.JLabel();
+        buildDateLabel = new javax.swing.JLabel();
 
-        getContentPane().setLayout(new java.awt.BorderLayout());
+        jLabel1.setFont(new java.awt.Font("AppleGothic", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(130, 15, 15));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Ambapo");
+        jLayeredPane2.add(jLabel1);
+        jLabel1.setBounds(80, 20, 220, 50);
 
-        jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jLayeredPane1.setMinimumSize(new java.awt.Dimension(400, 400));
-        jLayeredPane1.setSize(new java.awt.Dimension(400, 400));
-        jLayeredPane1.setOpaque(true);
-        jLayeredPane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel2.setForeground(new java.awt.Color(130, 15, 15));
+        jLabel2.setText("<html><b>Warranty:</b> Ambapo is provided as free open source software on an `as-is' basis.  Use at your own risk.  The developers disclaim all warranties about Ambapo.</html>");
+        jLayeredPane2.add(jLabel2);
+        jLabel2.setBounds(90, 200, 200, 110);
 
-        gitHubButton.setFont(new java.awt.Font("Shree Devanagari 714", 0, 16)); // NOI18N
-        gitHubButton.setText("GitHub");
-        gitHubButton.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("GitHub");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gitHubButtonActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(gitHubButton);
-        gitHubButton.setBounds(100, 110, 160, 40);
+        jLayeredPane2.add(jButton1);
+        jButton1.setBounds(130, 140, 110, 40);
 
-        ambapoLabel.setBackground(new java.awt.Color(255, 255, 255));
-        ambapoLabel.setFont(new java.awt.Font("AppleGothic", 0, 36)); // NOI18N
-        ambapoLabel.setForeground(new java.awt.Color(130, 15, 15));
-        ambapoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ambapoLabel.setText("Ambapo");
-        ambapoLabel.setOpaque(true);
-        jLayeredPane1.add(ambapoLabel);
-        ambapoLabel.setBounds(100, 10, 160, 50);
+        versionLabel.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        versionLabel.setForeground(new java.awt.Color(130, 15, 15));
+        versionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        versionLabel.setText("Ambapo");
+        jLayeredPane2.add(versionLabel);
+        versionLabel.setBounds(90, 80, 190, 22);
 
-        contributorLabel.setFont(new java.awt.Font("AppleGothic", 0, 13)); // NOI18N
-        contributorLabel.setForeground(new java.awt.Color(130, 15, 15));
-        contributorLabel.setText("Contributors: Elaina Cole, James Bowring");
-        jLayeredPane1.add(contributorLabel);
-        contributorLabel.setBounds(60, 170, 260, 50);
+        buildDateLabel.setForeground(new java.awt.Color(130, 15, 15));
+        buildDateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        buildDateLabel.setText("Ambapo");
+        jLayeredPane2.add(buildDateLabel);
+        buildDateLabel.setBounds(80, 110, 210, 16);
 
-        warrantyLabel.setFont(new java.awt.Font("AppleGothic", 0, 13)); // NOI18N
-        warrantyLabel.setForeground(new java.awt.Color(130, 15, 15));
-        warrantyLabel.setText("<html><b>Warranty:</b> Ambapo is provided as free open source software on an `as-is' basis.  Use at your own risk.  The developers disclaim all warranties about Ambapo.</html>");
-        jLayeredPane1.add(warrantyLabel);
-        warrantyLabel.setBounds(60, 220, 270, 100);
-
-        versionLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        versionLabel1.setFont(new java.awt.Font("AppleGothic", 0, 14)); // NOI18N
-        versionLabel1.setForeground(new java.awt.Color(130, 15, 15));
-        versionLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        versionLabel1.setText("v. 0.1.0");
-        versionLabel1.setOpaque(true);
-        jLayeredPane1.add(versionLabel1);
-        versionLabel1.setBounds(100, 70, 160, 18);
-
-        getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jLayeredPane2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void gitHubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gitHubButtonActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        BrowserControl.showURI("https://github.com/bowring/Ambapo");
-    }//GEN-LAST:event_gitHubButtonActionPerformed
+        BrowserControl.showURI("https://github.com/CIRDLES/Ambapo");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setSizeAndCenter(int preferredWidth, int preferredHeight) {
         super.setSize(preferredWidth, preferredHeight);
@@ -144,24 +129,6 @@ public class AboutBox extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Metal look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Metal is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Metal".equals(info.getName())) { //Nimbus (original), Motif, Metal
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(org.cirdles.ambapo.userInterface.AmbapoUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(() -> {
             AboutBox dialog = new AboutBox(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -172,14 +139,17 @@ public class AboutBox extends javax.swing.JDialog {
             });
             dialog.setVisible(true);
         });
+        
+        
+        
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ambapoLabel;
-    private javax.swing.JLabel contributorLabel;
-    private javax.swing.JButton gitHubButton;
-    private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JLabel versionLabel1;
-    private javax.swing.JLabel warrantyLabel;
+    private javax.swing.JLabel buildDateLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLayeredPane jLayeredPane2;
+    private javax.swing.JLabel versionLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -15,16 +15,11 @@
  */
 package org.cirdles.ambapo;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import org.cirdles.ambapo.userInterface.AmbapoUI;
-import org.cirdles.commons.util.ResourceExtractor;
 
 /**
  *
