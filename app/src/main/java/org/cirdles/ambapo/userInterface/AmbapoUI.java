@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
+import org.cirdles.ambapo.LatLongToUTM;
 import org.cirdles.ambapo.UTM;
 import org.cirdles.ambapo.UTMToLatLong;
 
@@ -44,6 +45,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     public boolean fromUTM;
     
     public String toDatum;
+    public String fromDatum;
     
 
     /**
@@ -280,7 +282,54 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void soloConvertToUTMButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToUTMButtonActionPerformed
-        // TODO add your handling code here:
+        //Set latitude
+        if(latitude.getText().length() <= 0){
+            latitude_val = BigDecimal.ZERO;
+        }
+        else if(Double.parseDouble(latitude.getText()) < -90){
+            latitude_val = new BigDecimal(-90);
+        }
+        else if(Double.parseDouble(latitude.getText()) > 90){
+            latitude_val = new BigDecimal(90);
+        }
+        else{
+            latitude_val = new BigDecimal(latitude.getText());
+        }
+        
+        //-Set longitude
+        if(longitude.getText().length() <= 0){
+            longitude_val = BigDecimal.ZERO;
+        }
+        else if(Double.parseDouble(longitude.getText()) < -180){
+            longitude_val = new BigDecimal(-180);
+        }
+        else if(Double.parseDouble(longitude.getText()) > 180){
+            longitude_val = new BigDecimal(180);
+        }
+        else{
+            longitude_val = new BigDecimal(longitude.getText());
+        }
+        
+        //Set Datum
+        if(datumSoloConvert.getSelectedItem().toString().equals("Datum")){
+            fromDatum = "WGS84";
+        }else{
+            fromDatum = datumSoloConvert.getSelectedItem().toString();
+        }
+        
+        //do conversion
+        UTM utm = null;
+        try {
+            utm = LatLongToUTM.convert(latitude_val, longitude_val, fromDatum);
+        } catch (Exception ex) {
+            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        easting.setText(utm.getEasting().toString());
+        northing.setText(utm.getNorthing().toString());
+        hemisphere.setSelectedItem(String.valueOf(utm.getHemisphere()));
+        zoneLetter.setText(String.valueOf(utm.getZoneLetter()));
+        zoneNumber.setText(String.valueOf(utm.getZoneNumber()));
         
     }//GEN-LAST:event_soloConvertToUTMButtonActionPerformed
 
@@ -296,23 +345,23 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         // TODO add your handling code here:
         
         //Set easting value
-        System.out.println("EASTING: " + easting.getText() + "\n");
+        //System.out.println("EASTING: " + easting.getText() + "\n");
         if(easting.getText().length() <= 0){            
-            easting_val = new BigDecimal(0);
+            easting_val = BigDecimal.ZERO;
         }else{
             easting_val = new BigDecimal(easting.getText());
         }
         
         //Set northing value
-         System.out.println("NORTHING: " + northing.getText() + "\n");
+         //System.out.println("NORTHING: " + northing.getText() + "\n");
         if(northing.getText().length() <= 0){
-            northing_val = new BigDecimal(0);
+            northing_val = BigDecimal.ZERO;
         }else{
             northing_val = new BigDecimal(northing.getText());
         }
         
         //Set hemisphere value
-        System.out.println("HEMISPHERE: " + hemisphere.getSelectedItem().toString() + "\n");
+        //System.out.println("HEMISPHERE: " + hemisphere.getSelectedItem().toString() + "\n");
         switch (hemisphere.getSelectedItem().toString()) {
             case "N":
                 hemisphere_val = 'N';
@@ -326,7 +375,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         }
         
         //Set zone letter value
-        System.out.println("ZONE LETTER: " + zoneLetter.getText() + "\n");
+        //System.out.println("ZONE LETTER: " + zoneLetter.getText() + "\n");
         if(zoneLetter.getText().length() <= 0){
             zoneletter_val = '*';
         }else{
@@ -334,7 +383,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         }
         
         //Set zone number value
-        System.out.println("ZONE Number: " + zoneNumber.getText() + "\n");
+        //System.out.println("ZONE Number: " + zoneNumber.getText() + "\n");
         if(zoneNumber.getText().length() <= 0 || Integer.parseInt(zoneNumber.getText()) < 1){
             zonenumber_val = 1;
         }
@@ -346,7 +395,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         }
         
         //Set Datum to Convert To
-        System.out.println("DATUM: " + datumSoloConvert.getSelectedItem().toString() + "\n");
+        //System.out.println("DATUM: " + datumSoloConvert.getSelectedItem().toString() + "\n");
         if(datumSoloConvert.getSelectedItem().toString().equals("Datum")){
             toDatum = "WGS84";
         }else{
