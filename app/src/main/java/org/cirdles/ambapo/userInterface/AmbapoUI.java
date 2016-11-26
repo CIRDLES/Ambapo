@@ -9,7 +9,12 @@ import com.apple.eawt.Application;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.cirdles.ambapo.ConversionFileHandler;
+import org.cirdles.ambapo.Coordinate;
+import org.cirdles.ambapo.UTM;
+import org.cirdles.ambapo.UTMToLatLong;
 
 /**
  *
@@ -100,7 +105,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         zoneLetter = new javax.swing.JTextField();
         zoneNumber = new javax.swing.JTextField();
         datumSoloConvert = new javax.swing.JComboBox();
-        soloConvertButton = new javax.swing.JButton();
+        soloConvertToUTMButton = new javax.swing.JButton();
         latitude = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -119,6 +124,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         toUTMRadioButton = new javax.swing.JRadioButton();
         toLatLongRadioButton = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
+        soloConvertToLatLongButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -146,12 +152,12 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         hemisphere.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "N/A", "N", "S" }));
         hemisphere.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLayeredPane1.add(hemisphere);
-        hemisphere.setBounds(240, 100, 80, 20);
+        hemisphere.setBounds(240, 80, 80, 20);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Hemisphere");
         jLayeredPane1.add(jLabel4);
-        jLabel4.setBounds(240, 70, 80, 16);
+        jLabel4.setBounds(240, 60, 80, 16);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Zone Letter");
@@ -164,11 +170,16 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
 
         datumSoloConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
         jLayeredPane1.add(datumSoloConvert);
-        datumSoloConvert.setBounds(330, 140, 96, 27);
+        datumSoloConvert.setBounds(240, 140, 96, 27);
 
-        soloConvertButton.setText("Convert");
-        jLayeredPane1.add(soloConvertButton);
-        soloConvertButton.setBounds(150, 140, 93, 29);
+        soloConvertToUTMButton.setText("Convert To UTM");
+        soloConvertToUTMButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                soloConvertToUTMButtonActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(soloConvertToUTMButton);
+        soloConvertToUTMButton.setBounds(30, 140, 160, 29);
         jLayeredPane1.add(latitude);
         latitude.setBounds(110, 180, 130, 20);
 
@@ -193,6 +204,11 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel8.setBounds(20, 250, 70, 16);
 
         browseButton.setText("Browse...");
+        browseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(browseButton);
         browseButton.setBounds(10, 270, 90, 29);
 
@@ -207,6 +223,11 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         inputfile.setBounds(100, 270, 110, 28);
 
         bulkConvertButton.setText("Convert");
+        bulkConvertButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bulkConvertButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(bulkConvertButton);
         bulkConvertButton.setBounds(240, 260, 93, 30);
 
@@ -215,6 +236,11 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         datumBulkConvert.setBounds(240, 300, 100, 20);
 
         exportFileButton.setText("Export...");
+        exportFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportFileButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(exportFileButton);
         exportFileButton.setBounds(370, 270, 97, 29);
 
@@ -237,10 +263,120 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel6);
         jLabel6.setBounds(350, 100, 90, 16);
 
+        soloConvertToLatLongButton.setText("Convert to LatLong");
+        soloConvertToLatLongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                soloConvertToLatLongButtonActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(soloConvertToLatLongButton);
+        soloConvertToLatLongButton.setBounds(410, 140, 160, 29);
+
         add(jLayeredPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void updateCurrentPrawnFileLocation() {
+    private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_browseButtonActionPerformed
+
+    private void soloConvertToUTMButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToUTMButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_soloConvertToUTMButtonActionPerformed
+
+    private void bulkConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulkConvertButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bulkConvertButtonActionPerformed
+
+    private void exportFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportFileButtonActionPerformed
+
+    private void soloConvertToLatLongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToLatLongButtonActionPerformed
+        // TODO add your handling code here:
+        
+        //Set easting value
+        System.out.println("EASTING: " + easting.getText() + "\n");
+        if(easting.getText().length() <= 0){            
+            easting_val = new BigDecimal(0);
+        }else{
+            easting_val = new BigDecimal(easting.getText());
+        }
+        
+        //Set northing value
+         System.out.println("NORTHING: " + northing.getText() + "\n");
+        if(northing.getText().length() <= 0){
+            northing_val = new BigDecimal(0);
+        }else{
+            northing_val = new BigDecimal(northing.getText());
+        }
+        
+        //Set hemisphere value
+        System.out.println("HEMISPHERE: " + hemisphere.getSelectedItem().toString() + "\n");
+        switch (hemisphere.getSelectedItem().toString()) {
+            case "N":
+                hemisphere_val = 'N';
+                break;
+            case "S":
+                hemisphere_val = 'S';
+                break;
+            default:
+                hemisphere_val = '*';
+                break;
+        }
+        
+        //Set zone letter value
+        System.out.println("ZONE LETTER: " + zoneLetter.getText() + "\n");
+        if(zoneLetter.getText().length() <= 0){
+            zoneletter_val = '*';
+        }else{
+            zoneletter_val = zoneLetter.getText().charAt(0);
+        }
+        
+        //Set zone number value
+        System.out.println("ZONE Number: " + zoneNumber.getText() + "\n");
+        if(zoneNumber.getText().length() <= 0 || Integer.parseInt(zoneNumber.getText()) < 1){
+            zonenumber_val = 1;
+        }
+        else if(Integer.parseInt(zoneNumber.getText()) > 60){
+            zonenumber_val = 60;
+        }
+        else{
+            zonenumber_val = Integer.parseInt(zoneNumber.getText());
+        }
+        
+        //Set Datum to Convert To
+        System.out.println("DATUM: " + datumSoloConvert.getSelectedItem().toString() + "\n");
+        if(datumSoloConvert.getSelectedItem().toString().equals("Datum")){
+            toDatum = "WGS84";
+        }else{
+            toDatum = datumSoloConvert.getSelectedItem().toString();
+        }
+        
+        //create UTM object
+        UTM utm = null;
+        try {
+            utm = new UTM(easting_val, northing_val, hemisphere_val, zonenumber_val, zoneletter_val);
+        } catch (Exception ex) {
+            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Do the conversion
+        Coordinate latlong = null;
+        try {
+            latlong = UTMToLatLong.convert(utm, toDatum);
+        } catch (Exception ex) {
+            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        latitude.setText(latlong.getLatitude().toString());
+        longitude.setText(latlong.getLongitude().toString());
+        
+        
+        
+    }//GEN-LAST:event_soloConvertToLatLongButtonActionPerformed
+
+    private void updateCurrentFileToConvertLocation() {
         inputfile.setText(conversionFileHandler.getCurrentFileLocationToConvert());
     }
     
@@ -271,7 +407,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JTextField longitude;
     private javax.swing.JTextField northing;
     private javax.swing.JTextField outputfile;
-    private javax.swing.JButton soloConvertButton;
+    private javax.swing.JButton soloConvertToLatLongButton;
+    private javax.swing.JButton soloConvertToUTMButton;
     private javax.swing.JRadioButton toLatLongRadioButton;
     private javax.swing.JRadioButton toUTMRadioButton;
     private javax.swing.JTextField zoneLetter;
