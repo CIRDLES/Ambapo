@@ -13,7 +13,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ import java.util.List;
  */
 public class ConversionFileHandler {
         private String currentFileLocationToConvert;
-        private String fileLocationToWriteTo;
+        private File outputFileLocation;
         private final String[] HEADER_LAT_LONG = {";LATITUDE, LONGITUDE, DATUM\n"};
         private final String[] HEADER_UTM_FROM_LATLONG = {";EASTING, NORTHING, HEMISPHERE, ZONE NUMBER, ZONE LETTER, DATUM CONVERTED FROM"};
     
@@ -43,19 +42,19 @@ public class ConversionFileHandler {
     public String getCurrentFileLocationToConvert() {
         return currentFileLocationToConvert;
     }
+    
+    /**
+     * @return the outputFileLocation
+     */
+    public File getOutputFile() {
+        return outputFileLocation;
+    }
 
     /**
      * @param aCurrentFileLocationToConvert the currentPrawnFileLocation to set
      */
     public void setCurrentFileLocation(String aCurrentFileLocationToConvert) {
         currentFileLocationToConvert = aCurrentFileLocationToConvert;
-    }
-    
-    /**
-     * @param aFileLocationToWriteTo to set a file location for the output file
-     */
-    public void setAFileLocationToWriteTo(String aFileLocationToWriteTo) {
-        fileLocationToWriteTo = aFileLocationToWriteTo;
     }
     
     private List<String[]> extractDataToConvert() throws FileNotFoundException, IOException{
@@ -71,19 +70,22 @@ public class ConversionFileHandler {
             
         
     }
-    
-    public void writeConversionsUTMToLatLong(String outputFileName) throws IOException, Exception {
+    public void writeConversionsUTMToLatLong(String outputFileName) throws Exception{
+        
+        writeConversionsUTMToLatLong(new File(outputFileName));
+        
+    }
+    public void writeConversionsUTMToLatLong(File outputFile) throws IOException, Exception {
         List<String[]> dataToConvert = extractDataToConvert();
         
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(new File(outputFileName)))){
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))){
             csvWriter.writeNext(HEADER_LAT_LONG);
             Datum datum;
             UTM utm;
             Coordinate latAndLong;
             String[] lineToWrite;
             
-            for (Iterator<String[]> it = dataToConvert.iterator(); it.hasNext();) {
-                String[] utmInfo = it.next();
+            for (String[] utmInfo : dataToConvert) {
                 if(utmInfo[0].charAt(0) != ';'){
                     utm = new UTM(
                             new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))),
@@ -101,20 +103,27 @@ public class ConversionFileHandler {
                     csvWriter.writeNext(lineToWrite);
                 }
             }
+            
+            csvWriter.close();
+            outputFileLocation = outputFile;
         }
+        
         
     }
     
-    public void writeConversionsLatLongToUTM(String outputFileName) throws IOException, Exception
+    public void writeConversionsLatLongToUTM(String outputFileName) throws Exception{
+        writeConversionsLatLongToUTM(new File(outputFileName));
+    }
+    public void writeConversionsLatLongToUTM(File outputFile) throws IOException, Exception
     {
         List<String[]> dataToConvert = extractDataToConvert();
-            File outputFile = new File(outputFileName);
             BigDecimal latitude;
             BigDecimal longitude;
             String datum;
             UTM utm;
             String[] lineToWrite;
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))){
+                csvWriter.writeNext(HEADER_UTM_FROM_LATLONG);
                 for(String[] latLongInfo : dataToConvert) {
                     if(latLongInfo[0].charAt(0) != ';'){
                         latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
@@ -134,6 +143,9 @@ public class ConversionFileHandler {
                         csvWriter.writeNext(lineToWrite);
                     }
                 }
+                
+                csvWriter.close();
+                outputFileLocation = outputFile;
             }
     }
     

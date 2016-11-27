@@ -67,10 +67,10 @@ public class Ambapo {
 
         //Path listOfConversionFiles = conversionFileResourceExtractor.extractResourceAsPath("listOfPrawnFiles.txt");
         
-        // Set up default folder for reports
+        /* Set up default folder for reports
         File defaultAmbapoConversionsFolder = new File("AmbapoConversions_v" + VERSION);
         defaultAmbapoConversionsFolder.mkdir();
-        conversionFileHandler.setAFileLocationToWriteTo(defaultAmbapoConversionsFolder.getCanonicalPath());
+        conversionFileHandler.setAFileLocationToWriteTo(defaultAmbapoConversionsFolder.getCanonicalPath());*/
         
         SwingUtilities.invokeLater(() -> {
             AmbapoUI gui = new AmbapoUI(conversionFileHandler);

@@ -8,9 +8,12 @@ package org.cirdles.ambapo.userInterface;
 import com.apple.eawt.Application;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
 import org.cirdles.ambapo.LatLongToUTM;
@@ -46,6 +49,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     
     public String toDatum;
     public String fromDatum;
+    
+    public File bulkConvertedFile;
     
 
     /**
@@ -95,6 +100,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -120,13 +127,14 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         inputfile = new javax.swing.JTextField();
         bulkConvertButton = new javax.swing.JButton();
         datumBulkConvert = new javax.swing.JComboBox();
-        exportFileButton = new javax.swing.JButton();
+        chooseDirButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        outputfile = new javax.swing.JTextField();
+        outputFileLocation = new javax.swing.JTextField();
         toUTMRadioButton = new javax.swing.JRadioButton();
         toLatLongRadioButton = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
         soloConvertToLatLongButton = new javax.swing.JButton();
+        outputFileName = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -195,15 +203,16 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(longitude);
         longitude.setBounds(410, 180, 130, 20);
 
-        jLabel7.setFont(new java.awt.Font("AppleGothic", 1, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("AppleGothic", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(130, 15, 15));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("OR...");
         jLayeredPane1.add(jLabel7);
-        jLabel7.setBounds(260, 220, 45, 16);
+        jLabel7.setBounds(260, 220, 60, 40);
 
-        jLabel8.setText("Input File");
+        jLabel8.setText("Input File:");
         jLayeredPane1.add(jLabel8);
-        jLabel8.setBounds(20, 250, 70, 16);
+        jLabel8.setBounds(20, 270, 70, 16);
 
         browseButton.setText("Browse...");
         browseButton.addActionListener(new java.awt.event.ActionListener() {
@@ -212,17 +221,30 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(browseButton);
-        browseButton.setBounds(10, 270, 90, 29);
+        browseButton.setBounds(10, 290, 90, 29);
 
+        buttonGroup1.add(fromUTMRadioButton);
+        fromUTMRadioButton.setSelected(true);
         fromUTMRadioButton.setText("UTM");
+        fromUTMRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromUTMRadioButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(fromUTMRadioButton);
-        fromUTMRadioButton.setBounds(20, 300, 70, 23);
+        fromUTMRadioButton.setBounds(20, 320, 70, 23);
 
+        buttonGroup1.add(fromLatLongRadioButton);
         fromLatLongRadioButton.setText("LatLong");
+        fromLatLongRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fromLatLongRadioButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(fromLatLongRadioButton);
-        fromLatLongRadioButton.setBounds(90, 300, 90, 23);
+        fromLatLongRadioButton.setBounds(90, 320, 90, 23);
         jLayeredPane1.add(inputfile);
-        inputfile.setBounds(100, 270, 110, 28);
+        inputfile.setBounds(100, 290, 110, 28);
 
         bulkConvertButton.setText("Convert");
         bulkConvertButton.addActionListener(new java.awt.event.ActionListener() {
@@ -231,34 +253,42 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(bulkConvertButton);
-        bulkConvertButton.setBounds(240, 260, 93, 30);
+        bulkConvertButton.setBounds(240, 290, 93, 30);
 
         datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
         jLayeredPane1.add(datumBulkConvert);
-        datumBulkConvert.setBounds(240, 300, 100, 20);
+        datumBulkConvert.setBounds(490, 360, 100, 20);
 
-        exportFileButton.setText("Export...");
-        exportFileButton.addActionListener(new java.awt.event.ActionListener() {
+        chooseDirButton.setText("Directory...");
+        chooseDirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportFileButtonActionPerformed(evt);
+                chooseDirButtonActionPerformed(evt);
             }
         });
-        jLayeredPane1.add(exportFileButton);
-        exportFileButton.setBounds(370, 270, 97, 29);
+        jLayeredPane1.add(chooseDirButton);
+        chooseDirButton.setBounds(370, 300, 114, 29);
 
-        jLabel9.setText("Output File");
+        jLabel9.setText("Output File Name:");
         jLayeredPane1.add(jLabel9);
-        jLabel9.setBounds(380, 250, 80, 16);
-        jLayeredPane1.add(outputfile);
-        outputfile.setBounds(470, 270, 120, 28);
+        jLabel9.setBounds(370, 270, 120, 16);
+        jLayeredPane1.add(outputFileLocation);
+        outputFileLocation.setBounds(490, 300, 120, 28);
 
+        buttonGroup2.add(toUTMRadioButton);
         toUTMRadioButton.setText("UTM");
+        toUTMRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toUTMRadioButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(toUTMRadioButton);
-        toUTMRadioButton.setBounds(400, 300, 70, 20);
+        toUTMRadioButton.setBounds(390, 330, 70, 20);
 
+        buttonGroup2.add(toLatLongRadioButton);
+        toLatLongRadioButton.setSelected(true);
         toLatLongRadioButton.setText("LatLong");
         jLayeredPane1.add(toLatLongRadioButton);
-        toLatLongRadioButton.setBounds(480, 300, 90, 20);
+        toLatLongRadioButton.setBounds(490, 330, 90, 20);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Zone Number");
@@ -272,13 +302,38 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(soloConvertToLatLongButton);
-        soloConvertToLatLongButton.setBounds(410, 140, 160, 29);
+        soloConvertToLatLongButton.setBounds(390, 140, 160, 29);
+
+        outputFileName.setText("converted.csv");
+        outputFileName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outputFileNameActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(outputFileName);
+        outputFileName.setBounds(490, 270, 120, 28);
 
         add(jLayeredPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            try {
+                inputfile.setText(selectedFile.getCanonicalPath());
+            } catch (IOException ex) {
+                Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        
+        
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void soloConvertToUTMButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToUTMButtonActionPerformed
@@ -335,11 +390,27 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
 
     private void bulkConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulkConvertButtonActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_bulkConvertButtonActionPerformed
 
-    private void exportFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtonActionPerformed
+    private void chooseDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseDirButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_exportFileButtonActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int result = fileChooser.showOpenDialog(this);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedDir = fileChooser.getSelectedFile();
+            try {
+                //System.out.println("Selected file: " + selectedDir.getAbsolutePath());
+                outputFileLocation.setText(selectedDir.getCanonicalPath());
+            } catch (IOException ex) {
+                Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_chooseDirButtonActionPerformed
 
     private void soloConvertToLatLongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToLatLongButtonActionPerformed
         // TODO add your handling code here:
@@ -425,17 +496,43 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         
     }//GEN-LAST:event_soloConvertToLatLongButtonActionPerformed
 
-    private void updateCurrentFileToConvertLocation() {
-        inputfile.setText(conversionFileHandler.getCurrentFileLocationToConvert());
-    }
+    private void fromUTMRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromUTMRadioButtonActionPerformed
+        // TODO add your handling code here:
+        fromUTM = true;
+        toLatLong = true;
+        
+        toLatLongRadioButton.setSelected(true);
+        toUTMRadioButton.setSelected(false);
+    }//GEN-LAST:event_fromUTMRadioButtonActionPerformed
+
+    private void toUTMRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toUTMRadioButtonActionPerformed
+        // TODO add your handling code here:
+        toUTM = true;
+        fromLatLong = true;
+        fromLatLongRadioButton.setSelected(true);
+        fromUTMRadioButton.setSelected(false);
+    }//GEN-LAST:event_toUTMRadioButtonActionPerformed
+
+    private void fromLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromLatLongRadioButtonActionPerformed
+        // TODO add your handling code here:
+        fromLatLong = true;
+    }//GEN-LAST:event_fromLatLongRadioButtonActionPerformed
+
+    private void outputFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputFileNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_outputFileNameActionPerformed
+
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseButton;
     private javax.swing.JButton bulkConvertButton;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton chooseDirButton;
     private javax.swing.JComboBox datumBulkConvert;
     private javax.swing.JComboBox datumSoloConvert;
     private javax.swing.JTextField easting;
-    private javax.swing.JButton exportFileButton;
     private javax.swing.JRadioButton fromLatLongRadioButton;
     private javax.swing.JRadioButton fromUTMRadioButton;
     private javax.swing.JComboBox hemisphere;
@@ -455,7 +552,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JTextField latitude;
     private javax.swing.JTextField longitude;
     private javax.swing.JTextField northing;
-    private javax.swing.JTextField outputfile;
+    private javax.swing.JTextField outputFileLocation;
+    private javax.swing.JTextField outputFileName;
     private javax.swing.JButton soloConvertToLatLongButton;
     private javax.swing.JButton soloConvertToUTMButton;
     private javax.swing.JRadioButton toLatLongRadioButton;
