@@ -70,7 +70,7 @@ public class UTM {
         if(zoneNumber < 1 || zoneNumber > 60)
             throw new Exception("Zone number must fall in the range from 1 to 60.");
         
-        if(Character.isLetter(zoneLetter) == false || zoneLetter == 'A' ||
+        if((Character.isLetter(zoneLetter) == false && zoneLetter != '*') || zoneLetter == 'A' ||
             zoneLetter == 'B' || zoneLetter == 'I' || zoneLetter == 'O' || 
             zoneLetter == 'Y' || zoneLetter == 'Z') {
             

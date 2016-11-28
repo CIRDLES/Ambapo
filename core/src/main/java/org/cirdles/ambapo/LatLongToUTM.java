@@ -32,15 +32,8 @@ Steven Dutch, Natural and Applied Sciences, University of Wisconsin - Green Bay
  */
 package org.cirdles.ambapo;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import org.apache.commons.math3.analysis.function.Asinh;
 import org.apache.commons.math3.analysis.function.Atanh;
 
@@ -57,48 +50,6 @@ public class LatLongToUTM {
     private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 10;
     
-    /**
-     * Converts a csv file of Latitude and Longitude to a csv file of converted UTM
-     * @param inputFileName
-     * @param outputFileName
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws Exception
-     */
-    public static void bulkConvert(String inputFileName, String outputFileName) 
-        throws IOException, Exception {
-         
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFileName)); CSVReader csvReader = new CSVReader(new FileReader(inputFileName))) {
-            List<String[]> listOfUTMs = csvReader.readAll();
-            
-            BigDecimal latitude;
-            BigDecimal longitude;
-            String datum;
-            UTM utm;
-            String[] lineToWrite;
-            
-            for(String[] latLongInfo : listOfUTMs) {
-                
-                latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
-                longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
-                datum = latLongInfo[2].trim().replace("\"", "");
-                
-                utm = LatLongToUTM.convert(latitude, longitude, datum);
-                
-                lineToWrite = new String[]{
-                    utm.getEasting().toString(),
-                    utm.getNorthing().toString(),
-                    Character.toString(utm.getHemisphere()),
-                    Integer.toString(utm.getZoneNumber()),
-                    Character.toString(utm.getZoneLetter()),
-                    datum
-                };
-                csvWriter.writeNext(lineToWrite);
-            }
-            
-        }
-        
-    }
     
     /**
      * Converts double latitude longitude to BigDecimal and converts it to UTM
