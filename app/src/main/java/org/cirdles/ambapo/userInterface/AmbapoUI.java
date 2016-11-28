@@ -51,6 +51,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     public String fromDatum;
     
     public File bulkConvertedFile;
+    public File fileToConvert;
     
 
     /**
@@ -85,6 +86,9 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         int y = (dim.height - h) / 2;
 
         this.setLocation(x, y);
+        
+        fromUTM = true;
+        toLatLong = true;
     }
     
     @Override
@@ -305,11 +309,6 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         soloConvertToLatLongButton.setBounds(390, 140, 160, 29);
 
         outputFileName.setText("converted.csv");
-        outputFileName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outputFileNameActionPerformed(evt);
-            }
-        });
         jLayeredPane1.add(outputFileName);
         outputFileName.setBounds(490, 270, 120, 28);
 
@@ -389,7 +388,42 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     }//GEN-LAST:event_soloConvertToUTMButtonActionPerformed
 
     private void bulkConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulkConvertButtonActionPerformed
-        // TODO add your handling code here:
+        fileToConvert = new File(inputfile.getText());
+        System.out.println(outputFileLocation.getText() + "/" + outputFileName.getText() +"\n");
+        bulkConvertedFile = new File(outputFileLocation.getText() + "/" + outputFileName.getText());
+        try {
+            // TODO add your handling code here:
+            conversionFileHandler.setCurrentFileLocation(fileToConvert.getCanonicalPath());
+        } catch (IOException ex) {
+            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(!conversionFileHandler.currentFileLocationToConvertIsFile()){
+                System.out.println("Not a file. Try again.\n");
+        }
+        else{ 
+            
+            if(fromUTM == true){
+                try {
+                    conversionFileHandler.writeConversionsUTMToLatLong(bulkConvertedFile);
+                } catch (Exception ex) {
+                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            else if(fromLatLong == true && toUTM == true){
+                try {
+                    conversionFileHandler.writeConversionsLatLongToUTM(bulkConvertedFile);
+                } catch (Exception ex) {
+                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            else{
+                System.out.println("Not supported yet. Sorry!\n");
+            }
+            
+        }
+        
         
     }//GEN-LAST:event_bulkConvertButtonActionPerformed
 
@@ -516,11 +550,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private void fromLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromLatLongRadioButtonActionPerformed
         // TODO add your handling code here:
         fromLatLong = true;
+        fromUTM = false;
     }//GEN-LAST:event_fromLatLongRadioButtonActionPerformed
-
-    private void outputFileNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputFileNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_outputFileNameActionPerformed
 
     
     

@@ -62,6 +62,7 @@ public class ConversionFileHandler {
         
         try (CSVReader csvReader = new CSVReader(new FileReader(new File(currentFileLocationToConvert)))) {
             listOfDataToConvert = csvReader.readAll();
+            csvReader.close();
         } catch(Exception e){
             System.out.println("\nUnable to extract data from file.");
         }
@@ -104,7 +105,7 @@ public class ConversionFileHandler {
                 }
             }
             
-            csvWriter.close();
+            //csvWriter.close();
             outputFileLocation = outputFile;
         }
         
@@ -144,9 +145,13 @@ public class ConversionFileHandler {
                     }
                 }
                 
-                csvWriter.close();
+                //csvWriter.close();
                 outputFileLocation = outputFile;
             }
+    }
+    
+    public void closeCSVWriter(CSVWriter csvwriter) throws IOException{
+        csvwriter.close();
     }
     
     
