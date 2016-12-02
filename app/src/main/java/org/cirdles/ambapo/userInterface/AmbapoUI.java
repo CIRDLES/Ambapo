@@ -106,13 +106,13 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         easting = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         northing = new javax.swing.JTextField();
+        hemisphere = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         zoneLetter = new javax.swing.JTextField();
@@ -139,8 +139,6 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel6 = new javax.swing.JLabel();
         soloConvertToLatLongButton = new javax.swing.JButton();
         outputFileName = new javax.swing.JTextField();
-        northHemisphereButton = new javax.swing.JRadioButton();
-        southHemisphereButton = new javax.swing.JRadioButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -149,7 +147,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Ambapo");
         jLayeredPane1.add(jLabel1);
-        jLabel1.setBounds(230, 0, 160, 60);
+        jLabel1.setBounds(200, 0, 160, 60);
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Easting");
@@ -165,44 +163,49 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(northing);
         northing.setBounds(90, 100, 110, 20);
 
+        hemisphere.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "N/A", "N", "S" }));
+        hemisphere.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLayeredPane1.add(hemisphere);
+        hemisphere.setBounds(240, 80, 80, 20);
+
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Hemisphere");
         jLayeredPane1.add(jLabel4);
-        jLabel4.setBounds(10, 160, 80, 16);
+        jLabel4.setBounds(240, 60, 80, 16);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Zone Letter");
         jLayeredPane1.add(jLabel5);
-        jLabel5.setBounds(10, 130, 80, 16);
+        jLabel5.setBounds(360, 70, 80, 16);
         jLayeredPane1.add(zoneLetter);
-        zoneLetter.setBounds(90, 130, 110, 20);
+        zoneLetter.setBounds(450, 70, 110, 20);
         jLayeredPane1.add(zoneNumber);
-        zoneNumber.setBounds(90, 190, 110, 20);
+        zoneNumber.setBounds(450, 100, 110, 20);
 
-        datumSoloConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum", "WGS84", "NAD83", "GRS80", "WGS72", "AUSTRALIAN 1965", "KRASOVSKY 1940", "NAD27", "IN24", "HAYFORD 1909", "CLARKE 1880", "CLARKE 1866", "AIRY 1830", "BESSEL 1941", "EVEREST 1830" }));
+        datumSoloConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
         jLayeredPane1.add(datumSoloConvert);
-        datumSoloConvert.setBounds(260, 140, 96, 27);
+        datumSoloConvert.setBounds(240, 140, 96, 27);
 
-        soloConvertToUTMButton.setText("<");
+        soloConvertToUTMButton.setText("Convert To UTM");
         soloConvertToUTMButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 soloConvertToUTMButtonActionPerformed(evt);
             }
         });
         jLayeredPane1.add(soloConvertToUTMButton);
-        soloConvertToUTMButton.setBounds(250, 100, 60, 29);
+        soloConvertToUTMButton.setBounds(30, 140, 160, 29);
         jLayeredPane1.add(latitude);
-        latitude.setBounds(470, 90, 130, 20);
+        latitude.setBounds(110, 180, 130, 20);
 
         jLabel10.setText("Latitude");
         jLayeredPane1.add(jLabel10);
-        jLabel10.setBounds(410, 90, 51, 16);
+        jLabel10.setBounds(40, 180, 51, 16);
 
         jLabel11.setText("Longitude");
         jLayeredPane1.add(jLabel11);
-        jLabel11.setBounds(400, 140, 70, 16);
+        jLabel11.setBounds(330, 180, 70, 16);
         jLayeredPane1.add(longitude);
-        longitude.setBounds(470, 140, 130, 20);
+        longitude.setBounds(410, 180, 130, 20);
 
         jLabel7.setFont(new java.awt.Font("AppleGothic", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(130, 15, 15));
@@ -256,7 +259,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(bulkConvertButton);
         bulkConvertButton.setBounds(240, 290, 93, 30);
 
-        datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum", "WGS84", "NAD83", "GRS80", "WGS72", "AUSTRALIAN 1965", "KRASOVSKY 1940", "NAD27", "IN24", "HAYFORD 1909", "CLARKE 1880", "CLARKE 1866", "AIRY 1830", "BESSEL 1941", "EVEREST 1830" }));
+        datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Datum" }));
         jLayeredPane1.add(datumBulkConvert);
         datumBulkConvert.setBounds(490, 360, 100, 20);
 
@@ -271,7 +274,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
 
         jLabel9.setText("Output File Name:");
         jLayeredPane1.add(jLabel9);
-        jLabel9.setBounds(370, 280, 120, 16);
+        jLabel9.setBounds(370, 270, 120, 16);
         jLayeredPane1.add(outputFileLocation);
         outputFileLocation.setBounds(490, 300, 120, 28);
 
@@ -294,35 +297,20 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Zone Number");
         jLayeredPane1.add(jLabel6);
-        jLabel6.setBounds(0, 190, 90, 16);
+        jLabel6.setBounds(350, 100, 90, 16);
 
-        soloConvertToLatLongButton.setText(">");
+        soloConvertToLatLongButton.setText("Convert to LatLong");
         soloConvertToLatLongButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 soloConvertToLatLongButtonActionPerformed(evt);
             }
         });
         jLayeredPane1.add(soloConvertToLatLongButton);
-        soloConvertToLatLongButton.setBounds(310, 100, 60, 29);
+        soloConvertToLatLongButton.setBounds(390, 140, 160, 29);
 
         outputFileName.setText("converted.csv");
         jLayeredPane1.add(outputFileName);
         outputFileName.setBounds(490, 270, 120, 28);
-
-        buttonGroup3.add(northHemisphereButton);
-        northHemisphereButton.setText("N");
-        northHemisphereButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                northHemisphereButtonActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(northHemisphereButton);
-        northHemisphereButton.setBounds(90, 160, 50, 23);
-
-        buttonGroup3.add(southHemisphereButton);
-        southHemisphereButton.setText("S");
-        jLayeredPane1.add(southHemisphereButton);
-        southHemisphereButton.setBounds(140, 160, 60, 23);
 
         add(jLayeredPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -393,14 +381,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         
         easting.setText(utm.getEasting().toString());
         northing.setText(utm.getNorthing().toString());
-        if(utm.getHemisphere() == 'N'){
-            northHemisphereButton.setSelected(true);
-            southHemisphereButton.setSelected(false);
-        }else{
-            northHemisphereButton.setSelected(false);
-            southHemisphereButton.setSelected(true);
-        }
-
+        hemisphere.setSelectedItem(String.valueOf(utm.getHemisphere()));
         zoneLetter.setText(String.valueOf(utm.getZoneLetter()));
         zoneNumber.setText(String.valueOf(utm.getZoneNumber()));
         
@@ -486,12 +467,16 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         
         //Set hemisphere value
         //System.out.println("HEMISPHERE: " + hemisphere.getSelectedItem().toString() + "\n");
-        if(northHemisphereButton.isSelected()){
-            hemisphere_val = 'N';
-        }else if(southHemisphereButton.isSelected()){
-            hemisphere_val = 'S';
-        }else{
-            hemisphere_val = '*';
+        switch (hemisphere.getSelectedItem().toString()) {
+            case "N":
+                hemisphere_val = 'N';
+                break;
+            case "S":
+                hemisphere_val = 'S';
+                break;
+            default:
+                hemisphere_val = '*';
+                break;
         }
         
         //Set zone letter value
@@ -568,10 +553,6 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         fromUTM = false;
     }//GEN-LAST:event_fromLatLongRadioButtonActionPerformed
 
-    private void northHemisphereButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_northHemisphereButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_northHemisphereButtonActionPerformed
-
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -579,13 +560,13 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JButton bulkConvertButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JButton chooseDirButton;
     private javax.swing.JComboBox datumBulkConvert;
     private javax.swing.JComboBox datumSoloConvert;
     private javax.swing.JTextField easting;
     private javax.swing.JRadioButton fromLatLongRadioButton;
     private javax.swing.JRadioButton fromUTMRadioButton;
+    private javax.swing.JComboBox hemisphere;
     private javax.swing.JTextField inputfile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -601,13 +582,11 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JTextField latitude;
     private javax.swing.JTextField longitude;
-    private javax.swing.JRadioButton northHemisphereButton;
     private javax.swing.JTextField northing;
     private javax.swing.JTextField outputFileLocation;
     private javax.swing.JTextField outputFileName;
     private javax.swing.JButton soloConvertToLatLongButton;
     private javax.swing.JButton soloConvertToUTMButton;
-    private javax.swing.JRadioButton southHemisphereButton;
     private javax.swing.JRadioButton toLatLongRadioButton;
     private javax.swing.JRadioButton toUTMRadioButton;
     private javax.swing.JTextField zoneLetter;
