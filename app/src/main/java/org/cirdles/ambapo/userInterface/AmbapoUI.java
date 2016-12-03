@@ -6,6 +6,7 @@
 package org.cirdles.ambapo.userInterface;
 
 import com.apple.eawt.Application;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
@@ -89,6 +90,9 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         
         fromUTM = true;
         toLatLong = true;
+        
+        openConvertedButton.setEnabled(false);
+        datumBulkConvert.setEnabled(false);
     }
     
     @Override
@@ -124,23 +128,20 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLabel11 = new javax.swing.JLabel();
         longitude = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         browseButton = new javax.swing.JButton();
         fromUTMRadioButton = new javax.swing.JRadioButton();
         fromLatLongRadioButton = new javax.swing.JRadioButton();
         inputfile = new javax.swing.JTextField();
         bulkConvertButton = new javax.swing.JButton();
         datumBulkConvert = new javax.swing.JComboBox();
-        chooseDirButton = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        outputFileLocation = new javax.swing.JTextField();
         toUTMRadioButton = new javax.swing.JRadioButton();
         toLatLongRadioButton = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
         soloConvertToLatLongButton = new javax.swing.JButton();
-        outputFileName = new javax.swing.JTextField();
         northHemisphereButton = new javax.swing.JRadioButton();
         southHemisphereButton = new javax.swing.JRadioButton();
+        jLabel12 = new javax.swing.JLabel();
+        openConvertedButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -211,18 +212,14 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel7);
         jLabel7.setBounds(280, 220, 60, 40);
 
-        jLabel8.setText("Input File:");
-        jLayeredPane1.add(jLabel8);
-        jLabel8.setBounds(20, 270, 70, 16);
-
-        browseButton.setText("Browse...");
+        browseButton.setText("Source File...");
         browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
             }
         });
         jLayeredPane1.add(browseButton);
-        browseButton.setBounds(10, 290, 90, 29);
+        browseButton.setBounds(180, 270, 130, 29);
 
         buttonGroup1.add(fromUTMRadioButton);
         fromUTMRadioButton.setSelected(true);
@@ -233,7 +230,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(fromUTMRadioButton);
-        fromUTMRadioButton.setBounds(20, 320, 70, 23);
+        fromUTMRadioButton.setBounds(180, 320, 70, 23);
 
         buttonGroup1.add(fromLatLongRadioButton);
         fromLatLongRadioButton.setText("LatLong");
@@ -243,9 +240,9 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(fromLatLongRadioButton);
-        fromLatLongRadioButton.setBounds(90, 320, 90, 23);
+        fromLatLongRadioButton.setBounds(180, 350, 90, 23);
         jLayeredPane1.add(inputfile);
-        inputfile.setBounds(100, 290, 110, 28);
+        inputfile.setBounds(320, 270, 110, 28);
 
         bulkConvertButton.setText("Convert");
         bulkConvertButton.addActionListener(new java.awt.event.ActionListener() {
@@ -254,26 +251,11 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(bulkConvertButton);
-        bulkConvertButton.setBounds(240, 290, 93, 30);
+        bulkConvertButton.setBounds(140, 390, 150, 50);
 
         datumBulkConvert.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "WGS84", "NAD83", "GRS80", "WG72", "AUSTRALIAN 1965", "NAD27", "IN24", "HAYFORD 1909", "CLARKE 1880", "CLARKE 1866", "AIRY 1830", "BESSEL 1941", "EVEREST 1830" }));
         jLayeredPane1.add(datumBulkConvert);
-        datumBulkConvert.setBounds(490, 360, 100, 20);
-
-        chooseDirButton.setText("Directory...");
-        chooseDirButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chooseDirButtonActionPerformed(evt);
-            }
-        });
-        jLayeredPane1.add(chooseDirButton);
-        chooseDirButton.setBounds(370, 300, 114, 29);
-
-        jLabel9.setText("Output File Name:");
-        jLayeredPane1.add(jLabel9);
-        jLabel9.setBounds(370, 270, 120, 16);
-        jLayeredPane1.add(outputFileLocation);
-        outputFileLocation.setBounds(490, 300, 120, 28);
+        datumBulkConvert.setBounds(420, 350, 100, 20);
 
         buttonGroup2.add(toUTMRadioButton);
         toUTMRadioButton.setText("UTM");
@@ -283,13 +265,18 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             }
         });
         jLayeredPane1.add(toUTMRadioButton);
-        toUTMRadioButton.setBounds(390, 330, 70, 20);
+        toUTMRadioButton.setBounds(340, 320, 70, 20);
 
         buttonGroup2.add(toLatLongRadioButton);
         toLatLongRadioButton.setSelected(true);
         toLatLongRadioButton.setText("LatLong");
+        toLatLongRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toLatLongRadioButtonActionPerformed(evt);
+            }
+        });
         jLayeredPane1.add(toLatLongRadioButton);
-        toLatLongRadioButton.setBounds(490, 330, 90, 20);
+        toLatLongRadioButton.setBounds(340, 350, 90, 20);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Zone Number");
@@ -304,10 +291,6 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         });
         jLayeredPane1.add(soloConvertToLatLongButton);
         soloConvertToLatLongButton.setBounds(310, 89, 50, 30);
-
-        outputFileName.setText("converted.csv");
-        jLayeredPane1.add(outputFileName);
-        outputFileName.setBounds(490, 270, 120, 28);
 
         buttonGroup3.add(northHemisphereButton);
         northHemisphereButton.setText("N");
@@ -324,6 +307,20 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(southHemisphereButton);
         southHemisphereButton.setBounds(150, 160, 40, 23);
 
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("to");
+        jLayeredPane1.add(jLabel12);
+        jLabel12.setBounds(290, 330, 20, 16);
+
+        openConvertedButton.setText("Open Converted File");
+        openConvertedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openConvertedButtonActionPerformed(evt);
+            }
+        });
+        jLayeredPane1.add(openConvertedButton);
+        openConvertedButton.setBounds(340, 390, 150, 50);
+
         add(jLayeredPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -335,7 +332,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             try {
                 inputfile.setText(selectedFile.getCanonicalPath());
             } catch (IOException ex) {
@@ -407,8 +404,17 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
 
     private void bulkConvertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bulkConvertButtonActionPerformed
         fileToConvert = new File(inputfile.getText());
-        System.out.println(outputFileLocation.getText() + "/" + outputFileName.getText() +"\n");
-        bulkConvertedFile = new File(outputFileLocation.getText() + "/" + outputFileName.getText());
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showSaveDialog(this);
+        
+        if (result == JFileChooser.APPROVE_OPTION) {
+            bulkConvertedFile = fileChooser.getSelectedFile();
+        }
+        
+
         try {
             // TODO add your handling code here:
             conversionFileHandler.setCurrentFileLocation(fileToConvert.getCanonicalPath());
@@ -442,27 +448,10 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
             
         }
         
+        openConvertedButton.setEnabled(true);
+        
         
     }//GEN-LAST:event_bulkConvertButtonActionPerformed
-
-    private void chooseDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseDirButtonActionPerformed
-        // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int result = fileChooser.showOpenDialog(this);
-        
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedDir = fileChooser.getSelectedFile();
-            try {
-                //System.out.println("Selected file: " + selectedDir.getAbsolutePath());
-                outputFileLocation.setText(selectedDir.getCanonicalPath());
-            } catch (IOException ex) {
-                Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-    }//GEN-LAST:event_chooseDirButtonActionPerformed
 
     private void soloConvertToLatLongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToLatLongButtonActionPerformed
         // TODO add your handling code here:
@@ -551,6 +540,8 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         
         toLatLongRadioButton.setSelected(true);
         toUTMRadioButton.setSelected(false);
+        
+        datumBulkConvert.setEnabled(false);
     }//GEN-LAST:event_fromUTMRadioButtonActionPerformed
 
     private void toUTMRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toUTMRadioButtonActionPerformed
@@ -559,17 +550,39 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         fromLatLong = true;
         fromLatLongRadioButton.setSelected(true);
         fromUTMRadioButton.setSelected(false);
+        
+        datumBulkConvert.setEnabled(false);
     }//GEN-LAST:event_toUTMRadioButtonActionPerformed
 
     private void fromLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromLatLongRadioButtonActionPerformed
         // TODO add your handling code here:
         fromLatLong = true;
         fromUTM = false;
+        if(toLatLong = true){
+            datumBulkConvert.setEnabled(true);
+        }
     }//GEN-LAST:event_fromLatLongRadioButtonActionPerformed
 
     private void southHemisphereButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_southHemisphereButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_southHemisphereButtonActionPerformed
+
+    private void openConvertedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openConvertedButtonActionPerformed
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().open(bulkConvertedFile);
+        } catch (IOException ex) {
+            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_openConvertedButtonActionPerformed
+
+    private void toLatLongRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toLatLongRadioButtonActionPerformed
+        // TODO add your handling code here:
+        toLatLong = true;
+        if(fromLatLong == true){
+            datumBulkConvert.setEnabled(true);
+        }
+    }//GEN-LAST:event_toLatLongRadioButtonActionPerformed
 
     
     
@@ -579,7 +592,6 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.JButton chooseDirButton;
     private javax.swing.JComboBox datumBulkConvert;
     private javax.swing.JComboBox datumSoloConvert;
     private javax.swing.JTextField easting;
@@ -589,21 +601,19 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JTextField latitude;
     private javax.swing.JTextField longitude;
     private javax.swing.JRadioButton northHemisphereButton;
     private javax.swing.JTextField northing;
-    private javax.swing.JTextField outputFileLocation;
-    private javax.swing.JTextField outputFileName;
+    private javax.swing.JButton openConvertedButton;
     private javax.swing.JButton soloConvertToLatLongButton;
     private javax.swing.JButton soloConvertToUTMButton;
     private javax.swing.JRadioButton southHemisphereButton;

@@ -48,7 +48,7 @@ public class LatLongToUTM {
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal SOUTH_HEMISPHERE_SUBTRACTION = new BigDecimal(10000000);
     private static final BigDecimal ONE = new BigDecimal(1);
-    private static final int PRECISION = 10;
+    private static final int PRECISION = 9;
     
     
     /**

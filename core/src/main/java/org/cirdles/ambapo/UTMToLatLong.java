@@ -46,7 +46,7 @@ public class UTMToLatLong {
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal ONE = new BigDecimal(1);
-    private static final int PRECISION = 20;
+    private static final int PRECISION = 9;
 
     /**
      * Converts a UTM into a Coordinate of lat,long with a specific datum.
