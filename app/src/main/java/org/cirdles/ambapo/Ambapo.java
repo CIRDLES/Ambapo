@@ -15,9 +15,11 @@
  */
 package org.cirdles.ambapo;
 
+import java.awt.MenuBar;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import org.cirdles.ambapo.userInterface.AmbapoUI;
 
@@ -79,6 +81,7 @@ public class Ambapo {
             frame.getContentPane().add(gui);
             frame.pack();
             frame.setVisible(true);
+            
         });
     }
 }
