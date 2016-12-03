@@ -212,7 +212,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
         jLayeredPane1.add(jLabel7);
         jLabel7.setBounds(280, 220, 60, 40);
 
-        browseButton.setText("File to Convert...");
+        browseButton.setText("Source File...");
         browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
