@@ -67,7 +67,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
     
     private void initUI() {
 
-        this.setPreferredSize(new Dimension(700, 475));
+        this.setPreferredSize(new Dimension(625, 475));
         //AmbapoUI.setDefaultLookAndFeelDecorated(true);
         //UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("SansSerif", Font.PLAIN, 12));
 
