@@ -77,6 +77,7 @@ public class Ambapo {
         SwingUtilities.invokeLater(() -> {
             AmbapoUI gui = new AmbapoUI(conversionFileHandler);
             JFrame frame = new JFrame();
+            frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(gui);
             frame.pack();
