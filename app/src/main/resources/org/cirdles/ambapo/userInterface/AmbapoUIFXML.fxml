@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="471.0" prefWidth="608.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="org.cirdles.ambapo.userInterface.AmbapoUIController">
+    <stylesheets>
+        <URL value="@ambapouifxml.css" />
+    </stylesheets>
+   <children>
+      <Label layoutX="48.0" layoutY="77.0" text="Easting" />
+      <Label layoutX="43.0" layoutY="114.0" text="Northing" />
+      <Label layoutX="27.0" layoutY="183.0" text="Zone Letter" />
+      <Label layoutX="26.0" layoutY="213.0" text="Hemisphere" />
+      <Label layoutX="15.0" layoutY="148.0" text="Zone Number" />
+      <Label layoutX="423.0" layoutY="108.0" text="Latitude" />
+      <Label layoutX="412.0" layoutY="149.0" text="Longitude" />
+      <TextField layoutX="107.0" layoutY="72.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField layoutX="107.0" layoutY="108.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField layoutX="107.0" layoutY="178.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField layoutX="107.0" layoutY="143.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField layoutX="489.0" layoutY="103.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField layoutX="489.0" layoutY="144.0" prefHeight="27.0" prefWidth="72.0" />
+      <RadioButton layoutX="107.0" layoutY="213.0" mnemonicParsing="false" text="N" />
+      <RadioButton layoutX="146.0" layoutY="213.0" mnemonicParsing="false" text="S" />
+      <Button layoutX="166.0" layoutY="302.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Source File..." />
+      <TextField layoutX="340.0" layoutY="302.0" prefHeight="27.0" prefWidth="144.0" />
+      <RadioButton layoutX="192.0" layoutY="351.0" mnemonicParsing="false" text="UTM" />
+      <RadioButton layoutX="192.0" layoutY="380.0" mnemonicParsing="false" text="LatLong" />
+      <RadioButton layoutX="369.0" layoutY="351.0" mnemonicParsing="false" text="UTM" />
+      <RadioButton layoutX="369.0" layoutY="380.0" mnemonicParsing="false" text="LatLong" />
+      <Button layoutX="163.0" layoutY="417.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Convert" />
+      <Button layoutX="340.0" layoutY="417.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
+      <MenuBar layoutX="-5.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Text fill="#c93737" layoutX="246.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ambapo">
+         <font>
+            <Font name="Cambria" size="37.0" />
+         </font>
+      </Text>
+      <Button layoutX="246.0" layoutY="108.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="54.0" text="&lt;" />
+      <Button layoutX="324.0" layoutY="108.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="54.0" text="&gt;" />
+      <Text fill="#c93737" layoutX="242.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bulk Conversion">
+         <font>
+            <Font name="Cambria" size="20.0" />
+         </font>
+      </Text>
+      <ChoiceBox layoutX="246.0" layoutY="165.0" prefHeight="27.0" prefWidth="132.0" />
+   </children>
+</AnchorPane>
