@@ -6,6 +6,8 @@
 package org.cirdles.ambapo.userInterface;
 
 import com.apple.eawt.Application;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,6 +29,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javax.swing.JFileChooser;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
 import org.cirdles.ambapo.Datum;
@@ -318,6 +322,24 @@ public class AmbapoUIController implements Initializable {
         
         latitudeText.setText(latlong.getLatitude().toString());
         longitudeText.setText(latlong.getLongitude().toString());
+    }
+
+    @FXML
+    private void sourceFileButtonClicked(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File result = fileChooser.showOpenDialog(mainAnchorPane.getScene().getWindow());
+        
+        if (result != null) {
+            String resultString = result.toString();
+            if(!resultString.endsWith(".csv"))
+                resultString = resultString.concat(".csv");
+            
+            sourceFileText.setText(resultString);
+            openConvertedFileButton.setDisable(false);
+            
+        }
+  
     }
     
 }

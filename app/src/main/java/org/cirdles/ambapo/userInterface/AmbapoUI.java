@@ -339,9 +339,7 @@ public class AmbapoUI extends javax.swing.JPanel implements java.beans.Customize
                 Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }
-        
-        
+        }   
     }//GEN-LAST:event_browseButtonActionPerformed
 
     private void soloConvertToUTMButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soloConvertToUTMButtonActionPerformed
