@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="mainAnchorPane" prefHeight="471.0" prefWidth="608.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cirdles.ambapo.userInterface.AmbapoUIController">
+    <stylesheets>
+        <URL value="@ambapouifxml.css" />
+    </stylesheets>
+   <children>
+      <Label fx:id="eastingLabel" layoutX="48.0" layoutY="77.0" text="Easting" />
+      <Label fx:id="northingLabel" layoutX="43.0" layoutY="114.0" text="Northing" />
+      <Label fx:id="zoneLetterLabel" layoutX="27.0" layoutY="183.0" text="Zone Letter" />
+      <Label fx:id="hemisphereLabel" layoutX="26.0" layoutY="218.0" text="Hemisphere" />
+      <Label fx:id="zoneNumberLabel" layoutX="15.0" layoutY="148.0" text="Zone Number" />
+      <Label fx:id="latitudeLabel" layoutX="423.0" layoutY="108.0" text="Latitude" />
+      <Label fx:id="longitudeLabel" layoutX="412.0" layoutY="149.0" text="Longitude" />
+      <TextField fx:id="eastingText" layoutX="107.0" layoutY="72.0" onAction="#eastingTextAction" prefHeight="27.0" prefWidth="72.0" />
+      <TextField fx:id="northingText" layoutX="107.0" layoutY="108.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField fx:id="zoneNumberText" layoutX="107.0" layoutY="143.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField fx:id="latitudeText" layoutX="489.0" layoutY="103.0" prefHeight="27.0" prefWidth="72.0" />
+      <TextField fx:id="longitudeText" layoutX="489.0" layoutY="144.0" prefHeight="27.0" prefWidth="72.0" />
+      <Button fx:id="sourceFileButton" layoutX="166.0" layoutY="302.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Source File..." />
+      <TextField fx:id="sourceFileText" layoutX="340.0" layoutY="302.0" prefHeight="27.0" prefWidth="144.0" />
+      <RadioButton fx:id="fromUTMRadioButton" layoutX="192.0" layoutY="351.0" mnemonicParsing="false" text="UTM" />
+      <RadioButton fx:id="fromLatLongRadioButton" layoutX="192.0" layoutY="380.0" mnemonicParsing="false" text="LatLong" />
+      <RadioButton fx:id="toUTMRadioButton" layoutX="369.0" layoutY="351.0" mnemonicParsing="false" text="UTM" />
+      <RadioButton fx:id="toLatLongRadioButton" layoutX="369.0" layoutY="380.0" mnemonicParsing="false" text="LatLong" />
+      <Button fx:id="convertButton" layoutX="163.0" layoutY="417.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Convert" />
+      <Button fx:id="openConvertedFileButton" layoutX="340.0" layoutY="417.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
+      <MenuBar fx:id="menuBar" layoutX="-5.0">
+        <menus>
+          <Menu fx:id="ambapoMenuBarOption" mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="openTemplateLatLong" mnemonicParsing="false" text="Close" />
+                  <MenuItem fx:id="openTemplateUTM" mnemonicParsing="false" text="Unspecified Action" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About" />
+                  <MenuItem fx:id="githubMenuItem" mnemonicParsing="false" text="Unspecified Action" />
+                  <MenuItem fx:id="cirdlesWebsiteMenuItem" mnemonicParsing="false" text="Unspecified Action" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <Text fx:id="title" fill="#c93737" layoutX="246.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ambapo">
+         <font>
+            <Font name="Cambria" size="37.0" />
+         </font>
+      </Text>
+      <Button fx:id="convertToLeftButton" layoutX="246.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#toUTMClicked" prefHeight="27.0" prefWidth="54.0" text="&lt;" />
+      <Button fx:id="convertTotRightButton" layoutX="324.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#toLatLongClicked" prefHeight="27.0" prefWidth="54.0" text="&gt;" />
+      <Text fx:id="bulkConversionTitle" fill="#c93737" layoutX="242.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bulk Conversion">
+         <font>
+            <Font name="Cambria" size="20.0" />
+         </font>
+      </Text>
+      <ChoiceBox fx:id="datumChooser" layoutX="246.0" layoutY="165.0" prefHeight="27.0" prefWidth="132.0" />
+      <ChoiceBox fx:id="zoneLetterChooser" layoutX="107.0" layoutY="178.0" prefHeight="27.0" prefWidth="74.0" />
+      <ChoiceBox fx:id="hemisphereChooser" layoutX="106.0" layoutY="213.0" prefHeight="27.0" prefWidth="74.0" />
+   </children>
+</AnchorPane>

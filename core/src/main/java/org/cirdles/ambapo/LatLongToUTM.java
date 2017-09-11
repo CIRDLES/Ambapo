@@ -89,45 +89,45 @@ public class LatLongToUTM {
         
         BigDecimal latitudeRadians = latitude.abs().multiply(
                 new BigDecimal(Math.PI)).divide(new BigDecimal(180.0), PRECISION,
-                RoundingMode.HALF_UP);
+                RoundingMode.UP);
         
         int zoneNumber = calcZoneNumber(longitude);
         
         BigDecimal zoneCentralMeridian = calcZoneCentralMeridian(zoneNumber);
         
         BigDecimal changeInLongitudeDegree = (longitude.subtract(zoneCentralMeridian)
-                ).abs().setScale(PRECISION, RoundingMode.HALF_UP);
+                ).abs().setScale(PRECISION, RoundingMode.UP);
         
         BigDecimal changeInLongitudeRadians = (changeInLongitudeDegree.multiply(
                 new BigDecimal(Math.PI))).divide(new BigDecimal(180), PRECISION, 
-                RoundingMode.HALF_UP);
+                RoundingMode.UP);
         
 
         BigDecimal conformalLatitude = calcConformalLatitude(eccentricity, 
-                latitudeRadians).setScale(PRECISION, RoundingMode.HALF_UP);
+                latitudeRadians).setScale(PRECISION, RoundingMode.UP);
         
         BigDecimal tauPrime = (new BigDecimal(Math.tan(conformalLatitude.
-                doubleValue()))).setScale(PRECISION, RoundingMode.HALF_UP);
+                doubleValue()))).setScale(PRECISION, RoundingMode.UP);
         
         BigDecimal xiPrimeNorth = calcXiPrimeNorth(changeInLongitudeRadians, 
-                tauPrime).setScale(PRECISION, RoundingMode.HALF_UP);
+                tauPrime).setScale(PRECISION, RoundingMode.UP);
         
         BigDecimal etaPrimeEast = calcEtaPrimeEast(changeInLongitudeRadians, 
-                tauPrime).setScale(PRECISION, RoundingMode.HALF_UP);
+                tauPrime).setScale(PRECISION, RoundingMode.UP);
         
         double[] alphaSeries = datum.getAlphaSeries();
         
 
         BigDecimal xiNorth = calcXiNorth(xiPrimeNorth, etaPrimeEast, 
-                alphaSeries).setScale(PRECISION, RoundingMode.HALF_UP);
+                alphaSeries).setScale(PRECISION, RoundingMode.UP);
         
         BigDecimal etaEast = calcEtaEast(xiPrimeNorth, etaPrimeEast, 
-                alphaSeries).setScale(PRECISION, RoundingMode.HALF_UP);
+                alphaSeries).setScale(PRECISION, RoundingMode.UP);
         
         BigDecimal easting = calcEasting(meridianRadius, etaEast, longitude, 
-                zoneCentralMeridian).setScale(PRECISION, RoundingMode.HALF_UP);
+                zoneCentralMeridian).setScale(PRECISION, RoundingMode.UP);
         BigDecimal northing = calcNorthing(meridianRadius, xiNorth, 
-                latitude).setScale(PRECISION, RoundingMode.HALF_UP);
+                latitude).setScale(PRECISION, RoundingMode.UP);
         
         char zoneLetter = calcZoneLetter(latitude);
         char hemisphere = calcHemisphere(latitude);
@@ -155,13 +155,13 @@ public class LatLongToUTM {
             
             BigDecimal oneEighty = new BigDecimal(180);
             zoneNumber = ((oneEighty.add(longitude)).divide(six, PRECISION, 
-                    RoundingMode.HALF_UP)).intValue()+ 1;
+                    RoundingMode.UP)).intValue()+ 1;
         }
             
         else {
             
             BigDecimal thirtyOne = new BigDecimal(31);
-            zoneNumber = ((longitude.divide(six, PRECISION, RoundingMode.HALF_UP)).abs().add(
+            zoneNumber = ((longitude.divide(six, PRECISION, RoundingMode.UP)).abs().add(
                     thirtyOne)).intValue();
         }
         

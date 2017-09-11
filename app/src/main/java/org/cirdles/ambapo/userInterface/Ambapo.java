@@ -13,21 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cirdles.ambapo;
+package org.cirdles.ambapo.userInterface;
 
-import java.awt.MenuBar;
 import java.io.File;
-import java.io.IOException;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.SwingUtilities;
-import org.cirdles.ambapo.userInterface.AmbapoUI;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
+import org.cirdles.ambapo.ConversionFileHandler;
 
 /**
  *
  * @author evc1996
  */
-public class Ambapo {
+public class Ambapo extends Application{
     
     public static final String VERSION;
     public static final String RELEASE_DATE;
@@ -63,26 +67,37 @@ public class Ambapo {
      * @param args the command line arguments
      * @throws java.io.IOException
      */
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
 
         org.cirdles.ambapo.ConversionFileHandler conversionFileHandler = new ConversionFileHandler();
+        
+        launch(args);
+    }
+    private Stage primaryStage;
 
-        //Path listOfConversionFiles = conversionFileResourceExtractor.extractResourceAsPath("listOfPrawnFiles.txt");
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+        Parent root = new AnchorPane();
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
         
-        /* Set up default folder for reports
-        File defaultAmbapoConversionsFolder = new File("AmbapoConversions_v" + VERSION);
-        defaultAmbapoConversionsFolder.mkdir();
-        conversionFileHandler.setAFileLocationToWriteTo(defaultAmbapoConversionsFolder.getCanonicalPath());*/
+        Window primaryStageWindow = primaryStage.getScene().getWindow();
         
-        SwingUtilities.invokeLater(() -> {
-            AmbapoUI gui = new AmbapoUI(conversionFileHandler);
-            JFrame frame = new JFrame();
-            frame.setResizable(false);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(gui);
-            frame.pack();
-            frame.setVisible(true);
-            
+        primaryStage.setOnCloseRequest((WindowEvent e) -> {
+            Platform.exit();
+            System.exit(0);
         });
+        
+        scene.setRoot(FXMLLoader.load(getClass().getResource("AmbapoUIController.fxml")));
+                
+        primaryStage.show();
+        primaryStage.setMinHeight(scene.getHeight() + 15);
+        primaryStage.setMinWidth(scene.getWidth());
+
+        primaryStage.show();
+        primaryStage.setMinHeight(scene.getHeight() + 15);
+        primaryStage.setMinWidth(scene.getWidth());
+
     }
 }

@@ -18,7 +18,6 @@ package org.cirdles.ambapo.userInterface;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JDialog;
-import org.cirdles.ambapo.Ambapo;
 /**
  *
  * @author evc1996
