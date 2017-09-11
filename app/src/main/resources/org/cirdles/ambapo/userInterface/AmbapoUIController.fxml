@@ -36,8 +36,8 @@
       <RadioButton fx:id="fromLatLongRadioButton" layoutX="192.0" layoutY="380.0" mnemonicParsing="false" text="LatLong" />
       <RadioButton fx:id="toUTMRadioButton" layoutX="369.0" layoutY="351.0" mnemonicParsing="false" text="UTM" />
       <RadioButton fx:id="toLatLongRadioButton" layoutX="369.0" layoutY="380.0" mnemonicParsing="false" text="LatLong" />
-      <Button fx:id="convertButton" layoutX="163.0" layoutY="417.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Convert" />
-      <Button fx:id="openConvertedFileButton" layoutX="340.0" layoutY="417.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
+      <Button fx:id="convertButton" layoutX="163.0" layoutY="417.0" mnemonicParsing="false" onMouseClicked="#convertFileClicked" prefHeight="27.0" prefWidth="144.0" text="Convert" />
+      <Button fx:id="openConvertedFileButton" layoutX="340.0" layoutY="417.0" mnemonicParsing="false" onMouseClicked="#openConvertedFileClicked" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
       <MenuBar fx:id="menuBar" layoutX="-5.0">
         <menus>
           <Menu fx:id="ambapoMenuBarOption" mnemonicParsing="false" text="File">

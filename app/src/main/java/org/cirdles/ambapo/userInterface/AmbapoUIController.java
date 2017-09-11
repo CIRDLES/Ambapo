@@ -18,6 +18,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -340,6 +342,73 @@ public class AmbapoUIController implements Initializable {
             
         }
   
+    }
+
+    @FXML
+    private void convertFileClicked(MouseEvent event) {
+        File fileToConvert = new File(sourceFileText.getText());
+        
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Specify a file to save");   
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File result = fileChooser.showSaveDialog(mainAnchorPane.getScene().getWindow());
+        
+        if (result != null) {
+            try {
+                
+                conversionFileHandler.setCurrentFileLocation(fileToConvert.getCanonicalPath());
+            } catch (IOException ex) {
+                Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                if(!conversionFileHandler.currentFileLocationToConvertIsFile()){
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Not a file.");
+
+                    alert.showAndWait();
+                }
+            }
+            
+            if(fromUTM == true){
+                try {
+                    conversionFileHandler.writeConversionsUTMToLatLong(result);
+                    openConvertedFileButton.setDisable(false);
+                } catch (Exception ex) {
+                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Conversion could not be completed.");
+                    alert.setContentText("Check if csv file is formatted properly.");
+
+                    alert.showAndWait();
+                }
+            }
+            
+            else if(fromLatLong == true && toUTM == true){
+                try {
+                    conversionFileHandler.writeConversionsLatLongToUTM(result);
+                    openConvertedFileButton.setDisable(false);
+                } catch (Exception ex) {
+                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Conversion could not be completed.");
+                    alert.setContentText("Check if csv file is formatted properly.");
+
+                    alert.showAndWait();
+                }
+            }
+            
+            else{
+                System.out.println("Not supported yet. Sorry!\n");
+            }
+            
+        
+        }
+    }
+
+    @FXML
+    private void openConvertedFileClicked(MouseEvent event) {
     }
     
 }
