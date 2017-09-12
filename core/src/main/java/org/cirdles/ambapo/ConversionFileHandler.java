@@ -154,7 +154,38 @@ public class ConversionFileHandler {
         writeConversionsLatLongToLatLong(new File(outputFileName));
     }
     
-    public void writeConversionsLatLongToLatLong(File outputFile) {
+    public void writeConversionsLatLongToLatLong(File outputFile) throws Exception {
+        List<String[]> dataToConvert = extractDataToConvert();
+            BigDecimal latitude;
+            BigDecimal longitude;
+            String fromDatum;
+            String toDatum;
+            Coordinate latAndLong;
+            String[] lineToWrite;
+            
+            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))){
+                csvWriter.writeNext(HEADER_LAT_LONG);
+                for(String[] latLongInfo : dataToConvert) {
+                    if(latLongInfo[0].charAt(0) != ';'){
+                        latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
+                        longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
+                        fromDatum = latLongInfo[2].trim().replace("\"", "");
+                        toDatum = latLongInfo[3].trim().replace("\"", "");
+
+                        latAndLong = LatLongToLatLong.convert(latitude, longitude, fromDatum, toDatum);
+
+                        lineToWrite = new String[]{
+                            latAndLong.getLatitude().toString(),
+                            latAndLong.getLongitude().toString(),
+                            toDatum
+                        };
+                        csvWriter.writeNext(lineToWrite);
+                    }
+                }
+                
+                //csvWriter.close();
+                outputFileLocation = outputFile;
+            }
         
     }
     
