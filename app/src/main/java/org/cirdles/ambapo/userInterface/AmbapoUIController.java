@@ -6,6 +6,7 @@
 package org.cirdles.ambapo.userInterface;
 
 import com.apple.eawt.Application;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -26,13 +26,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javax.swing.JFileChooser;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
 import org.cirdles.ambapo.Datum;
@@ -66,8 +65,6 @@ public class AmbapoUIController implements Initializable {
     @FXML
     private TextField northingText;
     @FXML
-    private TextField zoneNumberText;
-    @FXML
     private TextField latitudeText;
     @FXML
     private TextField longitudeText;
@@ -75,14 +72,6 @@ public class AmbapoUIController implements Initializable {
     private Button sourceFileButton;
     @FXML
     private TextField sourceFileText;
-    @FXML
-    private RadioButton fromUTMRadioButton;
-    @FXML
-    private RadioButton fromLatLongRadioButton;
-    @FXML
-    private RadioButton toUTMRadioButton;
-    @FXML
-    private RadioButton toLatLongRadioButton;
     @FXML
     private Button convertButton;
     @FXML
@@ -104,13 +93,7 @@ public class AmbapoUIController implements Initializable {
     @FXML
     private Text title;
     @FXML
-    private Button convertToLeftButton;
-    @FXML
-    private Button convertTotRightButton;
-    @FXML
     private Text bulkConversionTitle;
-    @FXML
-    private ChoiceBox<String> datumChooser;
     @FXML
     private AnchorPane mainAnchorPane;
     @FXML
@@ -119,11 +102,6 @@ public class AmbapoUIController implements Initializable {
     private ChoiceBox<Character> hemisphereChooser;
     
     public ConversionFileHandler conversionFileHandler;
-    
-    public boolean toLatLong;
-    public boolean toUTM;
-    public boolean fromLatLong;
-    public boolean fromUTM;
     
     public BigDecimal latitude_val;
     public BigDecimal longitude_val;
@@ -135,7 +113,46 @@ public class AmbapoUIController implements Initializable {
     
     public int zonenumber_val;
     
-    public String datumSoloConvert;
+    public String datumSoloConvertUTMLatLong;
+    
+    public File fileToConvert;
+    public File convertedFile;
+    @FXML
+    private Button convertToUTMButton;
+    @FXML
+    private Button convertToLatLongButton;
+    @FXML
+    private ChoiceBox<String> datumChooserUTMAndLatLong;
+    @FXML
+    private ChoiceBox<String> bulkConversionChooser;
+    @FXML
+    private ChoiceBox<Integer> zoneNumberChooser;
+    @FXML
+    private ImageView logo;
+    @FXML
+    private ImageView logo1;
+    @FXML
+    private Label latitudeLabel1;
+    @FXML
+    private Label longitudeLabel1;
+    @FXML
+    private TextField fromLatitude;
+    @FXML
+    private TextField fromLongitude;
+    @FXML
+    private Button convertFromLatLongToLatLongButton;
+    @FXML
+    private ChoiceBox<String> datumChooserLatLongFrom;
+    @FXML
+    private Label latitudeLabel11;
+    @FXML
+    private Label longitudeLabel11;
+    @FXML
+    private TextField toLatitude;
+    @FXML
+    private TextField toLongitude;
+    @FXML
+    private ChoiceBox<String> datumChooserLatLongTo;
     
 
     /**
@@ -168,14 +185,34 @@ public class AmbapoUIController implements Initializable {
         ObservableList<Character> hemispheres = FXCollections.observableArrayList(
             '*', 'N', 'S');
         
-        datumChooser.setItems(datumChoices);
-        datumChooser.getSelectionModel().selectFirst();
+        ObservableList<Integer> zoneNumbers = FXCollections.observableArrayList(
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 
+                37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 
+                53, 54, 55, 56, 57, 58, 59, 60);
+        
+        ObservableList<String> bulkConversionChoices = FXCollections.observableArrayList(
+        "From UTM to LatLong", "From LatLong to UTM", "From LatLong to LatLong");
+        
+        bulkConversionChooser.setItems(bulkConversionChoices);
+        bulkConversionChooser.getSelectionModel().selectFirst();
+        
+        datumChooserUTMAndLatLong.setItems(datumChoices);
+        datumChooserLatLongTo.setItems(datumChoices);
+        datumChooserLatLongFrom.setItems(datumChoices);
+        
+        datumChooserUTMAndLatLong.setValue("To/From Datum");
+        datumChooserLatLongTo.setValue("To Datum");
+        datumChooserLatLongFrom.setValue("From Datum");
         
         zoneLetterChooser.setItems(zoneLetters);
         zoneLetterChooser.getSelectionModel().selectFirst();
         
         hemisphereChooser.setItems(hemispheres);
         hemisphereChooser.getSelectionModel().selectFirst();
+        
+        zoneNumberChooser.setItems(zoneNumbers);
+        zoneNumberChooser.getSelectionModel().selectFirst();
         
         // check for MacOS
         String lcOSName = System.getProperty("os.name").toLowerCase();
@@ -186,21 +223,10 @@ public class AmbapoUIController implements Initializable {
 
         this.conversionFileHandler = new ConversionFileHandler();
         
-        fromUTM = true;
-        toLatLong = true;
-        
         openConvertedFileButton.setDisable(true);
+        convertButton.setDisable(true);
         
-        setupListeners();
     }    
-
-    @FXML
-    private void eastingTextAction(ActionEvent event) {
-    }
-    
-    private void setupListeners(){
-        
-    }
 
     @FXML
     private void toUTMClicked(MouseEvent event) {
@@ -215,7 +241,7 @@ public class AmbapoUIController implements Initializable {
         }
         else if(Double.parseDouble(latitudeText.getText()) > 90){
             latitude_val = new BigDecimal(90);
-            latitudeText.setText("00");
+            latitudeText.setText("0");
         }
         else{
             latitude_val = new BigDecimal(latitudeText.getText());
@@ -239,12 +265,12 @@ public class AmbapoUIController implements Initializable {
         }
         
         //Set Datum
-        datumSoloConvert = datumChooser.getValue();
+        datumSoloConvertUTMLatLong = datumChooserUTMAndLatLong.getValue();
         
         //do conversion
         UTM utm = null;
         try {
-            utm = LatLongToUTM.convert(latitude_val, longitude_val, datumSoloConvert);
+            utm = LatLongToUTM.convert(latitude_val, longitude_val, datumSoloConvertUTMLatLong);
         } catch (Exception ex) {
             Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -259,7 +285,7 @@ public class AmbapoUIController implements Initializable {
         }
         
         zoneLetterChooser.setValue(utm.getZoneLetter());
-        zoneNumberText.setText(String.valueOf(utm.getZoneNumber()));
+        zoneNumberChooser.setValue(utm.getZoneNumber());
     }
 
     @FXML
@@ -292,19 +318,12 @@ public class AmbapoUIController implements Initializable {
         
         //Set zone number value
         //System.out.println("ZONE Number: " + zoneNumber.getText() + "\n");
-        if(zoneNumberText.getText().length() <= 0 || Integer.parseInt(zoneNumberText.getText()) < 1){
-            zonenumber_val = 1;
-        }
-        else if(Integer.parseInt(zoneNumberText.getText()) > 60){
-            zonenumber_val = 60;
-        }
-        else{
-            zonenumber_val = Integer.parseInt(zoneNumberText.getText());
-        }
+        zonenumber_val = zoneNumberChooser.getValue();
+        
         
         //Set Datum to Convert To
-        //System.out.println("DATUM: " + datumSoloConvert.getSelectedItem().toString() + "\n");
-        datumSoloConvert = datumChooser.getValue();
+        //System.out.println("DATUM: " + datumSoloConvertUTMLatLong.getSelectedItem().toString() + "\n");
+        datumSoloConvertUTMLatLong = datumChooserUTMAndLatLong.getValue();
         
         //create UTM object
         UTM utm = null;
@@ -317,7 +336,7 @@ public class AmbapoUIController implements Initializable {
         //Do the conversion
         Coordinate latlong = null;
         try {
-            latlong = UTMToLatLong.convert(utm, datumSoloConvert);
+            latlong = UTMToLatLong.convert(utm, datumSoloConvertUTMLatLong);
         } catch (Exception ex) {
             Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -337,26 +356,26 @@ public class AmbapoUIController implements Initializable {
             if(!resultString.endsWith(".csv"))
                 resultString = resultString.concat(".csv");
             
-            sourceFileText.setText(resultString);
-            openConvertedFileButton.setDisable(false);
-            
+            sourceFileText.setText(resultString);   
+            convertButton.setDisable(false);
         }
   
     }
 
     @FXML
     private void convertFileClicked(MouseEvent event) {
-        File fileToConvert = new File(sourceFileText.getText());
+        fileToConvert = new File(sourceFileText.getText());
         
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Specify a file to save");   
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        File result = fileChooser.showSaveDialog(mainAnchorPane.getScene().getWindow());
+        convertedFile = fileChooser.showSaveDialog(mainAnchorPane.getScene().getWindow());
         
-        if (result != null) {
+        if (convertedFile != null) {
             try {
                 
                 conversionFileHandler.setCurrentFileLocation(fileToConvert.getCanonicalPath());
+                convertButton.setDisable(false);
             } catch (IOException ex) {
                 Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
                 if(!conversionFileHandler.currentFileLocationToConvertIsFile()){
@@ -368,9 +387,9 @@ public class AmbapoUIController implements Initializable {
                 }
             }
             
-            if(fromUTM == true){
+            if(bulkConversionChooser.getValue().equals(bulkConversionChooser.getItems().get(0))){
                 try {
-                    conversionFileHandler.writeConversionsUTMToLatLong(result);
+                    conversionFileHandler.writeConversionsUTMToLatLong(convertedFile);
                     openConvertedFileButton.setDisable(false);
                 } catch (Exception ex) {
                     Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -383,12 +402,11 @@ public class AmbapoUIController implements Initializable {
                 }
             }
             
-            else if(fromLatLong == true && toUTM == true){
+            else if(bulkConversionChooser.getValue().equals(bulkConversionChooser.getItems().get(1))){
                 try {
-                    conversionFileHandler.writeConversionsLatLongToUTM(result);
+                    conversionFileHandler.writeConversionsLatLongToUTM(convertedFile);
                     openConvertedFileButton.setDisable(false);
                 } catch (Exception ex) {
-                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
                     Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
@@ -400,7 +418,19 @@ public class AmbapoUIController implements Initializable {
             }
             
             else{
-                System.out.println("Not supported yet. Sorry!\n");
+                try{
+                    conversionFileHandler.writeConversionsLatLongToLatLong(convertedFile);
+                    openConvertedFileButton.setDisable(false);  
+                } catch (Exception ex) {
+                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Conversion could not be completed.");
+                    alert.setContentText("Check if csv file is formatted properly.");
+
+                    alert.showAndWait();
+                }
+                
             }
             
         
@@ -409,6 +439,18 @@ public class AmbapoUIController implements Initializable {
 
     @FXML
     private void openConvertedFileClicked(MouseEvent event) {
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().open(convertedFile);
+        } catch (IOException ex) {
+            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Unable to open file.");
+            alert.setContentText("Check if you have a valid file name.");
+            alert.showAndWait();
+        }
     }
     
 }

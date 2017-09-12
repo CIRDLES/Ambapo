@@ -75,7 +75,7 @@ public class UTM {
             zoneLetter == 'Y' || zoneLetter == 'Z') {
             
             throw new Exception("Zone letter must be a letter in the alphabet, "
-                    + "except A, B, I, O, Y, and Z");
+                    + "except A, B, I, O, Y, and Z and yours was " + zoneLetter);
         
         }
         

@@ -377,7 +377,7 @@ public class LatLongToUTM {
             return letters.charAt(new Double(Math.floor((lat+80.0)/8.0)).intValue());
         
         else
-            return 'Z';
+            return 'X';
         
     } 
 

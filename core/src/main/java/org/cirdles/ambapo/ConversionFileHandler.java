@@ -150,6 +150,14 @@ public class ConversionFileHandler {
             }
     }
     
+    public void writeConversionsLatLongToLatLong(String outputFileName) throws Exception{
+        writeConversionsLatLongToLatLong(new File(outputFileName));
+    }
+    
+    public void writeConversionsLatLongToLatLong(File outputFile) {
+        
+    }
+    
     public void closeCSVWriter(CSVWriter csvwriter) throws IOException{
         csvwriter.close();
     }
