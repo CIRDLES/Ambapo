@@ -23,7 +23,7 @@ public class ConversionFileHandler {
         private String currentFileLocationToConvert;
         private File outputFileLocation;
         private final String[] HEADER_LAT_LONG = {";LATITUDE, LONGITUDE, DATUM\n"};
-        private final String[] HEADER_UTM_FROM_LATLONG = {";EASTING, NORTHING, HEMISPHERE, ZONE NUMBER, ZONE LETTER, DATUM CONVERTED FROM"};
+        private final String[] HEADER_UTM_FROM_LATLONG = {";EASTING, NORTHING, HEMISPHERE, ZONE NUMBER, ZONE LETTER, DATUM CONVERTED FROM\n"};
     
     public ConversionFileHandler(String currentFileLocationToConvert){
         this.currentFileLocationToConvert = currentFileLocationToConvert;

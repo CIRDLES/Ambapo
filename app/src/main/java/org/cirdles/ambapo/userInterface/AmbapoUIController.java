@@ -10,12 +10,15 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -79,17 +82,9 @@ public class AmbapoUIController implements Initializable {
     @FXML
     private MenuBar menuBar;
     @FXML
-    private Menu ambapoMenuBarOption;
-    @FXML
-    private MenuItem openTemplateLatLong;
-    @FXML
-    private MenuItem openTemplateUTM;
-    @FXML
     private MenuItem aboutMenuItem;
     @FXML
     private MenuItem githubMenuItem;
-    @FXML
-    private MenuItem cirdlesWebsiteMenuItem;
     @FXML
     private Text title;
     @FXML
@@ -153,6 +148,16 @@ public class AmbapoUIController implements Initializable {
     private TextField toLongitude;
     @FXML
     private ChoiceBox<String> datumChooserLatLongTo;
+    @FXML
+    private Menu ambapoMenuBarOptionFile;
+    @FXML
+    private MenuItem openTemplateLatLongToUTM;
+    @FXML
+    private MenuItem openTemplateUTMToLatLong;
+    @FXML
+    private MenuItem openTemplateLatLongToLatLong;
+    @FXML
+    private Menu ambapoMenuBarOptionHelp;
     
 
     /**
@@ -177,6 +182,16 @@ public class AmbapoUIController implements Initializable {
                 Datum.AIRY_1830.getDatum(),
                 Datum.AGD65.getDatum());
         
+        ObservableList<String> toFromDatum = FXCollections.observableArrayList(
+        "To/From Datum");
+        toFromDatum.addAll(datumChoices);
+        
+        ObservableList<String> toDatum = FXCollections.observableArrayList("To Datum");
+        toDatum.addAll(datumChoices);
+        
+        ObservableList<String> fromDatum = FXCollections.observableArrayList("From Datum");
+        fromDatum.addAll(datumChoices);
+        
         //A, B, I, O, Y, and Z aren't valid zone letters
         ObservableList<Character> zoneLetters = FXCollections.observableArrayList(
             '*', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q',
@@ -197,9 +212,9 @@ public class AmbapoUIController implements Initializable {
         bulkConversionChooser.setItems(bulkConversionChoices);
         bulkConversionChooser.getSelectionModel().selectFirst();
         
-        datumChooserUTMAndLatLong.setItems(datumChoices);
-        datumChooserLatLongTo.setItems(datumChoices);
-        datumChooserLatLongFrom.setItems(datumChoices);
+        datumChooserUTMAndLatLong.setItems(toFromDatum);
+        datumChooserLatLongTo.setItems(toDatum);
+        datumChooserLatLongFrom.setItems(fromDatum);
         
         datumChooserUTMAndLatLong.setValue("To/From Datum");
         datumChooserLatLongTo.setValue("To Datum");
@@ -451,6 +466,59 @@ public class AmbapoUIController implements Initializable {
             alert.setContentText("Check if you have a valid file name.");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void clickOpenTemplateLatLongToUTM(ActionEvent event) throws IOException {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        File file = new File(getClass().getResource("latLongToUTMTemplate.csv").getFile());
+        
+        if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+            desktop.open(file);
+        } else {
+            throw new UnsupportedOperationException("Open action not supported");
+        }
+    }
+
+    @FXML
+    private void clickOpenTemplateUTMToLatLong(ActionEvent event) throws IOException {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        File file = new File(getClass().getResource("utmToLatLongTemplate.csv").getFile());
+        
+        if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+            desktop.open(file);
+        } else {
+            throw new UnsupportedOperationException("Open action not supported");
+        }
+    }
+
+    @FXML
+    private void clickOpenTemplateLatLongToLatLong(ActionEvent event) throws IOException {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        File file = new File(getClass().getResource("latLongToLatLongTemplate.csv").getFile());
+        
+        if (desktop != null && desktop.isSupported(Desktop.Action.OPEN)) {
+            desktop.open(file);
+        } else {
+            throw new UnsupportedOperationException("Open action not supported");
+        }
+    }
+
+    @FXML
+    private void clickAboutMenuItem(ActionEvent event) {
+    }
+
+    @FXML
+    private void clickGithubMenuItem(ActionEvent event) {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+
+        try
+        {
+            URI uri = new URI("https://github.com/CIRDLES/Ambapo");
+            Desktop dt = Desktop.getDesktop();
+            dt.browse(uri);
+        }
+        catch(IOException | URISyntaxException ex){}
     }
     
 }

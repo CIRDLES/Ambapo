@@ -35,17 +35,17 @@
       <Button fx:id="openConvertedFileButton" disable="true" layoutX="346.0" layoutY="477.0" mnemonicParsing="false" onMouseClicked="#openConvertedFileClicked" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
       <MenuBar fx:id="menuBar" layoutX="-5.0">
         <menus>
-          <Menu fx:id="ambapoMenuBarOption" mnemonicParsing="false" text="File">
+          <Menu fx:id="ambapoMenuBarOptionFile" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem fx:id="openTemplateLatLong" mnemonicParsing="false" text="Close" />
-                  <MenuItem fx:id="openTemplateUTM" mnemonicParsing="false" text="Unspecified Action" />
+              <MenuItem fx:id="openTemplateLatLongToUTM" mnemonicParsing="false" onAction="#clickOpenTemplateLatLongToUTM" text="Open LatLong to UTM Template" />
+                  <MenuItem fx:id="openTemplateUTMToLatLong" mnemonicParsing="false" onAction="#clickOpenTemplateUTMToLatLong" text="Open UTM to LatLong Template" />
+                  <MenuItem fx:id="openTemplateLatLongToLatLong" mnemonicParsing="false" onAction="#clickOpenTemplateLatLongToLatLong" text="Open LatLong to LatLong Template" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu fx:id="ambapoMenuBarOptionHelp" mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About" />
-                  <MenuItem fx:id="githubMenuItem" mnemonicParsing="false" text="Unspecified Action" />
-                  <MenuItem fx:id="cirdlesWebsiteMenuItem" mnemonicParsing="false" text="Unspecified Action" />
+              <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" onAction="#clickAboutMenuItem" text="About" />
+                  <MenuItem fx:id="githubMenuItem" mnemonicParsing="false" onAction="#clickGithubMenuItem" text="GitHub" />
             </items>
           </Menu>
         </menus>
@@ -74,12 +74,12 @@
       <Label fx:id="longitudeLabel1" layoutX="146.0" layoutY="284.0" text="Longitude" />
       <TextField fx:id="fromLatitude" layoutX="146.0" layoutY="241.0" prefHeight="27.0" prefWidth="126.0" />
       <TextField fx:id="fromLongitude" layoutX="146.0" layoutY="302.0" prefHeight="27.0" prefWidth="126.0" />
-      <Button fx:id="convertFromLatLongToLatLongButton" layoutX="313.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="114.0" text="Convert" />
-      <ChoiceBox fx:id="datumChooserLatLongFrom" layoutX="25.0" layoutY="271.0" prefHeight="27.0" prefWidth="95.0" />
+      <Button fx:id="convertFromLatLongToLatLongButton" layoutX="313.0" layoutY="241.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="126.0" text="Convert" />
+      <ChoiceBox fx:id="datumChooserLatLongFrom" layoutX="13.0" layoutY="271.0" prefHeight="27.0" prefWidth="107.0" />
       <Label fx:id="latitudeLabel11" layoutX="475.0" layoutY="217.0" text="Latitude" />
       <Label fx:id="longitudeLabel11" layoutX="473.0" layoutY="279.0" text="Longitude" />
       <TextField fx:id="toLatitude" disable="true" editable="false" layoutX="472.0" layoutY="239.0" prefHeight="27.0" prefWidth="126.0" />
       <TextField fx:id="toLongitude" disable="true" editable="false" layoutX="472.0" layoutY="302.0" prefHeight="27.0" prefWidth="126.0" />
-      <ChoiceBox fx:id="datumChooserLatLongTo" layoutX="313.0" layoutY="285.0" prefHeight="27.0" prefWidth="114.0" />
+      <ChoiceBox fx:id="datumChooserLatLongTo" layoutX="313.0" layoutY="285.0" prefHeight="27.0" prefWidth="126.0" />
    </children>
 </AnchorPane>
