@@ -20,7 +20,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -35,6 +38,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
 import org.cirdles.ambapo.Datum;
@@ -228,13 +234,6 @@ public class AmbapoUIController implements Initializable {
         
         zoneNumberChooser.setItems(zoneNumbers);
         zoneNumberChooser.getSelectionModel().selectFirst();
-        
-        // check for MacOS
-        String lcOSName = System.getProperty("os.name").toLowerCase();
-        boolean MAC_OS_X = lcOSName.startsWith("mac os x");
-        if (MAC_OS_X) {
-            Application myAboutHandler = new MacOSAboutHandler();
-        }
 
         this.conversionFileHandler = new ConversionFileHandler();
         
@@ -287,7 +286,7 @@ public class AmbapoUIController implements Initializable {
         try {
             utm = LatLongToUTM.convert(latitude_val, longitude_val, datumSoloConvertUTMLatLong);
         } catch (Exception ex) {
-            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         eastingText.setText(utm.getEasting().toString());
@@ -345,7 +344,7 @@ public class AmbapoUIController implements Initializable {
         try {
             utm = new UTM(easting_val, northing_val, hemisphere_val, zonenumber_val, zoneletter_val);
         } catch (Exception ex) {
-            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         //Do the conversion
@@ -353,7 +352,7 @@ public class AmbapoUIController implements Initializable {
         try {
             latlong = UTMToLatLong.convert(utm, datumSoloConvertUTMLatLong);
         } catch (Exception ex) {
-            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         latitudeText.setText(latlong.getLatitude().toString());
@@ -392,7 +391,7 @@ public class AmbapoUIController implements Initializable {
                 conversionFileHandler.setCurrentFileLocation(fileToConvert.getCanonicalPath());
                 convertButton.setDisable(false);
             } catch (IOException ex) {
-                Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
                 if(!conversionFileHandler.currentFileLocationToConvertIsFile()){
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
@@ -407,7 +406,7 @@ public class AmbapoUIController implements Initializable {
                     conversionFileHandler.writeConversionsUTMToLatLong(convertedFile);
                     openConvertedFileButton.setDisable(false);
                 } catch (Exception ex) {
-                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Conversion could not be completed.");
@@ -422,7 +421,7 @@ public class AmbapoUIController implements Initializable {
                     conversionFileHandler.writeConversionsLatLongToUTM(convertedFile);
                     openConvertedFileButton.setDisable(false);
                 } catch (Exception ex) {
-                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Conversion could not be completed.");
@@ -437,7 +436,7 @@ public class AmbapoUIController implements Initializable {
                     conversionFileHandler.writeConversionsLatLongToLatLong(convertedFile);
                     openConvertedFileButton.setDisable(false);  
                 } catch (Exception ex) {
-                    Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Conversion could not be completed.");
@@ -458,7 +457,7 @@ public class AmbapoUIController implements Initializable {
             // TODO add your handling code here:
             Desktop.getDesktop().open(convertedFile);
         } catch (IOException ex) {
-            Logger.getLogger(AmbapoUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
             
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
@@ -505,7 +504,14 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void clickAboutMenuItem(ActionEvent event) {
+    private void clickAboutMenuItem(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AboutController.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setScene(new Scene(root1));  
+        stage.show();
     }
 
     @FXML
