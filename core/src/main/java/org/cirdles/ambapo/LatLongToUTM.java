@@ -47,7 +47,6 @@ public class LatLongToUTM {
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal SOUTH_HEMISPHERE_SUBTRACTION = new BigDecimal(10000000);
-    private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 9;
     
     
@@ -132,7 +131,7 @@ public class LatLongToUTM {
         char zoneLetter = calcZoneLetter(latitude);
         char hemisphere = calcHemisphere(latitude);
         
-        UTM utm = new UTM(easting, northing, hemisphere, zoneNumber, zoneLetter);
+        UTM utm = new UTM(easting.setScale(5, RoundingMode.HALF_UP), northing, hemisphere, zoneNumber, zoneLetter);
         
         return utm;
     }
@@ -377,7 +376,7 @@ public class LatLongToUTM {
             return letters.charAt(new Double(Math.floor((lat+80.0)/8.0)).intValue());
         
         else
-            return 'Z';
+            return 'X';
         
     } 
 
@@ -398,7 +397,7 @@ public class LatLongToUTM {
             etaEast, BigDecimal longitude, BigDecimal centralMeridian) { 
         
         BigDecimal easting = (SCALE_FACTOR.multiply(meridianRadius)).multiply(etaEast);
-        BigDecimal eastOfCM = ONE;
+        BigDecimal eastOfCM = BigDecimal.ONE;
         
         if (longitude.compareTo(centralMeridian) < 0)
             eastOfCM = eastOfCM.multiply(new BigDecimal(-1));

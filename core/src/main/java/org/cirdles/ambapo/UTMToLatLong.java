@@ -45,7 +45,6 @@ public class UTMToLatLong {
     
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
-    private static final BigDecimal ONE = new BigDecimal(1);
     private static final int PRECISION = 9;
 
     /**
@@ -89,7 +88,7 @@ public class UTMToLatLong {
         
         BigDecimal latitude = calcLatitude(tauPrime, sigma, eccentricity, hemisphere);
         
-        Coordinate latAndLong = new Coordinate(latitude, longitude, datum);
+        Coordinate latAndLong = new Coordinate(latitude.setScale(3, BigDecimal.ROUND_UP), longitude.setScale(3, BigDecimal.ROUND_UP), datum);
         
         return latAndLong;
         
@@ -301,7 +300,7 @@ public class UTMToLatLong {
             currentTau.pow(2).doubleValue())))).subtract(currentSigma.multiply(
             currentTau))).multiply(new BigDecimal(1 - eccentricity.pow(
             2).doubleValue())).multiply(new BigDecimal(Math.sqrt(1 + 
-            currentTau.pow(2).doubleValue()))).divide(ONE.add(ONE.subtract(
+            currentTau.pow(2).doubleValue()))).divide(BigDecimal.ONE.add(BigDecimal.ONE.subtract(
             eccentricity.pow(2))).multiply(currentTau.pow(2)), PRECISION, 
             RoundingMode.HALF_UP);
         
