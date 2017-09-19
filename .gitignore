@@ -1,18 +1,55 @@
-# Maven
-target
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Gradle
+.gradle/
+build/
+/Squid/.nb-gradle/
 
 # Netbeans
+nb-configuration.xml
 nbactions.xml
+dependency-reduced-pom.xml
+nbproject/
+.nb-gradle/
+.nb-gradle-properties
+private/
+
 
 # IntelliJ
 .idea/
 *.iml
 
 # Generated
+*.txt
+*.html
+*.xml
+*.csv
 test_*
+*.ser
+*.zip
+*.squid
+*.xls
+
+# Resources
+!squidApp/src/main/resources/org/cirdles/squid/gui/version.txt
+!squidApp/src/main/resources/org/cirdles/squid/gui/content/*.txt
+!squidCore/src/main/resources/org/cirdles/squid/version.txt
+!squidCore/src/main/resources/org/cirdles/squid/docs/*.txt
+!squidCore/src/main/resources/org/cirdles/squid/prawn/*.xml
+!squidCore/src/main/resources/org/cirdles/squid/prawn/*.txt
+!squidCore/src/test/resources/org/cirdles/squid/core/*.csv
 
 # MACOS
 .DS_Store
-/app/.nb-gradle/
-/core/build/
-/app/build/
