@@ -80,7 +80,7 @@ public class Coordinate {
         
         this.latitude = latitude;
         this.longitude = longitude;
-        this.datum = Datum.getDatumByName(datum);
+        this.datum = Datum.valueOf(datum);
     }
 
     /**

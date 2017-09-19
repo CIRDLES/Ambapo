@@ -56,7 +56,7 @@ public class UTMToLatLong {
      */
     public static Coordinate convert(UTM utm, String datum) throws Exception {
         
-        Datum datumInformation = Datum.getDatumByName(datum);
+        Datum datumInformation = Datum.valueOf(datum);
                 
         double[] betaSeries = datumInformation.getBetaSeries();
         
