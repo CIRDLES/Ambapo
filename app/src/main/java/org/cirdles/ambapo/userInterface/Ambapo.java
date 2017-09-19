@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2016 CIRDLES.org.
+ * Copyright 2006-2017 CIRDLES.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,6 +73,7 @@ public class Ambapo extends Application{
         launch(args);
     }
     private Stage primaryStage;
+    protected static AboutWindow aboutWindow;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -97,6 +98,8 @@ public class Ambapo extends Application{
         primaryStage.show();
         primaryStage.setMinHeight(scene.getHeight() + 15);
         primaryStage.setMinWidth(scene.getWidth());
+        
+        aboutWindow = new AboutWindow();
 
     }
 }

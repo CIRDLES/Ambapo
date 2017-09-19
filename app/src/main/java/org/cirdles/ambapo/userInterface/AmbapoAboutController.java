@@ -13,26 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.cirdles.ambapo.userInterface;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
+ * FXML Controller class
  *
  * @author evc1996
  */
-public class BrowserControl {
-    public static void showURI(String location) {
-        try {
-            Desktop desktop = java.awt.Desktop.getDesktop();
-            URI oURL = new URI(location);
-            desktop.browse(oURL);
-        } catch (URISyntaxException | IOException e) {
-            // act dumb for now
-        }
-    }
+public class AmbapoAboutController implements Initializable {
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
 }
