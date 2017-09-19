@@ -23,10 +23,10 @@ import java.math.BigDecimal;
  */
 public class LatLongToLatLong {
     
-    public static Coordinate convert(BigDecimal latitude, BigDecimal longitude, String fromDatum, String toDatum) throws Exception
+    public static Coordinate convert(BigDecimal latitude, BigDecimal longitude, String fromDatumString, String toDatumString) throws Exception
     {
-        UTM utm = LatLongToUTM.convert(latitude, longitude, fromDatum);
-        Coordinate coordinate = UTMToLatLong.convert(utm, toDatum);
+        UTM utm = LatLongToUTM.convert(latitude, longitude, fromDatumString);
+        Coordinate coordinate = UTMToLatLong.convert(utm, toDatumString);
         
         return coordinate;
     }

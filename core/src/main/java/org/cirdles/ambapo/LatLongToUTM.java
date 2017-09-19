@@ -81,7 +81,7 @@ public class LatLongToUTM {
      */
     public static UTM convert(BigDecimal latitude, BigDecimal longitude, String datumName) throws Exception{
         
-        Datum datum = Datum.valueOf(datumName);
+        Datum datum = Datum.getDatumByName(datumName);
         
         BigDecimal meridianRadius = new BigDecimal(datum.getMeridianRadius());
         BigDecimal eccentricity = new BigDecimal(datum.getEccentricity());

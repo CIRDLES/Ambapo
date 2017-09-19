@@ -17,6 +17,7 @@
 package org.cirdles.ambapo.userInterface;
 
 import java.awt.Desktop;
+import java.math.BigDecimal;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -30,10 +31,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -43,17 +41,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
 import org.cirdles.ambapo.Datum;
+import org.cirdles.ambapo.LatLongToLatLong;
 import org.cirdles.ambapo.LatLongToUTM;
 import org.cirdles.ambapo.UTM;
 import org.cirdles.ambapo.UTMToLatLong;
@@ -138,10 +133,6 @@ public class AmbapoUIController implements Initializable {
     private ChoiceBox<String> bulkConversionChooser;
     @FXML
     private ChoiceBox<Integer> zoneNumberChooser;
-    @FXML
-    private ImageView logo;
-    @FXML
-    private ImageView logo1;
     @FXML
     private Label latitudeLabel1;
     @FXML
@@ -529,6 +520,31 @@ public class AmbapoUIController implements Initializable {
             dt.browse(uri);
         }
         catch(IOException | URISyntaxException ex){}
+    }
+
+    @FXML
+    private void convertFromLatLongToLatLongButtonClicked(MouseEvent event) {
+        try {
+            Coordinate result = LatLongToLatLong.convert(new BigDecimal(fromLatitude.getText()),
+                    new BigDecimal(fromLongitude.getText()), datumChooserLatLongFrom.getValue(),
+                    datumChooserLatLongTo.getValue());
+            
+            toLatitude.setText(result.getLatitude().toString());
+            toLongitude.setText(result.getLongitude().toString());
+            
+            toLatitude.setDisable(false);
+            toLatitude.setEditable(false);
+            
+            toLongitude.setDisable(false);
+            toLongitude.setEditable(false);
+        } catch (Exception ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Unable to complete conversion.");
+            alert.setContentText("Check if you have valid coordinates.");
+            alert.showAndWait();
+            Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

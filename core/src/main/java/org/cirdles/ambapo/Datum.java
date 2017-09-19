@@ -20,6 +20,7 @@
 package org.cirdles.ambapo;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -194,13 +195,13 @@ public enum Datum {
     
     
     private String datum;
-    private double equatorialRadius;
-    private double polarRadius;
-    private double meridianRadius;
-    private double flattening3D;
-    private double eccentricity;
-    private double[] alphaSeries;
-    private double[] betaSeries;
+    private final double equatorialRadius;
+    private final double polarRadius;
+    private final double meridianRadius;
+    private final double flattening3D;
+    private final double eccentricity;
+    private final double[] alphaSeries;
+    private final double[] betaSeries;
     
     private static final String[] datumNameArray = {Datum.AGD65.datum, Datum.AIRY_1830.datum,
         Datum.BESSEL_1841.datum, Datum.CLARKE_1866.datum, Datum.CLARKE_1880.datum,
@@ -208,7 +209,23 @@ public enum Datum {
         Datum.IN24.datum, Datum.KRASOVSKY_1940.datum, Datum.NAD27.datum,
         Datum.NAD83.datum, Datum.WGS72.datum, Datum.WGS84.datum};
     
+    private static final Datum[] datumArray = {Datum.AGD65, Datum.AIRY_1830,
+        Datum.BESSEL_1841, Datum.CLARKE_1866, Datum.CLARKE_1880,
+        Datum.EVEREST_1830, Datum.GRS80, Datum.HAYFORD_1909,
+        Datum.IN24, Datum.KRASOVSKY_1940, Datum.NAD27,
+        Datum.NAD83, Datum.WGS72, Datum.WGS84};
+    
     private static final Set<String> datumNames = new HashSet<>(Arrays.asList(datumNameArray));
+        
+    private static final HashMap<String, Datum> map = new HashMap<>();
+    
+    static {
+        int i = 0;
+        for(String datumName : datumNames){
+            map.put(datumName, datumArray[i]);
+            i++;
+        }
+    }
     
     private Datum(String datum, double equatorialRadius, double polarRadius,
             double flattening3D, double eccentricity, double meridianRadius, 
@@ -301,6 +318,11 @@ public enum Datum {
             datumFound = true;
         
         return datumFound;
+    }
+    
+    public static Datum getDatumByName(String datumToFind)
+    {
+       return map.getOrDefault(datumToFind, WGS84);
     }
     
     
