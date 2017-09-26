@@ -4,7 +4,7 @@ import org.apache.tools.ant.filters.ReplaceTokens;
 
 apply plugin: "application"
 
-mainClassName = "org.cirdles.ambapo.Ambapo"
+mainClassName = "org.cirdles.ambapo.userInterface.Ambapo"
 
 dependencies {
     compile project(":core")
