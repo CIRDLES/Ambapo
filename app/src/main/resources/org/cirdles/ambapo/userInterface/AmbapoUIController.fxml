@@ -55,7 +55,7 @@
       </Text>
       <Button fx:id="convertToUTMButton" disable="true" layoutX="330.0" layoutY="131.0" mnemonicParsing="false" onMouseClicked="#toUTMClicked" prefHeight="27.0" prefWidth="150.0" text="&lt;- Convert" textAlignment="CENTER" />
       <Button fx:id="convertToLatLongButton" disable="true" layoutX="330.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#toLatLongClicked" prefHeight="27.0" prefWidth="150.0" text="Convert -&gt;" textAlignment="CENTER" />
-      <Text fx:id="bulkConversionTitle" fill="#c93737" layoutX="266.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bulk Conversion" textAlignment="CENTER">
+      <Text fx:id="bulkConversionTitle" fill="#c93737" layoutX="266.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bulk Conversion" textAlignment="CENTER">
          <font>
             <Font name="Cambria" size="20.0" />
          </font>
@@ -90,11 +90,16 @@
             <Font name="Cambria" size="20.0" />
          </font>
       </Text>
-      <Label layoutX="326.0" layoutY="450.0" prefHeight="17.0" prefWidth="311.0" text="Chosen File: (none)" textFill="#c93737">
+      <Label fx:id="sourceFileLabel" layoutX="326.0" layoutY="450.0" prefHeight="20.0" prefWidth="97.0" text="Chosen File: " textFill="#c93737">
          <font>
             <Font name="Cambria" size="17.0" />
          </font>
       </Label>
       <Button fx:id="convertRightLatLongToLeftLatLongButton" disable="true" layoutX="273.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#convertFromRightLatLongToLeftLatLongButtonClicked" prefHeight="27.0" prefWidth="126.0" text="&lt;- Convert" />
+      <Label fx:id="sourceFileText" layoutX="418.0" layoutY="450.0" prefHeight="20.0" prefWidth="203.0" text="(none)" textFill="#c93737">
+         <font>
+            <Font name="Cambria" size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
