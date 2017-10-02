@@ -34,6 +34,21 @@ public class UTM {
     private BigDecimal northing;
     private char zoneLetter;
     
+    public static final Character[] ZONE_LETTERS = new Character[] {'*', 'C', 'D', 
+        'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 
+        'V', 'W', 'X'};
+    
+    public static final Integer[] ZONE_NUMBERS = new Integer[] {1, 2, 3, 4, 5, 6, 
+        7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 
+        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 
+        44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60};
+    
+    public static final int MIN_EASTING = 0;
+    public static final int MAX_EASTING = 1000000;
+    
+    public static final int MIN_NORTHING = 0;
+    public static final int MAX_NORTHING = 10000000;
+    
     /**
      * If you do not know the hemisphere or zone letter, denote it with an asterisk,
      * but you must know one or the other. 
