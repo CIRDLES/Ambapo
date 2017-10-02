@@ -17,7 +17,6 @@
 package org.cirdles.ambapo.userInterface;
 
 import java.awt.Desktop;
-import java.math.BigDecimal;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -27,6 +26,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -85,7 +85,7 @@ public class AmbapoUIController implements Initializable {
     @FXML
     private Button sourceFileButton;
     @FXML
-    private TextField sourceFileText;
+    private Label sourceFileText;
     @FXML
     private Button convertButton;
     @FXML
@@ -165,6 +165,10 @@ public class AmbapoUIController implements Initializable {
     private MenuItem openTemplateLatLongToLatLong;
     @FXML
     private Menu ambapoMenuBarOptionHelp;
+    @FXML
+    private Button convertRightLatLongToLeftLatLongButton;
+    @FXML
+    private Label sourceFileLabel;
     
 
     /**
@@ -174,44 +178,21 @@ public class AmbapoUIController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         ObservableList<String> datumChoices = FXCollections.observableArrayList(
-                Datum.WGS84.getDatum(),
-                Datum.WGS72.getDatum(),
-                Datum.NAD83.getDatum(),
-                Datum.NAD27.getDatum(),
-                Datum.KRASOVSKY_1940.getDatum(),
-                Datum.IN24.getDatum(),
-                Datum.HAYFORD_1909.getDatum(),
-                Datum.GRS80.getDatum(),
-                Datum.EVEREST_1830.getDatum(),
-                Datum.CLARKE_1880.getDatum(),
-                Datum.CLARKE_1866.getDatum(),
-                Datum.BESSEL_1841.getDatum(),
-                Datum.AIRY_1830.getDatum(),
-                Datum.AGD65.getDatum());
+                Datum.DATUMS);
         
         ObservableList<String> toFromDatum = FXCollections.observableArrayList(
-        "To/From Datum");
+        "Datum");
         toFromDatum.addAll(datumChoices);
-        
-        ObservableList<String> toDatum = FXCollections.observableArrayList("To Datum");
-        toDatum.addAll(datumChoices);
-        
-        ObservableList<String> fromDatum = FXCollections.observableArrayList("From Datum");
-        fromDatum.addAll(datumChoices);
         
         //A, B, I, O, Y, and Z aren't valid zone letters
         ObservableList<Character> zoneLetters = FXCollections.observableArrayList(
-            '*', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q',
-                'R', 'S', 'T', 'U', 'V', 'W', 'X');
+            UTM.ZONE_LETTERS);
         
         ObservableList<Character> hemispheres = FXCollections.observableArrayList(
             '*', 'N', 'S');
         
         ObservableList<Integer> zoneNumbers = FXCollections.observableArrayList(
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 
-                37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 
-                53, 54, 55, 56, 57, 58, 59, 60);
+        UTM.ZONE_NUMBERS);
         
         ObservableList<String> bulkConversionChoices = FXCollections.observableArrayList(
         "From UTM to LatLong", "From LatLong to UTM", "From LatLong to LatLong");
@@ -220,12 +201,12 @@ public class AmbapoUIController implements Initializable {
         bulkConversionChooser.getSelectionModel().selectFirst();
         
         datumChooserUTMAndLatLong.setItems(toFromDatum);
-        datumChooserLatLongTo.setItems(toDatum);
-        datumChooserLatLongFrom.setItems(fromDatum);
+        datumChooserLatLongTo.setItems(toFromDatum);
+        datumChooserLatLongFrom.setItems(toFromDatum);
         
-        datumChooserUTMAndLatLong.setValue("To/From Datum");
-        datumChooserLatLongTo.setValue("To Datum");
-        datumChooserLatLongFrom.setValue("From Datum");
+        datumChooserUTMAndLatLong.setValue("Datum");
+        datumChooserLatLongTo.setValue("Datum");
+        datumChooserLatLongFrom.setValue("Datum");
         
         zoneLetterChooser.setItems(zoneLetters);
         zoneLetterChooser.getSelectionModel().selectFirst();
@@ -241,43 +222,72 @@ public class AmbapoUIController implements Initializable {
         openConvertedFileButton.setDisable(true);
         convertButton.setDisable(true);
         
+        setupListeners();
     }    
+    
+    private void setupListeners(){
+        eastingText.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        northingText.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        latitudeText.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        longitudeText.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        zoneLetterChooser.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        hemisphereChooser.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        datumChooserUTMAndLatLong.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
+            checkUTMToLatLongCorrect();
+        });
+        
+        toLatitude.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkLatLongToLatLongCorrect();
+        });
+        
+        fromLatitude.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkLatLongToLatLongCorrect();
+        });
+        
+        toLongitude.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkLatLongToLatLongCorrect();
+        });
+        
+        fromLongitude.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            checkLatLongToLatLongCorrect();
+        });
+        
+        datumChooserLatLongFrom.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
+            checkLatLongToLatLongCorrect();
+        });
+        
+        datumChooserLatLongTo.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
+            checkLatLongToLatLongCorrect();
+        });
+        
+    }
+    
 
     @FXML
     private void toUTMClicked(MouseEvent event) {
         //Set latitude
-        if(latitudeText.getText().length() <= 0){
-            latitude_val = BigDecimal.ZERO;
-            latitudeText.setText("0");
-        }
-        else if(Double.parseDouble(latitudeText.getText()) < -90){
-            latitude_val = new BigDecimal(-90);
-            latitudeText.setText("-90");
-        }
-        else if(Double.parseDouble(latitudeText.getText()) > 90){
-            latitude_val = new BigDecimal(90);
-            latitudeText.setText("0");
-        }
-        else{
-            latitude_val = new BigDecimal(latitudeText.getText());
-        }
+        latitude_val = new BigDecimal(latitudeText.getText());
         
         //-Set longitude
-        if(longitudeText.getText().length() <= 0){
-            longitude_val = BigDecimal.ZERO;
-            longitudeText.setText("0");
-        }
-        else if(Double.parseDouble(longitudeText.getText()) < -180){
-            longitude_val = new BigDecimal(-180);
-            longitudeText.setText("-180");
-        }
-        else if(Double.parseDouble(longitudeText.getText()) > 180){
-            longitude_val = new BigDecimal(180);
-            longitudeText.setText("180");
-        }
-        else{
-            longitude_val = new BigDecimal(longitudeText.getText());
-        }
+        longitude_val = new BigDecimal(longitudeText.getText());
         
         //Set Datum
         datumSoloConvertUTMLatLong = datumChooserUTMAndLatLong.getValue();
@@ -307,37 +317,21 @@ public class AmbapoUIController implements Initializable {
     private void toLatLongClicked(MouseEvent event) {
         
         //Set easting value
-        //System.out.println("EASTING: " + easting.getText() + "\n");
-        if(eastingText.getText().length() <= 0){            
-            easting_val = BigDecimal.ZERO;
-            eastingText.setText("0");
-        }else{
-            easting_val = new BigDecimal(eastingText.getText());
-        }
+        easting_val = new BigDecimal(eastingText.getText());
         
         //Set northing value
-         //System.out.println("NORTHING: " + northing.getText() + "\n");
-        if(northingText.getText().length() <= 0){
-            northing_val = BigDecimal.ZERO;
-            northingText.setText("0");
-        }else{
-            northing_val = new BigDecimal(northingText.getText());
-        }
+        northing_val = new BigDecimal(northingText.getText());
         
         //Set hemisphere value
         hemisphere_val = hemisphereChooser.getValue();
                 
         //Set zone letter value
-        //System.out.println("ZONE LETTER: " + zoneLetter.getText() + "\n");
         zoneletter_val = zoneLetterChooser.getValue();
         
         //Set zone number value
-        //System.out.println("ZONE Number: " + zoneNumber.getText() + "\n");
         zonenumber_val = zoneNumberChooser.getValue();
         
-        
         //Set Datum to Convert To
-        //System.out.println("DATUM: " + datumSoloConvertUTMLatLong.getSelectedItem().toString() + "\n");
         datumSoloConvertUTMLatLong = datumChooserUTMAndLatLong.getValue();
         
         //create UTM object
@@ -523,7 +517,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void convertFromLatLongToLatLongButtonClicked(MouseEvent event) {
+    private void convertFromLeftLatLongToRightLatLongButtonClicked(MouseEvent event) {
         try {
             Coordinate result = LatLongToLatLong.convert(new BigDecimal(fromLatitude.getText()),
                     new BigDecimal(fromLongitude.getText()), datumChooserLatLongFrom.getValue(),
@@ -532,11 +526,9 @@ public class AmbapoUIController implements Initializable {
             toLatitude.setText(result.getLatitude().toString());
             toLongitude.setText(result.getLongitude().toString());
             
-            toLatitude.setDisable(false);
-            toLatitude.setEditable(false);
-            
+            toLatitude.setDisable(false);            
             toLongitude.setDisable(false);
-            toLongitude.setEditable(false);
+            
         } catch (Exception ex) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
@@ -545,6 +537,90 @@ public class AmbapoUIController implements Initializable {
             alert.showAndWait();
             Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void convertFromRightLatLongToLeftLatLongButtonClicked(MouseEvent event) {
+        try {
+            Coordinate result = LatLongToLatLong.convert(new BigDecimal(toLatitude.getText()),
+                    new BigDecimal(toLongitude.getText()), datumChooserLatLongTo.getValue(),
+                    datumChooserLatLongFrom.getValue());
+            
+            fromLatitude.setText(result.getLatitude().toString());
+            fromLongitude.setText(result.getLongitude().toString());
+            
+        } catch (Exception ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Unable to complete conversion.");
+            alert.setContentText("Check if you have valid coordinates.");
+            alert.showAndWait();
+            Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    private void leftLatitudeTextChangedLatLongToLatLong() {
+        if(Integer.parseInt(fromLatitude.getText()) >= -90 && 
+                Integer.parseInt(fromLatitude.getText()) <= 90){
+            checkLatLongToLatLongCorrect();
+        }else
+            convertFromLatLongToLatLongButton.setDisable(true);
+    }
+
+    private void leftLongitudeTextChangedLatLongToLatLong() {
+        if(Integer.parseInt(fromLongitude.getText()) >= -180 && 
+                Integer.parseInt(fromLongitude.getText()) <= 180){
+            checkLatLongToUTMCorrect();
+        }else
+            convertFromLatLongToLatLongButton.setDisable(true);
+    }
+    
+    private void checkUTMToLatLongCorrect() {
+        if((zoneLetterChooser.getSelectionModel().getSelectedIndex() > 0 || 
+            hemisphereChooser.getSelectionModel().getSelectedIndex() > 0) &&
+            Integer.parseInt(eastingText.getText()) >= UTM.MIN_EASTING &&
+            Integer.parseInt(eastingText.getText()) <= UTM.MAX_EASTING &&
+            Integer.parseInt(northingText.getText()) >= UTM.MIN_NORTHING &&
+            Integer.parseInt(northingText.getText()) <= UTM.MAX_NORTHING &&
+            datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0){
+               convertToLatLongButton.setDisable(false);
+        } 
+        else
+            convertToLatLongButton.setDisable(true);
+    }
+    
+    private void checkLatLongToUTMCorrect() {
+        if(datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0 &&
+                Integer.parseInt(latitudeText.getText()) >= Coordinate.MIN_LATITUDE && 
+                Integer.parseInt(latitudeText.getText()) <= Coordinate.MAX_LATITUDE &&
+                Integer.parseInt(longitudeText.getText()) >= Coordinate.MIN_LONGITUDE &&
+                Integer.parseInt(longitudeText.getText()) <= Coordinate.MAX_LONGITUDE)
+            convertToUTMButton.setDisable(false);
+        else
+            convertToUTMButton.setDisable(true);
+    }
+    
+    private void checkLatLongToLatLongCorrect() {
+        if(Integer.parseInt(fromLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
+            Integer.parseInt(fromLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
+            Integer.parseInt(fromLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
+            Integer.parseInt(fromLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
+            datumChooserLatLongFrom.getSelectionModel().getSelectedIndex() > 0 &&
+            datumChooserLatLongTo.getSelectionModel().getSelectedIndex() > 0){
+            convertFromLatLongToLatLongButton.setDisable(false);
+        }else
+            convertFromLatLongToLatLongButton.setDisable(true);
+        
+        if(Integer.parseInt(toLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
+            Integer.parseInt(toLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
+            Integer.parseInt(toLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
+            Integer.parseInt(toLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
+            datumChooserLatLongFrom.getSelectionModel().getSelectedIndex() > 0 &&
+            datumChooserLatLongTo.getSelectionModel().getSelectedIndex() > 0){
+            convertRightLatLongToLeftLatLongButton.setDisable(false);
+        }else
+            convertRightLatLongToLeftLatLongButton.setDisable(true);
     }
     
 }

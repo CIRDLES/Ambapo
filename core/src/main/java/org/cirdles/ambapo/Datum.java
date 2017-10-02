@@ -20,7 +20,6 @@
 package org.cirdles.ambapo;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -210,7 +209,7 @@ public enum Datum {
         Datum.NAD83.datum, Datum.WGS72.datum, Datum.WGS84.datum};
     
     
-    private static final Set<String> datumNames = new HashSet<>(Arrays.asList(datumNameArray));
+    public static final Set<String> DATUMS = new HashSet<>(Arrays.asList(datumNameArray));
        
     
     private Datum(String datum, double equatorialRadius, double polarRadius,
@@ -300,7 +299,7 @@ public enum Datum {
     public static boolean containsDatum(String datumToFind) {
         boolean datumFound = false;
         
-        if (datumNames.contains(datumToFind.toUpperCase()))
+        if (DATUMS.contains(datumToFind.toUpperCase()))
             datumFound = true;
         
         return datumFound;
