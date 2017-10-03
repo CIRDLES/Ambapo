@@ -576,7 +576,8 @@ public class AmbapoUIController implements Initializable {
     }
     
     private void checkLatLongToUTMCorrect() {
-        if(datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0 &&
+        if(!latitudeText.getText().isEmpty() && !longitudeText.getText().isEmpty() &&
+                datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0 &&
                 Integer.parseInt(latitudeText.getText()) >= Coordinate.MIN_LATITUDE && 
                 Integer.parseInt(latitudeText.getText()) <= Coordinate.MAX_LATITUDE &&
                 Integer.parseInt(longitudeText.getText()) >= Coordinate.MIN_LONGITUDE &&
