@@ -235,11 +235,11 @@ public class AmbapoUIController implements Initializable {
         });
         
         latitudeText.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            checkUTMToLatLongCorrect();
+            checkLatLongToUTMCorrect();
         });
         
         longitudeText.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            checkUTMToLatLongCorrect();
+            checkLatLongToUTMCorrect();
         });
         
         zoneLetterChooser.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
@@ -252,6 +252,7 @@ public class AmbapoUIController implements Initializable {
         
         datumChooserUTMAndLatLong.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
             checkUTMToLatLongCorrect();
+            checkLatLongToUTMCorrect();
         });
         
         toLatitude.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
@@ -558,27 +559,11 @@ public class AmbapoUIController implements Initializable {
             Logger.getLogger(AmbapoUIController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-
-    private void leftLatitudeTextChangedLatLongToLatLong() {
-        if(Integer.parseInt(fromLatitude.getText()) >= -90 && 
-                Integer.parseInt(fromLatitude.getText()) <= 90){
-            checkLatLongToLatLongCorrect();
-        }else
-            convertFromLatLongToLatLongButton.setDisable(true);
-    }
-
-    private void leftLongitudeTextChangedLatLongToLatLong() {
-        if(Integer.parseInt(fromLongitude.getText()) >= -180 && 
-                Integer.parseInt(fromLongitude.getText()) <= 180){
-            checkLatLongToUTMCorrect();
-        }else
-            convertFromLatLongToLatLongButton.setDisable(true);
-    }
     
     private void checkUTMToLatLongCorrect() {
         if((zoneLetterChooser.getSelectionModel().getSelectedIndex() > 0 || 
             hemisphereChooser.getSelectionModel().getSelectedIndex() > 0) &&
+            !eastingText.getText().isEmpty() && !northingText.getText().isEmpty() &&
             Integer.parseInt(eastingText.getText()) >= UTM.MIN_EASTING &&
             Integer.parseInt(eastingText.getText()) <= UTM.MAX_EASTING &&
             Integer.parseInt(northingText.getText()) >= UTM.MIN_NORTHING &&
@@ -602,7 +587,8 @@ public class AmbapoUIController implements Initializable {
     }
     
     private void checkLatLongToLatLongCorrect() {
-        if(Integer.parseInt(fromLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
+        if(!fromLatitude.getText().isEmpty() && !fromLongitude.getText().isEmpty() &&
+            Integer.parseInt(fromLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
             Integer.parseInt(fromLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
             Integer.parseInt(fromLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
             Integer.parseInt(fromLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
@@ -612,7 +598,8 @@ public class AmbapoUIController implements Initializable {
         }else
             convertFromLatLongToLatLongButton.setDisable(true);
         
-        if(Integer.parseInt(toLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
+        if(!toLatitude.getText().isEmpty() && !toLongitude.getText().isEmpty() &&
+            Integer.parseInt(toLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
             Integer.parseInt(toLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
             Integer.parseInt(toLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
             Integer.parseInt(toLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
