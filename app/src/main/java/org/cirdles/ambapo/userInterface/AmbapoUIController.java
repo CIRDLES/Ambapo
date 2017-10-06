@@ -564,10 +564,10 @@ public class AmbapoUIController implements Initializable {
         if((zoneLetterChooser.getSelectionModel().getSelectedIndex() > 0 || 
             hemisphereChooser.getSelectionModel().getSelectedIndex() > 0) &&
             !eastingText.getText().isEmpty() && !northingText.getText().isEmpty() &&
-            Integer.parseInt(eastingText.getText()) >= UTM.MIN_EASTING &&
-            Integer.parseInt(eastingText.getText()) <= UTM.MAX_EASTING &&
-            Integer.parseInt(northingText.getText()) >= UTM.MIN_NORTHING &&
-            Integer.parseInt(northingText.getText()) <= UTM.MAX_NORTHING &&
+            Double.parseDouble(eastingText.getText()) >= UTM.MIN_EASTING &&
+            Double.parseDouble(eastingText.getText()) <= UTM.MAX_EASTING &&
+            Double.parseDouble(northingText.getText()) >= UTM.MIN_NORTHING &&
+            Double.parseDouble(northingText.getText()) <= UTM.MAX_NORTHING &&
             datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0){
                convertToLatLongButton.setDisable(false);
         } 
@@ -578,10 +578,10 @@ public class AmbapoUIController implements Initializable {
     private void checkLatLongToUTMCorrect() {
         if(!latitudeText.getText().isEmpty() && !longitudeText.getText().isEmpty() &&
                 datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0 &&
-                Integer.parseInt(latitudeText.getText()) >= Coordinate.MIN_LATITUDE && 
-                Integer.parseInt(latitudeText.getText()) <= Coordinate.MAX_LATITUDE &&
-                Integer.parseInt(longitudeText.getText()) >= Coordinate.MIN_LONGITUDE &&
-                Integer.parseInt(longitudeText.getText()) <= Coordinate.MAX_LONGITUDE)
+                Double.parseDouble(latitudeText.getText()) >= Coordinate.MIN_LATITUDE && 
+                Double.parseDouble(latitudeText.getText()) <= Coordinate.MAX_LATITUDE &&
+                Double.parseDouble(longitudeText.getText()) >= Coordinate.MIN_LONGITUDE &&
+                Double.parseDouble(longitudeText.getText()) <= Coordinate.MAX_LONGITUDE)
             convertToUTMButton.setDisable(false);
         else
             convertToUTMButton.setDisable(true);
@@ -589,10 +589,10 @@ public class AmbapoUIController implements Initializable {
     
     private void checkLatLongToLatLongCorrect() {
         if(!fromLatitude.getText().isEmpty() && !fromLongitude.getText().isEmpty() &&
-            Integer.parseInt(fromLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
-            Integer.parseInt(fromLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
-            Integer.parseInt(fromLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
-            Integer.parseInt(fromLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
+            Double.parseDouble(fromLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
+            Double.parseDouble(fromLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
+            Double.parseDouble(fromLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
+            Double.parseDouble(fromLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
             datumChooserLatLongFrom.getSelectionModel().getSelectedIndex() > 0 &&
             datumChooserLatLongTo.getSelectionModel().getSelectedIndex() > 0){
             convertFromLatLongToLatLongButton.setDisable(false);
@@ -600,10 +600,10 @@ public class AmbapoUIController implements Initializable {
             convertFromLatLongToLatLongButton.setDisable(true);
         
         if(!toLatitude.getText().isEmpty() && !toLongitude.getText().isEmpty() &&
-            Integer.parseInt(toLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
-            Integer.parseInt(toLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
-            Integer.parseInt(toLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
-            Integer.parseInt(toLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
+            Double.parseDouble(toLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
+            Double.parseDouble(toLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
+            Double.parseDouble(toLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
+            Double.parseDouble(toLongitude.getText()) <= Coordinate.MAX_LONGITUDE &&
             datumChooserLatLongFrom.getSelectionModel().getSelectedIndex() > 0 &&
             datumChooserLatLongTo.getSelectionModel().getSelectedIndex() > 0){
             convertRightLatLongToLeftLatLongButton.setDisable(false);
