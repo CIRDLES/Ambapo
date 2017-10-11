@@ -1,3 +1,9 @@
+task fatJarCore(type: Jar) {
+    baseName = 'AmbapoCore'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
     compile "org.apache.commons:commons-math3:3.6.1"

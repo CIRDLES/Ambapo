@@ -1,6 +1,5 @@
 import java.text.SimpleDateFormat
 import java.util.Date
-import org.apache.tools.ant.filters.ReplaceTokens;
 
 apply plugin: "application"
 
@@ -23,15 +22,16 @@ repositories {
 
 
 
-task fatJar(type: Jar) {
+task fatFxJar(type: Jar) {
     manifest {
         attributes 'Main-Class': mainClassName
     }
 
-    baseName = 'Ambapo'
+    baseName = 'AmbapoTask'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
+
 
 def timestamp() {
     new SimpleDateFormat("dd MMMM yyyy").format(new Date())
