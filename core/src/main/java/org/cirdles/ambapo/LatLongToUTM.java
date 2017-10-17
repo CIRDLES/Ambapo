@@ -48,6 +48,7 @@ public class LatLongToUTM {
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal SOUTH_HEMISPHERE_SUBTRACTION = new BigDecimal(10000000);
     private static final int PRECISION = 9;
+    private static final int SCALE = 5;
     
     
     /**
@@ -131,7 +132,9 @@ public class LatLongToUTM {
         char zoneLetter = calcZoneLetter(latitude);
         char hemisphere = calcHemisphere(latitude);
         
-        UTM utm = new UTM(easting.setScale(5, RoundingMode.HALF_UP), northing, hemisphere, zoneNumber, zoneLetter);
+        UTM utm = new UTM(easting.setScale(SCALE, RoundingMode.HALF_UP), 
+                northing.setScale(SCALE, RoundingMode.HALF_UP), hemisphere, 
+                zoneNumber, zoneLetter);
         
         return utm;
     }
@@ -163,6 +166,12 @@ public class LatLongToUTM {
             zoneNumber = ((longitude.divide(six, PRECISION, RoundingMode.HALF_UP)).abs().add(
                     thirtyOne)).intValue();
         }
+        
+        if(zoneNumber > 60)
+            zoneNumber = 60;
+        
+        if(zoneNumber < 1)
+            zoneNumber = 1;
         
         return zoneNumber;
         
@@ -375,8 +384,10 @@ public class LatLongToUTM {
         if(lat >= -80 && lat <= 84)
             return letters.charAt(new Double(Math.floor((lat+80.0)/8.0)).intValue());
         
-        else
+        else if(lat > 84)
             return 'X';
+        else
+            return 'C';
         
     } 
 
