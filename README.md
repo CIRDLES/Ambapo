@@ -9,6 +9,6 @@ None of the numbers should contain commas, as that is how the values are separat
 If you are converting from Lat Long to UTM, the data should be put in the CSV file as follows:
   latitude, longitude, coordinate's datum
 
-You can have headers or comment out lines that you don't want read by the converter, but please denote these lines with a semicolon as the first character of each line with no spaces in front of it.
+You can have headers or comment out lines that you don't want read by the converter, but please denote these lines with a percent symbol % as the first character of each line with no spaces in front of it.
 
 Thank you, enjoy, and contribute.
