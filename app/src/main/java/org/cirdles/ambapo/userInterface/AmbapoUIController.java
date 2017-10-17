@@ -244,6 +244,7 @@ public class AmbapoUIController implements Initializable {
         
         zoneLetterChooser.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
             checkUTMToLatLongCorrect();
+            populateHemisphere();
         });
         
         hemisphereChooser.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
@@ -609,6 +610,13 @@ public class AmbapoUIController implements Initializable {
             convertRightLatLongToLeftLatLongButton.setDisable(false);
         }else
             convertRightLatLongToLeftLatLongButton.setDisable(true);
+    }
+
+    private void populateHemisphere() {
+        if(zoneLetterChooser.getSelectionModel().getSelectedIndex() >= 11)
+            hemisphereChooser.setValue(hemisphereChooser.getItems().get(1));
+        else
+            hemisphereChooser.setValue(hemisphereChooser.getItems().get(2));
     }
     
 }

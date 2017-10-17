@@ -32,9 +32,10 @@ import java.util.List;
 public class ConversionFileHandler {
         private String currentFileLocationToConvert;
         private File outputFileLocation;
-        private final String[] HEADER_LAT_LONG = {";LATITUDE, LONGITUDE, DATUM\n"};
-        private final String[] HEADER_UTM_FROM_LATLONG = {";EASTING, NORTHING, HEMISPHERE, ZONE NUMBER, ZONE LETTER, DATUM\n"};
-    
+        private final String[] HEADER_LAT_LONG = {"%LATITUDE, LONGITUDE, DATUM\n"};
+        private final String[] HEADER_UTM_FROM_LATLONG = {"%EASTING, NORTHING, HEMISPHERE, ZONE NUMBER, ZONE LETTER, DATUM\n"};
+        private final char COMMENT_DELIMETER = '%';
+        
     public ConversionFileHandler(String currentFileLocationToConvert){
         this.currentFileLocationToConvert = currentFileLocationToConvert;
     }
@@ -97,7 +98,7 @@ public class ConversionFileHandler {
             String[] lineToWrite;
             
             for (String[] utmInfo : dataToConvert) {
-                if(utmInfo[0].charAt(0) != ';'){
+                if(utmInfo[0].charAt(0) != COMMENT_DELIMETER){
                     utm = new UTM(
                             new BigDecimal(Double.parseDouble(utmInfo[0].trim().replace("\"", ""))),
                             new BigDecimal(Double.parseDouble(utmInfo[1].trim().replace("\"", ""))),
@@ -136,7 +137,7 @@ public class ConversionFileHandler {
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))){
                 csvWriter.writeNext(HEADER_UTM_FROM_LATLONG, false);
                 for(String[] latLongInfo : dataToConvert) {
-                    if(latLongInfo[0].charAt(0) != ';'){
+                    if(latLongInfo[0].charAt(0) != COMMENT_DELIMETER){
                         latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
                         longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
                         datum = latLongInfo[2].trim().replace("\"", "");
@@ -176,7 +177,7 @@ public class ConversionFileHandler {
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))){
                 csvWriter.writeNext(HEADER_LAT_LONG, false);
                 for(String[] latLongInfo : dataToConvert) {
-                    if(latLongInfo[0].charAt(0) != ';'){
+                    if(latLongInfo[0].charAt(0) != COMMENT_DELIMETER){
                         latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
                         longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
                         fromDatum = latLongInfo[2].trim().replace("\"", "");

@@ -65,16 +65,14 @@ public class Coordinate {
     public Coordinate(final BigDecimal latitude, final BigDecimal longitude,
             String datum) throws Exception{
         
-        if (longitude.compareTo(new BigDecimal(180)) > 0 || longitude.compareTo(
-            new BigDecimal(-180)) < 0) {
+        if (longitude.doubleValue() < MIN_LONGITUDE || longitude.doubleValue() > MAX_LONGITUDE) {
             
             throw new Exception("Longitude must be at or between -180 and 180"
                     + "degrees");
             
         }
         
-        if(latitude.compareTo(new BigDecimal(-90)) < 0 || latitude.compareTo(new
-            BigDecimal(90)) > 0) {
+        if(latitude.doubleValue() < MIN_LATITUDE || latitude.doubleValue() > MAX_LATITUDE) {
             
             throw new Exception("Latitude must be at or between 0 and 90 degrees");
             
