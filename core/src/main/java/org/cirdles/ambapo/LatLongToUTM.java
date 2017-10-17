@@ -132,6 +132,16 @@ public class LatLongToUTM {
         char zoneLetter = calcZoneLetter(latitude);
         char hemisphere = calcHemisphere(latitude);
         
+        if(easting.doubleValue() > UTM.MAX_EASTING)
+            easting = new BigDecimal(UTM.MAX_EASTING);
+        if(easting.doubleValue() < UTM.MIN_EASTING)
+            easting = new BigDecimal(UTM.MIN_EASTING);
+        
+        if(northing.doubleValue() > UTM.MAX_NORTHING)
+            northing = new BigDecimal(UTM.MAX_NORTHING);
+        if(northing.doubleValue() < UTM.MIN_NORTHING)
+            northing = new BigDecimal(UTM.MIN_NORTHING);
+        
         UTM utm = new UTM(easting.setScale(SCALE, RoundingMode.HALF_UP), 
                 northing.setScale(SCALE, RoundingMode.HALF_UP), hemisphere, 
                 zoneNumber, zoneLetter);

@@ -46,6 +46,7 @@ public class UTMToLatLong {
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final int PRECISION = 9;
+    private static final int SCALE = 5;
 
     /**
      * Converts a UTM into a Coordinate of lat,long with a specific datum.
@@ -86,9 +87,20 @@ public class UTMToLatLong {
         
         BigDecimal longitude = calcLongitude(zoneCentralMeridian, etaPrime, xiPrime);
         
+        if(longitude.doubleValue() > Coordinate.MAX_LONGITUDE)
+            longitude = new BigDecimal(Coordinate.MAX_LONGITUDE);
+        
+        if(longitude.doubleValue() < Coordinate.MIN_LONGITUDE)
+            longitude = new BigDecimal(Coordinate.MIN_LONGITUDE);
+      
         BigDecimal latitude = calcLatitude(tauPrime, sigma, eccentricity, hemisphere);
         
-        Coordinate latAndLong = new Coordinate(latitude.setScale(3, BigDecimal.ROUND_UP), longitude.setScale(3, BigDecimal.ROUND_UP), datum);
+        if(latitude.doubleValue() > Coordinate.MAX_LATITUDE)
+            latitude = new BigDecimal(Coordinate.MAX_LATITUDE);
+        if(latitude.doubleValue() < Coordinate.MIN_LATITUDE)
+            latitude = new BigDecimal(Coordinate.MIN_LATITUDE);
+        
+        Coordinate latAndLong = new Coordinate(latitude.setScale(SCALE, BigDecimal.ROUND_HALF_UP), longitude.setScale(SCALE, BigDecimal.ROUND_HALF_UP), datum);
         
         return latAndLong;
         
