@@ -106,7 +106,7 @@ public class ConversionFileHandler {
                             Integer.parseInt(utmInfo[3].replace("\"", "").trim()),
                             utmInfo[4].trim().replace("\"", "").charAt(0));
 
-                    datum = Datum.valueOf(utmInfo[5].trim().replace("\"", ""));
+                    datum = Datum.valueOf(utmInfo[5].trim().replace("\"", "").toUpperCase());
 
                     latAndLong = UTMToLatLong.convert(utm, datum.getDatum());
                     lineToWrite = new String[]{latAndLong.getLatitude().toString(),
@@ -140,7 +140,7 @@ public class ConversionFileHandler {
                     if(latLongInfo[0].charAt(0) != COMMENT_DELIMETER){
                         latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
                         longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
-                        datum = latLongInfo[2].trim().replace("\"", "");
+                        datum = latLongInfo[2].trim().replace("\"", "").toUpperCase();
 
                         utm = LatLongToUTM.convert(latitude, longitude, datum);
 
@@ -180,8 +180,8 @@ public class ConversionFileHandler {
                     if(latLongInfo[0].charAt(0) != COMMENT_DELIMETER){
                         latitude = new BigDecimal(latLongInfo[0].trim().replace("\"", ""));
                         longitude = new BigDecimal(latLongInfo[1].trim().replace("\"", ""));
-                        fromDatum = latLongInfo[2].trim().replace("\"", "");
-                        toDatum = latLongInfo[3].trim().replace("\"", "");
+                        fromDatum = latLongInfo[2].trim().replace("\"", "").toUpperCase();
+                        toDatum = latLongInfo[3].trim().replace("\"", "").toUpperCase();
 
                         latAndLong = LatLongToLatLong.convert(latitude, longitude, fromDatum, toDatum);
 

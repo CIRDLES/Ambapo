@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="mainAnchorPane" prefHeight="570.0" prefWidth="652.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cirdles.ambapo.userInterface.AmbapoUIController">
+<AnchorPane id="AnchorPane" fx:id="mainAnchorPane" prefHeight="570.0" prefWidth="551.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cirdles.ambapo.userInterface.AmbapoUIController">
     <stylesheets>
         <URL value="@ambapouifxml.css" />
     </stylesheets>
@@ -41,7 +41,7 @@
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Label>
-      <Label fx:id="longitudeLabel" layoutX="499.0" layoutY="167.0" text="Longitude">
+      <Label fx:id="longitudeLabel" layoutX="499.0" layoutY="173.0" text="Longitude">
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Label>
@@ -52,10 +52,10 @@
       <ChoiceBox fx:id="zoneNumberChooser" layoutX="208.0" layoutY="181.0" prefHeight="27.0" prefWidth="84.0" />
       <ChoiceBox fx:id="datumChooserUTMAndLatLong" layoutX="330.0" layoutY="155.0" prefHeight="27.0" prefWidth="150.0" />
       <TextField fx:id="latitudeText" layoutX="499.0" layoutY="133.0" prefHeight="27.0" prefWidth="126.0" />
-      <TextField fx:id="longitudeText" layoutX="499.0" layoutY="185.0" prefHeight="27.0" prefWidth="126.0" />
-      <Button fx:id="sourceFileButton" layoutX="169.0" layoutY="446.0" mnemonicParsing="false" onMouseClicked="#sourceFileButtonClicked" prefHeight="27.0" prefWidth="144.0" text="Source File..." />
-      <Button fx:id="convertButton" disable="true" layoutX="169.0" layoutY="520.0" mnemonicParsing="false" onMouseClicked="#convertFileClicked" prefHeight="27.0" prefWidth="144.0" text="Convert" />
-      <Button fx:id="openConvertedFileButton" disable="true" layoutX="346.0" layoutY="520.0" mnemonicParsing="false" onMouseClicked="#openConvertedFileClicked" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
+      <TextField fx:id="longitudeText" layoutX="499.0" layoutY="191.0" prefHeight="27.0" prefWidth="126.0" />
+      <Button fx:id="sourceFileButton" layoutX="163.0" layoutY="455.0" mnemonicParsing="false" onMouseClicked="#sourceFileButtonClicked" prefHeight="27.0" prefWidth="144.0" text="Source File..." />
+      <Button fx:id="convertButton" disable="true" layoutX="163.0" layoutY="529.0" mnemonicParsing="false" onMouseClicked="#convertFileClicked" prefHeight="27.0" prefWidth="144.0" text="Convert" />
+      <Button fx:id="openConvertedFileButton" disable="true" layoutX="340.0" layoutY="529.0" mnemonicParsing="false" onMouseClicked="#openConvertedFileClicked" prefHeight="27.0" prefWidth="144.0" text="Open Converted File" />
       <MenuBar fx:id="menuBar" layoutX="-5.0">
         <menus>
           <Menu fx:id="ambapoMenuBarOptionFile" mnemonicParsing="false" text="File">
@@ -73,63 +73,63 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Text fx:id="title" fill="#c93737" layoutX="259.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ambapo" textAlignment="CENTER">
+      <Text fx:id="title" fill="#c93737" layoutX="196.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ambapo" textAlignment="CENTER" wrappingWidth="249.806640625">
          <font>
             <Font name="Lucida Sans Regular" size="37.0" />
          </font>
       </Text>
       <Button fx:id="convertToUTMButton" disable="true" layoutX="330.0" layoutY="111.0" mnemonicParsing="false" onMouseClicked="#toUTMClicked" prefHeight="27.0" prefWidth="150.0" text="&lt;- Convert" textAlignment="CENTER" />
       <Button fx:id="convertToLatLongButton" disable="true" layoutX="330.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#toLatLongClicked" prefHeight="27.0" prefWidth="150.0" text="Convert -&gt;" textAlignment="CENTER" />
-      <Text fx:id="bulkConversionTitle" fill="#c93737" layoutX="252.0" layoutY="430.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bulk Conversion" textAlignment="CENTER">
+      <Text fx:id="bulkConversionTitle" fill="#c93737" layoutX="-9.0" layoutY="432.0" strokeType="OUTSIDE" strokeWidth="0.0" text="------------------ Bulk Conversion ------------------" textAlignment="CENTER" wrappingWidth="658.99999833107">
          <font>
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>
       </Text>
-      <ChoiceBox fx:id="bulkConversionChooser" layoutX="240.0" layoutY="484.0" prefHeight="27.0" prefWidth="184.0" />
+      <ChoiceBox fx:id="bulkConversionChooser" layoutX="234.0" layoutY="493.0" prefHeight="27.0" prefWidth="184.0" />
       <Text fill="#c93737" layoutX="141.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OR">
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Text>
-      <Label fx:id="latitudeLabel1" layoutX="63.0" layoutY="286.0" text="Latitude">
+      <Label fx:id="latitudeLabel1" layoutX="51.0" layoutY="286.0" text="Latitude">
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Label>
-      <Label fx:id="longitudeLabel1" layoutX="63.0" layoutY="346.0" text="Longitude">
+      <Label fx:id="longitudeLabel1" layoutX="51.0" layoutY="346.0" text="Longitude">
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Label>
-      <TextField fx:id="fromLatitude" layoutX="63.0" layoutY="305.0" prefHeight="27.0" prefWidth="126.0" />
-      <TextField fx:id="fromLongitude" layoutX="63.0" layoutY="364.0" prefHeight="27.0" prefWidth="126.0" />
-      <Button fx:id="convertFromLatLongToLatLongButton" disable="true" layoutX="273.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#convertFromLeftLatLongToRightLatLongButtonClicked" prefHeight="27.0" prefWidth="126.0" text="Convert -&gt;" />
-      <ChoiceBox fx:id="datumChooserLatLongFrom" layoutX="220.0" layoutY="364.0" prefHeight="27.0" prefWidth="107.0" />
-      <Label fx:id="latitudeLabel11" layoutX="484.0" layoutY="287.0" text="Latitude">
+      <TextField fx:id="fromLatitude" layoutX="51.0" layoutY="305.0" prefHeight="27.0" prefWidth="126.0" />
+      <TextField fx:id="fromLongitude" layoutX="51.0" layoutY="364.0" prefHeight="27.0" prefWidth="126.0" />
+      <Button fx:id="convertFromLatLongToLatLongButton" disable="true" layoutX="255.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#convertFromLeftLatLongToRightLatLongButtonClicked" prefHeight="27.0" prefWidth="126.0" text="Convert -&gt;" />
+      <ChoiceBox fx:id="datumChooserLatLongFrom" layoutX="209.0" layoutY="364.0" prefHeight="27.0" prefWidth="107.0" />
+      <Label fx:id="latitudeLabel11" layoutX="472.0" layoutY="287.0" text="Latitude">
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Label>
-      <Label fx:id="longitudeLabel11" layoutX="484.0" layoutY="348.0" text="Longitude">
+      <Label fx:id="longitudeLabel11" layoutX="472.0" layoutY="348.0" text="Longitude">
          <font>
             <Font name="Lucida Sans Regular" size="13.0" />
          </font></Label>
-      <TextField fx:id="toLatitude" editable="false" layoutX="484.0" layoutY="306.0" prefHeight="27.0" prefWidth="126.0" />
-      <TextField fx:id="toLongitude" editable="false" layoutX="483.0" layoutY="366.0" prefHeight="27.0" prefWidth="126.0" />
-      <ChoiceBox fx:id="datumChooserLatLongTo" layoutX="346.0" layoutY="364.0" prefHeight="27.0" prefWidth="107.0" />
-      <Text fill="#c93737" layoutX="217.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="UTM &lt;-&gt;LatLong" textAlignment="CENTER" wrappingWidth="237.00000051409006">
+      <TextField fx:id="toLatitude" layoutX="472.0" layoutY="306.0" prefHeight="27.0" prefWidth="126.0" />
+      <TextField fx:id="toLongitude" layoutX="471.0" layoutY="366.0" prefHeight="27.0" prefWidth="126.0" />
+      <ChoiceBox fx:id="datumChooserLatLongTo" layoutX="326.0" layoutY="364.0" prefHeight="27.0" prefWidth="107.0" />
+      <Text fill="#c93737" layoutX="8.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="----------------- UTM &lt;-&gt;LatLong -----------------" textAlignment="CENTER" wrappingWidth="651.9999994933605">
          <font>
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>
       </Text>
-      <Text fill="#c93737" layoutX="231.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LatLong &lt;-&gt; LatLong" textAlignment="CENTER">
+      <Text fill="#c93737" layoutX="-10.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---------------- LatLong &lt;-&gt; LatLong ----------------" textAlignment="CENTER" wrappingWidth="658.0000002980232">
          <font>
             <Font name="Lucida Sans Regular" size="20.0" />
          </font>
       </Text>
-      <Label fx:id="sourceFileLabel" layoutX="326.0" layoutY="450.0" prefHeight="21.0" prefWidth="107.0" text="Chosen File: " textFill="#c93737">
+      <Label fx:id="sourceFileLabel" layoutX="320.0" layoutY="459.0" prefHeight="21.0" prefWidth="107.0" text="Chosen File: " textFill="#c93737">
          <font>
             <Font name="Lucida Sans Regular" size="17.0" />
          </font>
       </Label>
-      <Button fx:id="convertRightLatLongToLeftLatLongButton" disable="true" layoutX="273.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#convertFromRightLatLongToLeftLatLongButtonClicked" prefHeight="27.0" prefWidth="126.0" text="&lt;- Convert" />
-      <Label fx:id="sourceFileText" layoutX="430.0" layoutY="450.0" prefHeight="20.0" prefWidth="203.0" text="(none)" textFill="#c93737">
+      <Button fx:id="convertRightLatLongToLeftLatLongButton" disable="true" layoutX="255.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#convertFromRightLatLongToLeftLatLongButtonClicked" prefHeight="27.0" prefWidth="126.0" text="&lt;- Convert" />
+      <Label fx:id="sourceFileText" layoutX="424.0" layoutY="459.0" prefHeight="20.0" prefWidth="203.0" text="(none)" textFill="#c93737">
          <font>
             <Font name="Lucida Sans Regular" size="15.0" />
          </font>

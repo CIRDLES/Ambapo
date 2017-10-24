@@ -202,11 +202,11 @@ public enum Datum {
     private final double[] alphaSeries;
     private final double[] betaSeries;
     
-    private static final String[] datumNameArray = {Datum.AGD65.datum, Datum.AIRY_1830.datum,
+    private static final String[] datumNameArray = {Datum.WGS84.datum, Datum.AGD65.datum, Datum.AIRY_1830.datum,
         Datum.BESSEL_1841.datum, Datum.CLARKE_1866.datum, Datum.CLARKE_1880.datum,
         Datum.EVEREST_1830.datum, Datum.GRS80.datum, Datum.HAYFORD_1909.datum,
         Datum.IN24.datum, Datum.KRASOVSKY_1940.datum, Datum.NAD27.datum,
-        Datum.NAD83.datum, Datum.WGS72.datum, Datum.WGS84.datum};
+        Datum.NAD83.datum, Datum.WGS72.datum};
     
     
     public static final Set<String> DATUMS = new HashSet<>(Arrays.asList(datumNameArray));

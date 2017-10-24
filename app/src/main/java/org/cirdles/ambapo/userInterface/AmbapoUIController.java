@@ -180,10 +180,6 @@ public class AmbapoUIController implements Initializable {
         ObservableList<String> datumChoices = FXCollections.observableArrayList(
                 Datum.DATUMS);
         
-        ObservableList<String> toFromDatum = FXCollections.observableArrayList(
-        "Datum");
-        toFromDatum.addAll(datumChoices);
-        
         //A, B, I, O, Y, and Z aren't valid zone letters
         ObservableList<Character> zoneLetters = FXCollections.observableArrayList(
             UTM.ZONE_LETTERS);
@@ -200,13 +196,13 @@ public class AmbapoUIController implements Initializable {
         bulkConversionChooser.setItems(bulkConversionChoices);
         bulkConversionChooser.getSelectionModel().selectFirst();
         
-        datumChooserUTMAndLatLong.setItems(toFromDatum);
-        datumChooserLatLongTo.setItems(toFromDatum);
-        datumChooserLatLongFrom.setItems(toFromDatum);
+        datumChooserUTMAndLatLong.setItems(datumChoices);
+        datumChooserLatLongTo.setItems(datumChoices);
+        datumChooserLatLongFrom.setItems(datumChoices);
         
-        datumChooserUTMAndLatLong.setValue("Datum");
-        datumChooserLatLongTo.setValue("Datum");
-        datumChooserLatLongFrom.setValue("Datum");
+        datumChooserUTMAndLatLong.setValue(Datum.WGS84.getDatum());
+        datumChooserLatLongTo.setValue(Datum.WGS84.getDatum());
+        datumChooserLatLongFrom.setValue(Datum.WGS84.getDatum());
         
         zoneLetterChooser.setItems(zoneLetters);
         zoneLetterChooser.getSelectionModel().selectFirst();
