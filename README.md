@@ -1,5 +1,9 @@
 Ambapo
 ======
+How do I execute Ambapo?
+Go to "Releases" and click on the most recent release's .jar file link and get to converting!
+
+What is Ambapo? Once I open Ambapo, how do I use it?
 Ambapo, named after the Swahili word for "where", allows for the conversion of latitude and longitude, using any geodetic datum, to Universal Transverse Mercator and vice versa. One conversion can be done or a bulk conversion of a CSV file. If converting from UTM to lat/long, the data should be put in the CSV file as follows:
 
   easting, northing, hemisphere, zone number, zone letter, datum to convert to
