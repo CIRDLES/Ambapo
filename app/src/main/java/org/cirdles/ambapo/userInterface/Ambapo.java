@@ -81,6 +81,7 @@ public class Ambapo extends Application{
         Parent root = new AnchorPane();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         
         Window primaryStageWindow = primaryStage.getScene().getWindow();
         

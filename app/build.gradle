@@ -11,7 +11,7 @@ dependencies {
     compile "org.netbeans.external:AbsoluteLayout:RELEASE731"
     compile "com.apple:AppleJavaExtensions:1.4"
     compile "org.netbeans.external:swing-layout-1.0.4:RELEASE80"
-    compile "com.github.cirdles:Commons:-SNAPSHOT"
+    //compile "com.github.cirdles:Commons:-SNAPSHOT"
 }
 
 repositories {

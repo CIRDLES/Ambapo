@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="304.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cirdles.ambapo.userInterface.AmbapoAboutController">
+<AnchorPane id="AnchorPane" prefHeight="380.0" prefWidth="484.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.cirdles.ambapo.userInterface.AmbapoAboutController">
    <children>
-      <Text fill="#c93737" layoutX="125.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ambapo">
+      <Text fill="#c93737" layoutX="144.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ambapo">
          <font>
-            <Font name="Cambria" size="48.0" />
+            <Font name="Lucida Sans Regular" size="48.0" />
          </font>
       </Text>
-      <Text layoutX="78.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Warranty: Ambapo is provided as free open source software on an 'as-is' basis.  Use at your own risk.  The developers disclaim all warranties about Ambapo." wrappingWidth="266.8447265625">
+      <Text layoutX="109.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Warranty: Ambapo is provided as free open source software on an 'as-is' basis.  Use at your own risk.  The developers disclaim all warranties about Ambapo." textAlignment="CENTER" wrappingWidth="266.8447265625">
          <font>
-            <Font size="17.0" />
+            <Font name="Lucida Sans Regular" size="17.0" />
          </font>
       </Text>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="166.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Desktop/cirdles/ambapoLogo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
