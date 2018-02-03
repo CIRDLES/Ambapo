@@ -347,7 +347,7 @@ public class LatLongToUTM {
         double etaPrimeEastDouble = etaPrimeEast.doubleValue();
         double xiPrimeNorthDouble = xiPrimeNorth.doubleValue();
         
-        for(int i=0; i < alphaSeries.length - 2; i++) {
+        for(int i=0; i < alphaSeries.length - 1; i++) {
             
             double cosOfXiPrimeNorth = Math.cos(
                     xiPrimeNorthDouble * multiplicand);
@@ -362,17 +362,6 @@ public class LatLongToUTM {
             multiplicand = multiplicand + 2;
             
         }
-        
-        double cosOfXiPrimeNorth = Math.cos(
-                    xiPrimeNorthDouble * multiplicand);
-            
-        double sinhOfEtaPrimeEast = Math.sinh(
-                    etaPrimeEastDouble * multiplicand);
-            
-        double augend = (alphaSeries[5] * cosOfXiPrimeNorth)*
-                    sinhOfEtaPrimeEast;
-            
-        etaEastDouble = etaEastDouble + augend;
         
         BigDecimal etaEast = new BigDecimal(etaEastDouble);
         

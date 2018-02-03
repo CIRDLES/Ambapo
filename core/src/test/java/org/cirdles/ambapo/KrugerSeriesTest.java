@@ -119,7 +119,7 @@ public class KrugerSeriesTest {
      */
     @Test
     public void testAlpha7() {
-        System.out.println("alpha6");
+        System.out.println("alpha7");
         BigDecimal flattening3D = new BigDecimal(0.00167922);
         BigDecimal expResult = new BigDecimal(0.0000000000000000000410768).setScale(
                 25, RoundingMode.HALF_UP);
