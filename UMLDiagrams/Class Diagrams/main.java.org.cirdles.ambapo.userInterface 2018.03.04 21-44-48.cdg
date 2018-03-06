@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="main.java.org.cirdles.ambapo.userInterface">
+  <ClassDiagramComponents>
+    <Class name="FileHelper" package="org.cirdles.ambapo.userInterface" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="AllPlatformSaveAs" returnType="File" visibility="public" isStatic="true">
+          <Argument type="Frame" name="parentFrame"/>
+          <Argument type="String" name="dialogTitle"/>
+          <Argument type="String" name="directory"/>
+          <Argument type="String" name="fileExtension"/>
+          <Argument type="String" name="fractionFileName"/>
+          <Argument type="FileFilter" name="nonMacFileFilter"/>
+        </Method>
+        <Method name="AllPlatformGetFile" returnType="File[]" visibility="public" isStatic="true" isSynchronized="true">
+          <Argument type="String" name="dialogTitle"/>
+          <Argument type="File" name="locationIn"/>
+          <Argument type="String" name="fileExtension"/>
+          <Argument type="FileFilter" name="nonMacFileFilter"/>
+          <Argument type="boolean" name="allowMultipleSelect"/>
+          <Argument type="JLayeredPane" name="parentFrame"/>
+        </Method>
+        <Method name="AllPlatformGetFolder" returnType="File" visibility="public" isStatic="true">
+          <Argument type="String" name="dialogTitle"/>
+          <Argument type="File" name="location"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Ambapo" package="org.cirdles.ambapo.userInterface" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields>
+        <Field name="VERSION" type="String" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="RELEASE_DATE" type="String" visibility="public" isStatic="true" isFinal="true"/>
+        <Field name="primaryStage" type="Stage" visibility="private"/>
+        <Field name="aboutWindow" type="AboutWindow" visibility="protected" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="main" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="args"/>
+        </Method>
+        <Method name="start" returnType="void" visibility="public">
+          <Argument type="Stage" name="primaryStage"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="BrowserControl" package="org.cirdles.ambapo.userInterface" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="showURI" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="location"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="AboutWindow" package="org.cirdles.ambapo.userInterface" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="aboutWindow" type="Stage" visibility="private" isFinal="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="loadAboutWindow" returnType="void" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="AmbapoAboutController" package="org.cirdles.ambapo.userInterface" visibility="public" xPosition="1220.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="initialize" returnType="void" visibility="public">
+          <Argument type="URL" name="url"/>
+          <Argument type="ResourceBundle" name="rb"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="AmbapoUIController" package="org.cirdles.ambapo.userInterface" visibility="public" xPosition="1520.0" yPosition="20.0">
+      <Fields>
+        <Field name="eastingText" type="TextField" visibility="private"/>
+        <Field name="eastingLabel" type="Label" visibility="private"/>
+        <Field name="northingLabel" type="Label" visibility="private"/>
+        <Field name="zoneLetterLabel" type="Label" visibility="private"/>
+        <Field name="hemisphereLabel" type="Label" visibility="private"/>
+        <Field name="zoneNumberLabel" type="Label" visibility="private"/>
+        <Field name="latitudeLabel" type="Label" visibility="private"/>
+        <Field name="longitudeLabel" type="Label" visibility="private"/>
+        <Field name="northingText" type="TextField" visibility="private"/>
+        <Field name="latitudeText" type="TextField" visibility="private"/>
+        <Field name="longitudeText" type="TextField" visibility="private"/>
+        <Field name="sourceFileButton" type="Button" visibility="private"/>
+        <Field name="sourceFileText" type="Label" visibility="private"/>
+        <Field name="convertButton" type="Button" visibility="private"/>
+        <Field name="openConvertedFileButton" type="Button" visibility="private"/>
+        <Field name="menuBar" type="MenuBar" visibility="private"/>
+        <Field name="aboutMenuItem" type="MenuItem" visibility="private"/>
+        <Field name="githubMenuItem" type="MenuItem" visibility="private"/>
+        <Field name="title" type="Text" visibility="private"/>
+        <Field name="bulkConversionTitle" type="Text" visibility="private"/>
+        <Field name="mainAnchorPane" type="AnchorPane" visibility="private"/>
+        <Field name="zoneLetterChooser" type="ChoiceBox&lt;Character&gt;" visibility="private"/>
+        <Field name="hemisphereChooser" type="ChoiceBox&lt;Character&gt;" visibility="private"/>
+        <Field name="conversionFileHandler" type="ConversionFileHandler" visibility="public"/>
+        <Field name="latitude_val" type="BigDecimal" visibility="public"/>
+        <Field name="longitude_val" type="BigDecimal" visibility="public"/>
+        <Field name="easting_val" type="BigDecimal" visibility="public"/>
+        <Field name="northing_val" type="BigDecimal" visibility="public"/>
+        <Field name="hemisphere_val" type="char" visibility="public"/>
+        <Field name="zoneletter_val" type="char" visibility="public"/>
+        <Field name="zonenumber_val" type="int" visibility="public"/>
+        <Field name="datumSoloConvertUTMLatLong" type="String" visibility="public"/>
+        <Field name="fileToConvert" type="File" visibility="public"/>
+        <Field name="convertedFile" type="File" visibility="public"/>
+        <Field name="convertToUTMButton" type="Button" visibility="private"/>
+        <Field name="convertToLatLongButton" type="Button" visibility="private"/>
+        <Field name="datumChooserUTMAndLatLong" type="ChoiceBox&lt;String&gt;" visibility="private"/>
+        <Field name="bulkConversionChooser" type="ChoiceBox&lt;String&gt;" visibility="private"/>
+        <Field name="zoneNumberChooser" type="ChoiceBox&lt;Integer&gt;" visibility="private"/>
+        <Field name="latitudeLabel1" type="Label" visibility="private"/>
+        <Field name="longitudeLabel1" type="Label" visibility="private"/>
+        <Field name="fromLatitude" type="TextField" visibility="private"/>
+        <Field name="fromLongitude" type="TextField" visibility="private"/>
+        <Field name="convertFromLatLongToLatLongButton" type="Button" visibility="private"/>
+        <Field name="datumChooserLatLongFrom" type="ChoiceBox&lt;String&gt;" visibility="private"/>
+        <Field name="latitudeLabel11" type="Label" visibility="private"/>
+        <Field name="longitudeLabel11" type="Label" visibility="private"/>
+        <Field name="toLatitude" type="TextField" visibility="private"/>
+        <Field name="toLongitude" type="TextField" visibility="private"/>
+        <Field name="datumChooserLatLongTo" type="ChoiceBox&lt;String&gt;" visibility="private"/>
+        <Field name="ambapoMenuBarOptionFile" type="Menu" visibility="private"/>
+        <Field name="openTemplateLatLongToUTM" type="MenuItem" visibility="private"/>
+        <Field name="openTemplateUTMToLatLong" type="MenuItem" visibility="private"/>
+        <Field name="openTemplateLatLongToLatLong" type="MenuItem" visibility="private"/>
+        <Field name="ambapoMenuBarOptionHelp" type="Menu" visibility="private"/>
+        <Field name="convertRightLatLongToLeftLatLongButton" type="Button" visibility="private"/>
+        <Field name="sourceFileLabel" type="Label" visibility="private"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="initialize" returnType="void" visibility="public">
+          <Argument type="URL" name="url"/>
+          <Argument type="ResourceBundle" name="rb"/>
+        </Method>
+        <Method name="setupListeners" returnType="void" visibility="private"/>
+        <Method name="toUTMClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="toLatLongClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="sourceFileButtonClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="convertFileClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="openConvertedFileClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="clickOpenTemplateLatLongToUTM" returnType="void" visibility="private">
+          <Argument type="ActionEvent" name="event"/>
+        </Method>
+        <Method name="clickOpenTemplateUTMToLatLong" returnType="void" visibility="private">
+          <Argument type="ActionEvent" name="event"/>
+        </Method>
+        <Method name="clickOpenTemplateLatLongToLatLong" returnType="void" visibility="private">
+          <Argument type="ActionEvent" name="event"/>
+        </Method>
+        <Method name="clickAboutMenuItem" returnType="void" visibility="private">
+          <Argument type="ActionEvent" name="event"/>
+        </Method>
+        <Method name="clickGithubMenuItem" returnType="void" visibility="private">
+          <Argument type="ActionEvent" name="event"/>
+        </Method>
+        <Method name="convertFromLeftLatLongToRightLatLongButtonClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="convertFromRightLatLongToLeftLatLongButtonClicked" returnType="void" visibility="private">
+          <Argument type="MouseEvent" name="event"/>
+        </Method>
+        <Method name="checkUTMToLatLongCorrect" returnType="void" visibility="private"/>
+        <Method name="checkLatLongToUTMCorrect" returnType="void" visibility="private"/>
+        <Method name="checkLatLongToLatLongCorrect" returnType="void" visibility="private"/>
+        <Method name="populateHemisphere" returnType="void" visibility="private"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="aboutWindow" source="org.cirdles.ambapo.userInterface.Ambapo" target="org.cirdles.ambapo.userInterface.AboutWindow" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
