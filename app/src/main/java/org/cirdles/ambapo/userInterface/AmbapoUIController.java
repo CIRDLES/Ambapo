@@ -52,6 +52,7 @@ import org.cirdles.ambapo.LatLongToLatLong;
 import org.cirdles.ambapo.LatLongToUTM;
 import org.cirdles.ambapo.UTM;
 import org.cirdles.ambapo.UTMToLatLong;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * FXML Controller class
@@ -561,6 +562,8 @@ public class AmbapoUIController implements Initializable {
         if((zoneLetterChooser.getSelectionModel().getSelectedIndex() > 0 || 
             hemisphereChooser.getSelectionModel().getSelectedIndex() > 0) &&
             !eastingText.getText().isEmpty() && !northingText.getText().isEmpty() &&
+            NumberUtils.isNumber(eastingText.getText()) && 
+            NumberUtils.isNumber(northingText.getText()) &&
             Double.parseDouble(eastingText.getText()) >= UTM.MIN_EASTING &&
             Double.parseDouble(eastingText.getText()) <= UTM.MAX_EASTING &&
             Double.parseDouble(northingText.getText()) >= UTM.MIN_NORTHING &&
@@ -575,6 +578,8 @@ public class AmbapoUIController implements Initializable {
     private void checkLatLongToUTMCorrect() {
         if(!latitudeText.getText().isEmpty() && !longitudeText.getText().isEmpty() &&
                 datumChooserUTMAndLatLong.getSelectionModel().getSelectedIndex() > 0 &&
+                NumberUtils.isNumber(latitudeText.getText()) && 
+                NumberUtils.isNumber(longitudeText.getText()) &&
                 Double.parseDouble(latitudeText.getText()) >= Coordinate.MIN_LATITUDE && 
                 Double.parseDouble(latitudeText.getText()) <= Coordinate.MAX_LATITUDE &&
                 Double.parseDouble(longitudeText.getText()) >= Coordinate.MIN_LONGITUDE &&
@@ -586,6 +591,8 @@ public class AmbapoUIController implements Initializable {
     
     private void checkLatLongToLatLongCorrect() {
         if(!fromLatitude.getText().isEmpty() && !fromLongitude.getText().isEmpty() &&
+            NumberUtils.isNumber(fromLatitude.getText()) && 
+            NumberUtils.isNumber(fromLongitude.getText()) &&
             Double.parseDouble(fromLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
             Double.parseDouble(fromLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
             Double.parseDouble(fromLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
@@ -597,6 +604,8 @@ public class AmbapoUIController implements Initializable {
             convertFromLatLongToLatLongButton.setDisable(true);
         
         if(!toLatitude.getText().isEmpty() && !toLongitude.getText().isEmpty() &&
+            NumberUtils.isNumber(toLatitude.getText()) && 
+            NumberUtils.isNumber(toLongitude.getText()) &&
             Double.parseDouble(toLatitude.getText()) >= Coordinate.MIN_LATITUDE && 
             Double.parseDouble(toLatitude.getText()) <= Coordinate.MAX_LATITUDE &&
             Double.parseDouble(toLongitude.getText()) >= Coordinate.MIN_LONGITUDE &&
