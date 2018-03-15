@@ -1,2 +1,4 @@
 %LATITUDE,LONGITUDE,DATUM
 %Make sure you save as a .csv file
+%Datum names must be written as one of the following: WGS84, WGS72, NAD83, GRS80, AGD65, 
+%KRASOVSKY_1940, NAD27, HAYFORD_1909, CLARKE_1880, CLARKE_1866, AIRY_1830, BESSEL_1841, EVEREST_1830
