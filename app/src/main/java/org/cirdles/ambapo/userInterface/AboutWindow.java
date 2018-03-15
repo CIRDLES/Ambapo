@@ -35,12 +35,15 @@ import javafx.stage.WindowEvent;
 public class AboutWindow {
     
     private final Stage aboutWindow;
+    private Window ownerWindow;
 
-    public AboutWindow() {
+    public AboutWindow(Stage ownerStage) throws IOException {
         this.aboutWindow = new Stage();
+        this.ownerWindow = ownerStage.getOwner();
+        initialize();
     }
 
-    public void loadAboutWindow() throws IOException {
+    public void initialize() throws IOException {
         Parent aboutPage = FXMLLoader.load(getClass().getResource("AmbapoAbout.fxml"));
         Scene scene = new Scene(aboutPage);
         //primaryStage.setScene(scene);
@@ -49,14 +52,17 @@ public class AboutWindow {
         aboutWindow.setScene(scene);
             
         aboutWindow.requestFocus();
-        aboutWindow.initModality(Modality.NONE);
+        aboutWindow.initModality(Modality.WINDOW_MODAL);
+        aboutWindow.initOwner(ownerWindow);
         
         aboutWindow.setOnCloseRequest((WindowEvent e) -> {
             aboutWindow.close();
         });
-        
-        aboutWindow.show();
 
+    }
+    
+    public void showAboutWindow(){
+        aboutWindow.show();
     }
     
 }
