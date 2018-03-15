@@ -100,7 +100,7 @@ public class Ambapo extends Application{
         primaryStage.setMinHeight(scene.getHeight() + 15);
         primaryStage.setMinWidth(scene.getWidth());
         
-        aboutWindow = new AboutWindow();
+        aboutWindow = new AboutWindow(primaryStage);
 
     }
 }

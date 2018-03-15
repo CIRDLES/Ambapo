@@ -45,6 +45,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import org.cirdles.ambapo.ConversionFileHandler;
 import org.cirdles.ambapo.Coordinate;
 import org.cirdles.ambapo.Datum;
@@ -170,7 +171,7 @@ public class AmbapoUIController implements Initializable {
     private Button convertRightLatLongToLeftLatLongButton;
     @FXML
     private Label sourceFileLabel;
-    
+        
 
     /**
      * Initializes the controller class.
@@ -218,7 +219,7 @@ public class AmbapoUIController implements Initializable {
         
         openConvertedFileButton.setDisable(true);
         convertButton.setDisable(true);
-        
+                
         setupListeners();
     }    
     
@@ -499,7 +500,7 @@ public class AmbapoUIController implements Initializable {
 
     @FXML
     private void clickAboutMenuItem(ActionEvent event) throws IOException {
-        Ambapo.aboutWindow.loadAboutWindow();
+        Ambapo.aboutWindow.showAboutWindow();
     }
 
     @FXML
