@@ -246,6 +246,7 @@ public class AmbapoUIController implements Initializable {
         });
         
         hemisphereChooser.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Object> observable, Object oldValue, Object newValue) -> {
+            checkZoneLetter();
             checkUTMToLatLongCorrect();
         });
         
@@ -623,6 +624,20 @@ public class AmbapoUIController implements Initializable {
             hemisphereChooser.setValue(hemisphereChooser.getItems().get(1));
         else
             hemisphereChooser.setValue(hemisphereChooser.getItems().get(2));
+    }
+    
+    private void checkZoneLetter() {
+        int currentZoneLetter = zoneLetterChooser.getSelectionModel().getSelectedIndex();
+        
+        if(currentZoneLetter != 0){
+            int currentHemisphere = hemisphereChooser.getSelectionModel().getSelectedIndex();
+            
+            if( (currentHemisphere == 1 && currentZoneLetter < 11) || 
+            (currentHemisphere == 2 && currentZoneLetter >= 11) )
+            {
+                zoneLetterChooser.setValue(zoneLetterChooser.getItems().get(0));
+            }
+        }
     }
     
 }
