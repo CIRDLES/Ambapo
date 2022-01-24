@@ -68,7 +68,7 @@ public class Ambapo extends Application{
      */
     public static void main(String args[]) {
 
-        org.cirdles.ambapo.ConversionFileHandler conversionFileHandler = new ConversionFileHandler();
+        ConversionFileHandler conversionFileHandler = new ConversionFileHandler();
         
         launch(args);
     }

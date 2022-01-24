@@ -1,2 +1,2 @@
 rootProject.name = 'Ambapo'
-include "app", "core"
+include "core","app"

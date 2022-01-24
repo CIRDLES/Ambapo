@@ -1,29 +1,24 @@
+plugins {
+    id 'java' 
+}
+
 subprojects {
-    apply plugin: "java"
-
     group = "org.cirdles"
-    version = "0.1.0"
+    version = "2.0.0"
 
-    description = """Ambapo is a conversion tool that bulk converts CSV files with 
-    Latitude, Longitude coordinates to UTM and vice versa."""
+    // description = """Ambapo is a conversion tool that bulk converts CSV files with 
+    // Latitude, Longitude coordinates to UTM and vice versa."""
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     repositories {
-         mavenCentral()
-
+        mavenCentral()
         maven {
             url "https://jitpack.io"
         }
-
     }
 
-    dependencies {
-        testCompile "junit:junit:4.12"
-        testCompile "org.assertj:assertj-core:3.5.1"
-    }
-    
     javadoc {
         options.tags = [
             'pre:a:"Precondition:"',

@@ -1,6 +1,5 @@
 package org.cirdles.ambapo;
 
-import org.cirdles.ambapo.KrugerSeries;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import org.junit.After;
