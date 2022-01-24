@@ -2,7 +2,29 @@ plugins {
     id 'java' 
 }
 
-subprojects {
+configurations {
+    childJars
+}
+
+dependencies {
+    subprojects.each {
+        childJars project(it.path)
+    }
+}
+
+jar {
+    archiveBaseName = 'Ambapo'
+    archiveVersion =  '2.0.0'
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    dependsOn configurations.childJars
+    manifest { 
+        attributes "Main-Class": "org.cirdles.ambapo.userInterface.Ambapo"
+    }
+    from { configurations.childJars.collect { zipTree(it) } }
+}
+
+
+allprojects {
     group = "org.cirdles"
     version = "2.0.0"
 
@@ -27,3 +49,4 @@ subprojects {
         ]
     }
 }
+
