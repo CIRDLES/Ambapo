@@ -1,45 +1,18 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-import org.apache.tools.ant.filters.ReplaceTokens;
-
-apply plugin: "application"
-
-mainClassName = "org.cirdles.ambapo.userInterface.Ambapo"
+plugins {
+    id 'application' 
+    id 'org.openjfx.javafxplugin' version '0.0.11'
+}
 
 dependencies {
-    compile project(":core")
-    compile "org.netbeans.external:AbsoluteLayout:RELEASE731"
-    compile "com.apple:AppleJavaExtensions:1.4"
-    compile "org.netbeans.external:swing-layout-1.0.4:RELEASE80"
-    //compile "com.github.cirdles:Commons:-SNAPSHOT"
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation project(':core')
 }
 
-repositories {
-    maven {
-        url "http://bits.netbeans.org/maven2/"
-        url "http://jcenter.bintray.com/"
-    }
+application {
+    mainClass = 'org.cirdles.ambapo.userInterface.Ambapo' 
 }
 
-
-
-task fatFxJar(type: Jar) {
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
-
-    baseName = 'AmbapoTask'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-def timestamp() {
-    new SimpleDateFormat("dd MMMM yyyy").format(new Date())
-}
-
-processResources {
-    filter ReplaceTokens, tokens: [
-        "pom.version": version,
-        "timestamp": timestamp()
-    ]
+javafx {
+    version = '17'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }

@@ -33,9 +33,10 @@ Steven Dutch, Natural and Applied Sciences, University of Wisconsin - Green Bay
 package org.cirdles.ambapo;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import org.apache.commons.math3.analysis.function.Atanh;
-
+import ch.obermuhlner.math.big.BigDecimalMath;
 
 /**
  *
@@ -45,8 +46,15 @@ public class UTMToLatLong {
     
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
-    private static final int PRECISION = 9;
-    private static final int SCALE = 5;
+    private static final BigDecimal TWO = new BigDecimal(2);
+    private static final BigDecimal THREE = new BigDecimal(3);
+    private static final BigDecimal FOUR = new BigDecimal(4);
+    private static final BigDecimal FIVE = new BigDecimal(5);
+    private static final BigDecimal THIRTYTWO = new BigDecimal(32);
+    private static final BigDecimal ONEEIGHTY = new BigDecimal(180);
+    
+    private static final int SCALE = 34;
+    private static final MathContext MC = new MathContext(34, RoundingMode.HALF_UP);
 
     /**
      * Converts a UTM into a Coordinate of lat,long with a specific datum.
@@ -58,34 +66,28 @@ public class UTMToLatLong {
     public static Coordinate convert(UTM utm, String datum) throws Exception {
         
         Datum datumInformation = Datum.valueOf(datum);
-                
-        double[] betaSeries = datumInformation.getBetaSeries();
-        
         char hemisphere = utm.getHemisphere();
-        
-        double zoneCentralMeridian = utm.getZoneNumber() * 6 - 183;
-        
-        BigDecimal meridianRadius = new BigDecimal(datumInformation.getMeridianRadius());
-        
         BigDecimal northing = utm.getNorthing();
-        
         BigDecimal easting = utm.getEasting();
         
-        BigDecimal xiNorth = calcXiNorth(hemisphere, meridianRadius, northing);
-        
-        BigDecimal etaEast = calcEtaEast(easting, meridianRadius);
-        
-        BigDecimal xiPrime = calcXiPrime(xiNorth, etaEast, betaSeries);
-        
-        BigDecimal etaPrime = calcEtaPrime(xiNorth, etaEast, betaSeries);
-        
-        BigDecimal tauPrime = calcTauPrime(xiPrime, etaPrime);
-        
         BigDecimal eccentricity = new BigDecimal(datumInformation.getEccentricity());
+        BigDecimal equatorialRadius = new BigDecimal(datumInformation.getEquatorialRadius());
+        BigDecimal polarAxis = new BigDecimal(datumInformation.getPolarRadius());
+        BigDecimal firstEccentricitySquared = getFirstEccentricitySquared(polarAxis, equatorialRadius);
+        BigDecimal mu = getMu(northing, eccentricity, equatorialRadius);
+        BigDecimal ei = getFirstEccentricity(eccentricity);
+        BigDecimal footprintLatitude = getFootprintLatitude(ei, mu);
+        BigDecimal oneMinusEccentricityTimesSinOfFootprintLatSquared = getOneMinusEccentricityTimesSinOfFootprintLatSquared(footprintLatitude, eccentricity);
+        BigDecimal coefficientN1 = getCoefficientN1(equatorialRadius, oneMinusEccentricityTimesSinOfFootprintLatSquared);
+        BigDecimal coefficientD = getCoefficientD(easting, coefficientN1);
+        BigDecimal coefficientT1 = getCoefficientT1(footprintLatitude);
+        BigDecimal coefficientC1 = getCoefficientC1(ei, footprintLatitude);
         
-        BigDecimal sigma = calcSigma(eccentricity, tauPrime);
-        
-        BigDecimal longitude = calcLongitude(zoneCentralMeridian, etaPrime, xiPrime);
+        /* calcLongitude(int zoneNumber, BigDecimal coefficientD,
+            BigDecimal coefficientC1, BigDecimal coefficientT1, BigDecimal footprintLat,
+            BigDecimal firstEccentricitySquared) */
+        BigDecimal longitude = calcLongitude(utm.getZoneNumber(), coefficientD, coefficientC1,
+                coefficientT1, footprintLatitude, firstEccentricitySquared);
         
         if(longitude.doubleValue() > Coordinate.MAX_LONGITUDE)
             longitude = new BigDecimal(Coordinate.MAX_LONGITUDE);
@@ -93,232 +95,126 @@ public class UTMToLatLong {
         if(longitude.doubleValue() < Coordinate.MIN_LONGITUDE)
             longitude = new BigDecimal(Coordinate.MIN_LONGITUDE);
       
-        BigDecimal latitude = calcLatitude(tauPrime, sigma, eccentricity, hemisphere);
+        /* calcLatitude(BigDecimal oneMinusEccentricityTimesSinOfFootprintLatSquared,
+        BigDecimal equatorialRadius, BigDecimal eccentricity, BigDecimal e1Squared,
+        BigDecimal footprintLat, BigDecimal coefficientC1, BigDecimal coefficientN1,
+        BigDecimal coefficientD, BigDecimal coefficientT1, char hemisphere)
+        */
+        BigDecimal latitude = calcLatitude(oneMinusEccentricityTimesSinOfFootprintLatSquared,
+                equatorialRadius, eccentricity, firstEccentricitySquared, footprintLatitude,
+                coefficientC1, coefficientN1, coefficientD, coefficientT1, hemisphere);
         
         if(latitude.doubleValue() > Coordinate.MAX_LATITUDE)
             latitude = new BigDecimal(Coordinate.MAX_LATITUDE);
         if(latitude.doubleValue() < Coordinate.MIN_LATITUDE)
             latitude = new BigDecimal(Coordinate.MIN_LATITUDE);
         
-        Coordinate latAndLong = new Coordinate(latitude.setScale(SCALE, BigDecimal.ROUND_HALF_UP), longitude.setScale(SCALE, BigDecimal.ROUND_HALF_UP), datum);
+        Coordinate latAndLong = new Coordinate(latitude.setScale(SCALE, RoundingMode.HALF_UP), longitude.setScale(SCALE, RoundingMode.HALF_UP), datum);
         
         return latAndLong;
         
     }
     
-    /**
-     * Calculates the xi-north which refers to the north-south direction of the UTM.
-     * @param hemisphere
-     * @param meridianRadius
-     * @param northing
-     * @return xi north
-     */
-    private static BigDecimal calcXiNorth(char hemisphere, BigDecimal 
-            meridianRadius, BigDecimal northing) {
-        
-        BigDecimal xiNorth;
+    private static BigDecimal getOneMinusEccentricityTimesSinOfFootprintLatSquared(BigDecimal footprintLat, BigDecimal eccentricity)
+    {
+        BigDecimal sinOfFootprintLat = BigDecimalMath.sin(footprintLat, MC);
+        BigDecimal eccentricityTimesSinOfFootprintLat = eccentricity.multiply(sinOfFootprintLat);
+        BigDecimal eccentricityTimesSinOfFootprintLatSquared = eccentricityTimesSinOfFootprintLat.pow(2);
+        return BigDecimal.ONE.subtract(eccentricityTimesSinOfFootprintLatSquared);
+    }
+    
+    private static BigDecimal getCoefficientC1(BigDecimal firstEccentricity, BigDecimal footprintLat)
+    {
+        BigDecimal eiSquared = firstEccentricity.pow(2);
+        BigDecimal cosOfFootprintLatSquared = BigDecimalMath.cos(footprintLat, MC).pow(2);
+        return eiSquared.multiply(cosOfFootprintLatSquared); //M3
+    }
+    
+    private static BigDecimal getCoefficientT1(BigDecimal footprintLatitude)
+    {
+        BigDecimal tanOfFootprintLat = BigDecimalMath.tan(footprintLatitude, MC);
+        return tanOfFootprintLat.pow(2); //N3
+    }
+    
+    private static BigDecimal getCoefficientN1(BigDecimal equatorialRadius, BigDecimal oneMinusEccentricityTimesSinOfFootprintLatSquared)
+    {
+        BigDecimal sqrtOfOneMinusEccentricityTimesSinOfFootprintLatSquared = oneMinusEccentricityTimesSinOfFootprintLatSquared.sqrt(MC);
+        return equatorialRadius.divide(sqrtOfOneMinusEccentricityTimesSinOfFootprintLatSquared, MC); //O3
+    }
+    
+    private static BigDecimal getCoefficientD(BigDecimal easting, BigDecimal coefficientN1)
+    {
+        BigDecimal eastPrime = FALSE_EASTING.subtract(easting); //I3
+        BigDecimal n1TimesScale = coefficientN1.multiply(SCALE_FACTOR);
+        return eastPrime.divide(n1TimesScale, MC); //Q3
+    }
+    
+    private static BigDecimal getMu(BigDecimal northing, BigDecimal eccentricity, BigDecimal equatorialRadius)
+    {
+        BigDecimal arcLength = northing.divide(SCALE_FACTOR, MC); //J3
+        BigDecimal eccentricitySq = eccentricity.pow(2);
+        BigDecimal eccentricityFourth = eccentricity.pow(4);
+        BigDecimal eccentricitySixth = eccentricity.pow(6);
+        BigDecimal eccentricityFourthTimesThree = eccentricityFourth.multiply(THREE);
+        BigDecimal eccentricitySixthTimesFive = eccentricitySixth.multiply(FIVE);
+        BigDecimal eccentricitySqOverFour = eccentricitySq.divide(FOUR, MC);
+        BigDecimal eccentricityFourthTimesThreeOverSixtyFour = eccentricityFourthTimesThree.divide(new BigDecimal(64), MC);
+        BigDecimal eccentricitySixthTimesFiveOver256 = eccentricitySixthTimesFive.divide(new BigDecimal(256), MC);
+        BigDecimal oneMinusEccentricities = BigDecimal.ONE.subtract(eccentricitySqOverFour).subtract(eccentricityFourthTimesThreeOverSixtyFour).subtract(eccentricitySixthTimesFiveOver256);
+        BigDecimal eqRadiusTimesEccentricities = equatorialRadius.multiply(oneMinusEccentricities);
+        return arcLength.divide(eqRadiusTimesEccentricities, MC); // K3
+    }
+    
+    private static BigDecimal getFirstEccentricity(BigDecimal eccentricity)
+    {
+        BigDecimal eccentricitySq = eccentricity.pow(2);
+        BigDecimal oneMinusEccentrictySquared = BigDecimal.ONE.subtract(eccentricitySq);
+        BigDecimal sqRootOfOneMinusEccentrictySquared = oneMinusEccentrictySquared.sqrt(MC);
+        BigDecimal oneMinusSqRootOfOneMinusEccentrictySquared = BigDecimal.ONE.subtract(sqRootOfOneMinusEccentrictySquared);
+        BigDecimal onePlusSqRootOfOneMinusEccentrictySquared = BigDecimal.ONE.add(sqRootOfOneMinusEccentrictySquared);
+        return oneMinusSqRootOfOneMinusEccentrictySquared.divide(onePlusSqRootOfOneMinusEccentrictySquared, MC);
+    }
+    
+    private static BigDecimal getFirstEccentricitySquared(BigDecimal polarRadius, BigDecimal equatorialRadius)
+    {
+        BigDecimal polarRadiusSquared = polarRadius.pow(2);
+        BigDecimal equatorialRadiusSquared = equatorialRadius.pow(2);
+        BigDecimal polarRadiusSquaredOverEquatorialRadiusSquared = polarRadiusSquared.divide(equatorialRadiusSquared, MC);
+        return BigDecimal.ONE.subtract(polarRadiusSquaredOverEquatorialRadiusSquared);
+    }
+    
+    private static BigDecimal getFootprintLatitude(BigDecimal ei, BigDecimal mu)
+    {
+        BigDecimal eiCubed = ei.pow(3);
+        BigDecimal threeTimesEi = ei.multiply(THREE);
+        BigDecimal twentySevenTimesEiCubed = eiCubed.multiply(new BigDecimal(27));
+        BigDecimal threeTimesEiOverTwo = threeTimesEi.divide(TWO, MC);
+        BigDecimal twentySevenTimesEiCubedOverThirtyTwo = twentySevenTimesEiCubed.divide(THIRTYTWO, MC);
+        BigDecimal c1 = threeTimesEiOverTwo.subtract(twentySevenTimesEiCubedOverThirtyTwo); // B14
 
-        if(hemisphere == 'N') {
-            
-            BigDecimal divideByThis = SCALE_FACTOR.multiply(meridianRadius).setScale(
-                    PRECISION, RoundingMode.HALF_UP);
-            
-            xiNorth = northing.divide(divideByThis, PRECISION, RoundingMode.HALF_UP);
-            
-        }
+        BigDecimal eiSquared = ei.pow(2);
+        BigDecimal eiToTheFourth = ei.pow(4);
+        BigDecimal twentyOneTimesEiSquared = new BigDecimal(21).multiply(eiSquared);
+        BigDecimal twentyOneTimesEiSquaredOverSixteen = twentyOneTimesEiSquared.divide(new BigDecimal(16), MC);
+        BigDecimal fiftyFiveTimesEiToTheFourth = new BigDecimal(55).multiply(eiToTheFourth);
+        BigDecimal fiftyFiveTimesEiToTheFourthOverThirtyTwo = fiftyFiveTimesEiToTheFourth.divide(THIRTYTWO, MC);
+        BigDecimal c2 = twentyOneTimesEiSquaredOverSixteen.subtract(fiftyFiveTimesEiToTheFourthOverThirtyTwo); // B15
         
-        else {
-            
-            BigDecimal numerator = (new BigDecimal(10000000)).subtract(northing);
-            BigDecimal denominator = SCALE_FACTOR.multiply(meridianRadius);
-            
-            xiNorth = numerator.divide(denominator, PRECISION, RoundingMode.HALF_UP);
-            
-        }
-            
+        BigDecimal oneFiftyOneTimesEiCubed = new BigDecimal(151).multiply(eiCubed);
+        BigDecimal c3 = oneFiftyOneTimesEiCubed.divide(new BigDecimal(96), MC); //B16
         
+        BigDecimal oneThousandNinetySevenTimesEiToTheFourth = new BigDecimal(1097).multiply(eiToTheFourth);
+        BigDecimal c4 = oneThousandNinetySevenTimesEiToTheFourth.divide(new BigDecimal(512), MC);
         
-        return xiNorth;
-        
-    }
-    
-    
-    /**
-     * Eta-east refers to the east west direction of the UTM.
-     * @param easting
-     * @param meridianRadius
-     * @return eta east
-     */
-    private static BigDecimal calcEtaEast(BigDecimal easting, BigDecimal meridianRadius) {
-        
-        BigDecimal etaEast = (easting.subtract(FALSE_EASTING)).divide(
-            SCALE_FACTOR.multiply(meridianRadius), PRECISION, RoundingMode.HALF_UP);
-        
-        return etaEast;
-    }
-    
-    /**
-     * 
-     * @param xiNorth
-     * @param etaEast
-     * @param betaSeries
-     * @return xi prime
-     */
-    private static BigDecimal calcXiPrime(BigDecimal xiNorth, BigDecimal etaEast, 
-            double[] betaSeries) {
-        
-        double xiNorthDouble = xiNorth.doubleValue();
-        double etaEastDouble = etaEast.doubleValue();
-        
-        BigDecimal sinOfXiNorth;
-        BigDecimal coshOfEtaEast;
-        
-        BigDecimal subtrahend = new BigDecimal(0.0);
-        int multiplicand = 2;
-        
-        for(double beta : betaSeries) {
-            
-            sinOfXiNorth = new BigDecimal(Math.sin(multiplicand * xiNorthDouble));
-            coshOfEtaEast = new BigDecimal(Math.cosh(multiplicand * etaEastDouble));
-            
-            subtrahend.add(new BigDecimal(beta).multiply(sinOfXiNorth).multiply(coshOfEtaEast));
-            
-            multiplicand += 2;
-            
-        }
-        
-        BigDecimal xiPrime = xiNorth.subtract(subtrahend);
-        
-        return xiPrime;
-        
-        
-    }
-    
-    /**
-     * 
-     * @param xiNorth
-     * @param etaEast
-     * @param betaSeries
-     * @return eta prime
-     */
-    private static BigDecimal calcEtaPrime(BigDecimal xiNorth, BigDecimal etaEast,
-            double[] betaSeries) {
-        
-        double xiNorthDouble = xiNorth.doubleValue();
-        double etaEastDouble = etaEast.doubleValue();
-        
-        BigDecimal cosOfXiNorth;
-        BigDecimal sinhOfEtaEast;
-        
-        BigDecimal subtrahend = new BigDecimal(0.0);
-        int multiplicand = 2;
-        
-        for(double beta : betaSeries) {
-            
-            cosOfXiNorth = new BigDecimal(Math.cos(multiplicand * xiNorthDouble));
-            sinhOfEtaEast = new BigDecimal(Math.sinh(multiplicand * etaEastDouble));
-            
-            subtrahend.add(new BigDecimal(beta).multiply(cosOfXiNorth).multiply(sinhOfEtaEast));
-            
-            multiplicand += 2;
-            
-        }
-        
-        BigDecimal etaPrime = etaEast.subtract(subtrahend);
-        
-        return etaPrime;
-        
-        
-    }
-    
-    /**
-     * 
-     * @param xiPrime
-     * @param etaPrime
-     * @return tau prime
-     */
-    private static BigDecimal calcTauPrime(BigDecimal xiPrime, BigDecimal etaPrime) {
-        
-        double xiPrimeDouble = xiPrime.doubleValue();
-        double etaPrimeDouble = etaPrime.doubleValue();
-        
-        BigDecimal sinOfXiPrime = new BigDecimal(Math.sin(xiPrimeDouble));
-        BigDecimal cosOfXiPrime = new BigDecimal(Math.cos(xiPrimeDouble));
-        BigDecimal sinhOfEtaPrime = new BigDecimal(Math.sinh(etaPrimeDouble));
-        
-        BigDecimal squareRoot = new BigDecimal(Math.sqrt(sinhOfEtaPrime.pow(2).
-                add(cosOfXiPrime.pow(2)).doubleValue()));
-        
-        BigDecimal tauPrime = sinOfXiPrime.divide(squareRoot, PRECISION, RoundingMode.HALF_UP);
-        
-        return tauPrime;
-    }
-    
-    /**
-     * 
-     * @param eccentricity
-     * @param tau
-     * @return sigma
-     */
-    private static BigDecimal calcSigma(BigDecimal eccentricity, BigDecimal tau) {
-        
-        double eccentricityDouble = eccentricity.doubleValue();
-        double tauDouble = tau.doubleValue();
-        
-        Atanh atanh = new Atanh();
-        double sigmaDouble = Math.sinh(eccentricityDouble *
-            (atanh.value( eccentricityDouble * tauDouble / Math.sqrt(
-            1 + Math.pow(tauDouble, 2)))));
-        
-        BigDecimal sigma = new BigDecimal (sigmaDouble);
-        
-        return sigma;
-        
-    }
-    
-    /**
-     * 
-     * @param currentTau
-     * @param currentSigma
-     * @param originalTau
-     * @return function of tau
-     */
-    private static BigDecimal functionOfTau(BigDecimal currentTau, BigDecimal
-        currentSigma, BigDecimal originalTau) {
-        
-        BigDecimal funcOfTau = originalTau.multiply(new BigDecimal(Math.sqrt(1 + 
-            currentSigma.pow(2).doubleValue()))).subtract(currentSigma.multiply(
-            new BigDecimal(Math.sqrt(1 + currentTau.pow(2).doubleValue())))).subtract(originalTau);
-        
-        
-        return funcOfTau;
-        
-    }
-    
-
-    /**
-     * 
-     * @param eccentricity
-     * @param currentTau
-     * @param currentSigma
-     * @return change in tau
-     */
-    private static BigDecimal changeInTau(BigDecimal eccentricity, BigDecimal 
-        currentTau, BigDecimal currentSigma) {
-        
-
-        BigDecimal changeInTau = ((new BigDecimal(Math.sqrt((1 + 
-            currentSigma.pow(2).doubleValue()) * (1 + 
-            currentTau.pow(2).doubleValue())))).subtract(currentSigma.multiply(
-            currentTau))).multiply(new BigDecimal(1 - eccentricity.pow(
-            2).doubleValue())).multiply(new BigDecimal(Math.sqrt(1 + 
-            currentTau.pow(2).doubleValue()))).divide(BigDecimal.ONE.add(BigDecimal.ONE.subtract(
-            eccentricity.pow(2))).multiply(currentTau.pow(2)), PRECISION, 
-            RoundingMode.HALF_UP);
-        
-        
-        return changeInTau;
-        
+        BigDecimal sinOfTwoTimesMu = BigDecimalMath.sin(TWO.multiply(mu), MC);
+        BigDecimal sinOfFourTimesMu = BigDecimalMath.sin(FOUR.multiply(mu), MC);
+        BigDecimal sinOfSixTimesMu = BigDecimalMath.sin(new BigDecimal(6).multiply(mu), MC);
+        BigDecimal sinOfEightTimesMu = BigDecimalMath.sin(new BigDecimal(8).multiply(mu), MC);
+        BigDecimal c1TimesSinOfTwoTimesMu = c1.multiply(sinOfTwoTimesMu);
+        BigDecimal c2TimesSinOfFourTimesMu = c2.multiply(sinOfFourTimesMu);
+        BigDecimal c3TimesSinOfSixTimesMu = c3.multiply(sinOfSixTimesMu);
+        BigDecimal c4TimesSinOfEightTimesMu = c4.multiply(sinOfEightTimesMu);
+        return mu.add(c1TimesSinOfTwoTimesMu).add(c2TimesSinOfFourTimesMu).add(c3TimesSinOfSixTimesMu).add(c4TimesSinOfEightTimesMu);
     }
     
     /**
@@ -329,24 +225,49 @@ public class UTMToLatLong {
      * @param hemisphere
      * @return latitude
      */
-    private static BigDecimal calcLatitude(BigDecimal originalTau, BigDecimal sigma, 
-            BigDecimal eccentricity, char hemisphere) {
+    private static BigDecimal calcLatitude(BigDecimal oneMinusEccentricityTimesSinOfFootprintLatSquared,
+        BigDecimal equatorialRadius, BigDecimal eccentricity, BigDecimal e1Squared,
+        BigDecimal footprintLat, BigDecimal coefficientC1, BigDecimal coefficientN1,
+        BigDecimal coefficientD, BigDecimal coefficientT1, char hemisphere)
+    {
+        BigDecimal eccentricitySq = eccentricity.pow(2);
+        BigDecimal oneMinusEccentrictySquared = BigDecimal.ONE.subtract(eccentricitySq);
+        BigDecimal oneMinusEccentricityTimesSinOfFootprintLatSquaredCubed = oneMinusEccentricityTimesSinOfFootprintLatSquared.pow(3);
+        BigDecimal sqrtOneMinusEccentricityTimesSinOfFootprintLatSquaredCubed = oneMinusEccentricityTimesSinOfFootprintLatSquaredCubed.sqrt(MC);
+        BigDecimal equatorialRadiusTimesOneMinusEccentrictySquared = equatorialRadius.multiply(oneMinusEccentrictySquared);
+        //P3
+        BigDecimal coefficient_r1 = equatorialRadiusTimesOneMinusEccentrictySquared.divide(sqrtOneMinusEccentricityTimesSinOfFootprintLatSquaredCubed, MC);
         
-        BigDecimal funcOfTau = functionOfTau(originalTau, sigma, originalTau).setScale(PRECISION, RoundingMode.HALF_UP);
+        BigDecimal tanOfFootprintLat = BigDecimalMath.tan(footprintLat, MC);
+        BigDecimal n1TimesTanOfFootprintLat = coefficientN1.multiply(tanOfFootprintLat);
+        BigDecimal fact1 = n1TimesTanOfFootprintLat.divide(coefficient_r1, MC); //R3
         
-        BigDecimal changeInTau = changeInTau(eccentricity, originalTau, sigma);
+        BigDecimal fact2 = coefficientD.pow(2).divide(TWO, MC); //S3
         
-        BigDecimal newTau = originalTau.subtract(funcOfTau.divide(changeInTau, 
-            PRECISION, RoundingMode.HALF_UP));
-          
-        BigDecimal latitude = (new BigDecimal(Math.atan(newTau.doubleValue())))
-           .multiply(new BigDecimal(180.0 / Math.PI));
+        BigDecimal threeTimesCoefficientT1 = THREE.multiply(coefficientT1);
+        BigDecimal tenTimesCoefficientC1 = BigDecimal.TEN.multiply(coefficientC1);
+        BigDecimal fourTimesCoefficientC1Squared = FOUR.multiply(coefficientC1).multiply(coefficientC1);
+        BigDecimal nineTimesE1Squared = new BigDecimal(9).multiply(e1Squared);
+        BigDecimal sumOfCoefficientsForFact3 = FIVE.add(threeTimesCoefficientT1).add(tenTimesCoefficientC1).subtract(fourTimesCoefficientC1Squared).subtract(nineTimesE1Squared);
+        BigDecimal coefficientDToTheFourth = coefficientD.pow(4);
+        BigDecimal fact3 = sumOfCoefficientsForFact3.multiply(coefficientDToTheFourth).divide(new BigDecimal(24), MC); //T3
+
+        BigDecimal ninetyTimesCoefficientT1 = new BigDecimal(90).multiply(coefficientT1);
+        BigDecimal twoNinetyEightTimesCoefficientC1 = new BigDecimal(298).multiply(coefficientC1);
+        BigDecimal fortyFiveTimesCoefficientT1Squared = new BigDecimal(45).multiply(coefficientT1).multiply(coefficientT1);
+        BigDecimal twoFiftyTwoTimesE1Squared = new BigDecimal(252).multiply(e1Squared);
+        BigDecimal threeTimesCoefficientC1Squared = THREE.multiply(coefficientC1).multiply(coefficientC1);
+        BigDecimal sumOfCoefficientsForFact4 = new BigDecimal(61).add(ninetyTimesCoefficientT1).add(twoNinetyEightTimesCoefficientC1).add(fortyFiveTimesCoefficientT1Squared).subtract(twoFiftyTwoTimesE1Squared).subtract(threeTimesCoefficientC1Squared);
+        BigDecimal coefficientDToTheSixth = coefficientD.pow(6);
+        BigDecimal fact4 = sumOfCoefficientsForFact4.multiply(coefficientDToTheSixth).divide(new BigDecimal(720), MC); //U3
         
-        if(hemisphere == 'S')
-            latitude = latitude.multiply(new BigDecimal(-1));
+        BigDecimal sumOfFacts = fact2.add(fact3).add(fact4);
+        BigDecimal fact1TimesSumOfFacts = fact1.multiply(sumOfFacts);
+        BigDecimal footprintLatMinusFact1TimesSumOfFacts = footprintLat.subtract(fact1TimesSumOfFacts);
+        BigDecimal oneEightyTimesFootprintLatMinusFact1TimesSumOfFacts = ONEEIGHTY.multiply(footprintLatMinusFact1TimesSumOfFacts);
+        BigDecimal latitude = oneEightyTimesFootprintLatMinusFact1TimesSumOfFacts.divide(BigDecimalMath.pi(MC), MC);
         
-        return latitude;
-        
+        return (hemisphere == 'N' ? latitude : new BigDecimal(-1).multiply(latitude));
     }
     
     /**
@@ -356,17 +277,42 @@ public class UTMToLatLong {
      * @param xiPrime
      * @return longitude
      */
-    private static BigDecimal calcLongitude(double zoneCentralMeridian, 
-        BigDecimal etaPrime, BigDecimal xiPrime) {
+    private static BigDecimal calcLongitude(int zoneNumber, BigDecimal coefficientD,
+            BigDecimal coefficientC1, BigDecimal coefficientT1, BigDecimal footprintLat,
+            BigDecimal firstEccentricitySquared) 
+    {
+        BigDecimal six = new BigDecimal(6);
+        BigDecimal eight = new BigDecimal(8);
+        BigDecimal twentyFour = new BigDecimal(24);
+        BigDecimal twentyEight = new BigDecimal(28);
+        BigDecimal oneTwenty = new BigDecimal(120);
         
-        double longitudeRadians = Math.atan(Math.sinh(etaPrime.doubleValue())/
-            Math.cos(xiPrime.doubleValue()));
+        BigDecimal zoneCentralMeridian = new BigDecimal(zoneNumber * 6 - 183); //Z3
         
-        BigDecimal changeInLongitude = new BigDecimal(longitudeRadians*180.0/Math.PI);
+        BigDecimal twoTimesCoefficientT1 = coefficientT1.multiply(TWO);
+        BigDecimal sumOfCoefficientsForFact2 = BigDecimal.ONE.add(twoTimesCoefficientT1).add(coefficientC1);
+        BigDecimal coefficientDCubed = coefficientD.pow(3);
+        BigDecimal sumOfCoefficientsForFact2TimesCoefficientDCubed = sumOfCoefficientsForFact2.multiply(coefficientDCubed);
+        BigDecimal fact2 = sumOfCoefficientsForFact2TimesCoefficientDCubed.divide(six, MC);
         
-        BigDecimal longitude = new BigDecimal(zoneCentralMeridian).add(changeInLongitude);
+        BigDecimal coefficientC1Squared = coefficientC1.pow(2);
+        BigDecimal coefficientT1Squared = coefficientT1.pow(2);
+        BigDecimal twoTimesCoefficientC1 = coefficientC1.multiply(TWO);
+        BigDecimal twentyEightTimesCoefficientT1 = coefficientT1.multiply(twentyEight);
+        BigDecimal threeTimesCoefficientC1Squared = coefficientC1Squared.multiply(THREE);
+        BigDecimal eightTimesFirstEccentricitySquared = firstEccentricitySquared.multiply(eight);
+        BigDecimal twentyFourTimesCoefficientT1Squared = coefficientT1Squared.multiply(twentyFour);
+        BigDecimal sumOfCoefficientsForFact3 = FIVE.subtract(twoTimesCoefficientC1).add(twentyEightTimesCoefficientT1).subtract(threeTimesCoefficientC1Squared).add(eightTimesFirstEccentricitySquared).add(twentyFourTimesCoefficientT1Squared);
+        BigDecimal coefficientDToTheFifth = coefficientD.pow(5);
+        BigDecimal fact3 = sumOfCoefficientsForFact3.multiply(coefficientDToTheFifth).divide(oneTwenty, MC);
         
-        return longitude;
+        BigDecimal cosOfFootprintLat = BigDecimalMath.cos(footprintLat, MC);
+        BigDecimal sumOfFacts = coefficientD.subtract(fact2).add(fact3);
+        BigDecimal deltaLong = sumOfFacts.divide(cosOfFootprintLat, MC);
+        
+        BigDecimal deltaLongTimesOneEighty = deltaLong.multiply(ONEEIGHTY);
+        BigDecimal deltaLongTimesOneEightyOverPi = deltaLongTimesOneEighty.divide(BigDecimalMath.pi(MC), MC);
+        return zoneCentralMeridian.subtract(deltaLongTimesOneEightyOverPi);
     }
 
     

@@ -39,7 +39,7 @@ public class Ambapo extends Application{
         /*ResourceExtractor ambapoResourceExtractor
                 = new ResourceExtractor(Ambapo.class);*/
 
-        String version = "0.1.0";
+        String version = "2.0.0";
         String releaseDate = "Nov. 25, 2016";
 
         /* get version number and release date written by pom.xml
@@ -68,7 +68,7 @@ public class Ambapo extends Application{
      */
     public static void main(String args[]) {
 
-        org.cirdles.ambapo.ConversionFileHandler conversionFileHandler = new ConversionFileHandler();
+        ConversionFileHandler conversionFileHandler = new ConversionFileHandler();
         
         launch(args);
     }
