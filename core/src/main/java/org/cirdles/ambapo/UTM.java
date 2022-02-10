@@ -66,13 +66,7 @@ public class UTM {
             throw new Exception("You must have either a hemisphere or a zoneLetter");
         }
         
-        else if(hemisphere == '*') {
-            if((int)zoneLetter >= 80)
-                this.hemisphere = 'N';
-            else
-                this.hemisphere = 'S';  
-        }
-        
+        setHemisphereIfNull();
         
         zoneLetter = Character.toUpperCase(zoneLetter);
         hemisphere = Character.toUpperCase(hemisphere);
@@ -139,6 +133,16 @@ public class UTM {
      * @return hemisphere
      */
     public char getHemisphere() {
+        setHemisphereIfNull();
         return hemisphere;
+    }
+    
+    private void setHemisphereIfNull() {
+        if(hemisphere == '*') {
+            if((int)zoneLetter >= 80)
+                this.hemisphere = 'N';
+            else
+                this.hemisphere = 'S';  
+        }
     }
 }

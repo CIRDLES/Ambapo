@@ -67,7 +67,6 @@ public class UTMToLatLong {
         
         Datum datumInformation = Datum.valueOf(datum);
         char hemisphere = utm.getHemisphere();
-        
         BigDecimal northing = utm.getNorthing();
         BigDecimal easting = utm.getEasting();
         
