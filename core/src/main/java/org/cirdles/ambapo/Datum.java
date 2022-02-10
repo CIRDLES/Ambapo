@@ -27,13 +27,9 @@ import java.util.Set;
  *
  * @author Elaina Cole
  */
-
-
-
-
 public enum Datum {
     
-    //datum name, equatorial radius, polar radius, flattening 3D, eccentricity, 
+    // datum name, equatorial radius, polar radius, flattening 3D, eccentricity, 
     //  meridian radius, alpha series, betaSeries
     
     WGS84("WGS84",  6378137.0, 6356752.314, 0.00167922, 0.081819191, 6367449.146,
