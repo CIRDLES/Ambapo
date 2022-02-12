@@ -1,2 +1,8 @@
+pluginManagement {
+    plugins {
+        id 'org.beryx.jlink' version '2.24.4' 
+    }
+}
+
 rootProject.name = 'Ambapo'
-include "core","app"
+include 'core', 'app'
