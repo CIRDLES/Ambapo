@@ -1,5 +1,5 @@
 plugins {
-    id 'java' 
+    id 'java'
 }
 
 configurations {
@@ -18,11 +18,10 @@ jar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     dependsOn configurations.childJars
     manifest { 
-        attributes "Main-Class": "org.cirdles.ambapo.userInterface.Ambapo"
+        attributes "Main-Class": "org.cirdles.ambapo.userInterface.AmbapoLauncher"
     }
     from { configurations.childJars.collect { zipTree(it) } }
 }
-
 
 allprojects {
     group = "org.cirdles"
@@ -31,8 +30,8 @@ allprojects {
     // description = """Ambapo is a conversion tool that bulk converts CSV files with 
     // Latitude, Longitude coordinates to UTM and vice versa."""
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 11
 
     repositories {
         mavenCentral()

@@ -63,51 +63,51 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class AmbapoUIController implements Initializable {
 
     @FXML
-    private TextField eastingText;
+    public TextField eastingText;
     @FXML
-    private Label eastingLabel;
+    public Label eastingLabel;
     @FXML
-    private Label northingLabel;
+    public Label northingLabel;
     @FXML
-    private Label zoneLetterLabel;
+    public Label zoneLetterLabel;
     @FXML
-    private Label hemisphereLabel;
+    public Label hemisphereLabel;
     @FXML
-    private Label zoneNumberLabel;
+    public Label zoneNumberLabel;
     @FXML
-    private Label latitudeLabel;
+    public Label latitudeLabel;
     @FXML
-    private Label longitudeLabel;
+    public Label longitudeLabel;
     @FXML
-    private TextField northingText;
+    public TextField northingText;
     @FXML
-    private TextField latitudeText;
+    public TextField latitudeText;
     @FXML
-    private TextField longitudeText;
+    public TextField longitudeText;
     @FXML
-    private Button sourceFileButton;
+    public Button sourceFileButton;
     @FXML
-    private Label sourceFileText;
+    public Label sourceFileText;
     @FXML
-    private Button convertButton;
+    public Button convertButton;
     @FXML
-    private Button openConvertedFileButton;
+    public Button openConvertedFileButton;
     @FXML
-    private MenuBar menuBar;
+    public MenuBar menuBar;
     @FXML
-    private MenuItem aboutMenuItem;
+    public MenuItem aboutMenuItem;
     @FXML
-    private MenuItem githubMenuItem;
+    public MenuItem githubMenuItem;
     @FXML
-    private Text title;
+    public Text title;
     @FXML
-    private Text bulkConversionTitle;
+    public Text bulkConversionTitle;
     @FXML
-    private AnchorPane mainAnchorPane;
+    public AnchorPane mainAnchorPane;
     @FXML
-    private ChoiceBox<Character> zoneLetterChooser;
+    public ChoiceBox<Character> zoneLetterChooser;
     @FXML
-    private ChoiceBox<Character> hemisphereChooser;
+    public ChoiceBox<Character> hemisphereChooser;
     
     public ConversionFileHandler conversionFileHandler;
     
@@ -126,51 +126,51 @@ public class AmbapoUIController implements Initializable {
     public File fileToConvert;
     public File convertedFile;
     @FXML
-    private Button convertToUTMButton;
+    public Button convertToUTMButton;
     @FXML
-    private Button convertToLatLongButton;
+    public Button convertToLatLongButton;
     @FXML
-    private ChoiceBox<String> datumChooserUTMAndLatLong;
+    public ChoiceBox<String> datumChooserUTMAndLatLong;
     @FXML
-    private ChoiceBox<String> bulkConversionChooser;
+    public ChoiceBox<String> bulkConversionChooser;
     @FXML
-    private ChoiceBox<Integer> zoneNumberChooser;
+    public ChoiceBox<Integer> zoneNumberChooser;
     @FXML
-    private Label latitudeLabel1;
+    public Label latitudeLabel1;
     @FXML
-    private Label longitudeLabel1;
+    public Label longitudeLabel1;
     @FXML
-    private TextField fromLatitude;
+    public TextField fromLatitude;
     @FXML
-    private TextField fromLongitude;
+    public TextField fromLongitude;
     @FXML
-    private Button convertFromLatLongToLatLongButton;
+    public Button convertFromLatLongToLatLongButton;
     @FXML
-    private ChoiceBox<String> datumChooserLatLongFrom;
+    public ChoiceBox<String> datumChooserLatLongFrom;
     @FXML
-    private Label latitudeLabel11;
+    public Label latitudeLabel11;
     @FXML
-    private Label longitudeLabel11;
+    public Label longitudeLabel11;
     @FXML
-    private TextField toLatitude;
+    public TextField toLatitude;
     @FXML
-    private TextField toLongitude;
+    public TextField toLongitude;
     @FXML
-    private ChoiceBox<String> datumChooserLatLongTo;
+    public ChoiceBox<String> datumChooserLatLongTo;
     @FXML
-    private Menu ambapoMenuBarOptionFile;
+    public Menu ambapoMenuBarOptionFile;
     @FXML
-    private MenuItem openTemplateLatLongToUTM;
+    public MenuItem openTemplateLatLongToUTM;
     @FXML
-    private MenuItem openTemplateUTMToLatLong;
+    public MenuItem openTemplateUTMToLatLong;
     @FXML
-    private MenuItem openTemplateLatLongToLatLong;
+    public MenuItem openTemplateLatLongToLatLong;
     @FXML
-    private Menu ambapoMenuBarOptionHelp;
+    public Menu ambapoMenuBarOptionHelp;
     @FXML
-    private Button convertRightLatLongToLeftLatLongButton;
+    public Button convertRightLatLongToLeftLatLongButton;
     @FXML
-    private Label sourceFileLabel;
+    public Label sourceFileLabel;
         
 
     /**
@@ -283,7 +283,7 @@ public class AmbapoUIController implements Initializable {
     
 
     @FXML
-    private void toUTMClicked(MouseEvent event) {
+    public void toUTMClicked(MouseEvent event) {
         //Set latitude
         latitude_val = new BigDecimal(latitudeText.getText());
         
@@ -315,7 +315,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void toLatLongClicked(MouseEvent event) {
+    public void toLatLongClicked(MouseEvent event) {
         
         //Set easting value
         easting_val = new BigDecimal(eastingText.getText());
@@ -356,7 +356,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void sourceFileButtonClicked(MouseEvent event) {
+    public void sourceFileButtonClicked(MouseEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         File result = fileChooser.showOpenDialog(mainAnchorPane.getScene().getWindow());
@@ -373,7 +373,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void convertFileClicked(MouseEvent event) {
+    public void convertFileClicked(MouseEvent event) {
         fileToConvert = new File(sourceFileText.getText());
         
         FileChooser fileChooser = new FileChooser();
@@ -448,7 +448,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void openConvertedFileClicked(MouseEvent event) {
+    public void openConvertedFileClicked(MouseEvent event) {
         try {
             // TODO add your handling code here:
             Desktop.getDesktop().open(convertedFile);
@@ -464,7 +464,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void clickOpenTemplateLatLongToUTM(ActionEvent event) throws IOException {
+    public void clickOpenTemplateLatLongToUTM(ActionEvent event) throws IOException {
         final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         File file = new File(getClass().getResource("latLongToUTMTemplate.csv").getFile());
         
@@ -476,7 +476,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void clickOpenTemplateUTMToLatLong(ActionEvent event) throws IOException {
+    public void clickOpenTemplateUTMToLatLong(ActionEvent event) throws IOException {
         final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         File file = new File(getClass().getResource("utmToLatLongTemplate.csv").getFile());
         
@@ -488,7 +488,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void clickOpenTemplateLatLongToLatLong(ActionEvent event) throws IOException {
+    public void clickOpenTemplateLatLongToLatLong(ActionEvent event) throws IOException {
         final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
         File file = new File(getClass().getResource("latLongToLatLongTemplate.csv").getFile());
         
@@ -500,12 +500,12 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void clickAboutMenuItem(ActionEvent event) throws IOException {
+    public void clickAboutMenuItem(ActionEvent event) throws IOException {
         Ambapo.aboutWindow.showAboutWindow();
     }
 
     @FXML
-    private void clickGithubMenuItem(ActionEvent event) {
+    public void clickGithubMenuItem(ActionEvent event) {
         final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 
         try
@@ -518,7 +518,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void convertFromLeftLatLongToRightLatLongButtonClicked(MouseEvent event) {
+    public void convertFromLeftLatLongToRightLatLongButtonClicked(MouseEvent event) {
         try {
             Coordinate result = LatLongToLatLong.convert(new BigDecimal(fromLatitude.getText()),
                     new BigDecimal(fromLongitude.getText()), datumChooserLatLongFrom.getValue(),
@@ -541,7 +541,7 @@ public class AmbapoUIController implements Initializable {
     }
 
     @FXML
-    private void convertFromRightLatLongToLeftLatLongButtonClicked(MouseEvent event) {
+    public void convertFromRightLatLongToLeftLatLongButtonClicked(MouseEvent event) {
         try {
             Coordinate result = LatLongToLatLong.convert(new BigDecimal(toLatitude.getText()),
                     new BigDecimal(toLongitude.getText()), datumChooserLatLongTo.getValue(),
