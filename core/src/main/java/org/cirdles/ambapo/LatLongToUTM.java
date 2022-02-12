@@ -32,10 +32,10 @@ Steven Dutch, Natural and Applied Sciences, University of Wisconsin - Green Bay
  */
 package org.cirdles.ambapo;
 
+import ch.obermuhlner.math.big.BigDecimalMath;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
-import org.apache.commons.math3.analysis.function.Asinh;
-import org.apache.commons.math3.analysis.function.Atanh;
 
 
 /**
@@ -47,8 +47,9 @@ public class LatLongToUTM {
     private static final BigDecimal SCALE_FACTOR = new BigDecimal(0.9996);
     private static final BigDecimal FALSE_EASTING = new BigDecimal(500000);
     private static final BigDecimal SOUTH_HEMISPHERE_SUBTRACTION = new BigDecimal(10000000);
-    private static final int PRECISION = 9;
-    private static final int SCALE = 5;
+    private static final int PRECISION = 34;
+    private static final int SCALE = 34;
+    private static final MathContext MC = new MathContext(34, RoundingMode.HALF_UP);
     
     
     /**
@@ -221,20 +222,15 @@ public class LatLongToUTM {
      */
     private static BigDecimal calcConformalLatitude(BigDecimal eccentricity, BigDecimal latitudeRadians) {
         
-        BigDecimal conformalLatitude;
-        
-        double latRadDouble = latitudeRadians.doubleValue();
-        double eccDouble = eccentricity.doubleValue();
-        double confLatDouble;
-        
-        Atanh atanh = new Atanh();
-        Asinh asinh = new Asinh();
-        
-        confLatDouble = Math.atan(Math.sinh(asinh.value( Math.tan(latRadDouble)) -
-            eccDouble * atanh.value(eccDouble * Math.sin(latRadDouble))));
-        
-        conformalLatitude = new BigDecimal(confLatDouble);
-        
+        BigDecimal sinOfLatRad = BigDecimalMath.sin(latitudeRadians, MC);
+        BigDecimal tanOfLatRad = BigDecimalMath.tan(latitudeRadians, MC);
+        BigDecimal asinhOfTanOfLatRad = BigDecimalMath.asinh(tanOfLatRad, MC);
+        BigDecimal eccentricityTimesSinOfLatRad = eccentricity.multiply(sinOfLatRad);
+        BigDecimal atanhOfEccentricityTimesSinOfLatRad = BigDecimalMath.atanh(eccentricityTimesSinOfLatRad, MC);
+        BigDecimal eccentricityTimesAtanhOfEccentricityTimesSinOfLatRad = eccentricity.multiply(atanhOfEccentricityTimesSinOfLatRad);
+        BigDecimal asinhOfTanOfLatRadMinusEccentricityTimesAtanhOfEccentricityTimesSinOfLatRad = asinhOfTanOfLatRad.subtract(eccentricityTimesAtanhOfEccentricityTimesSinOfLatRad);
+        BigDecimal conformalLatitude = BigDecimalMath.atan(BigDecimalMath.sinh(asinhOfTanOfLatRadMinusEccentricityTimesAtanhOfEccentricityTimesSinOfLatRad, MC), MC);
+
         return conformalLatitude;
         
     }
@@ -272,19 +268,16 @@ public class LatLongToUTM {
     private static BigDecimal calcEtaPrimeEast(BigDecimal changeInLongitudeRadians, 
             BigDecimal tauPrime) {
         
-        BigDecimal etaPrime;
-        
-        double sinOfLatRad = Math.sin(changeInLongitudeRadians.doubleValue());
-        double cosOfLatRad = Math.cos(changeInLongitudeRadians.doubleValue());
-        double cosOfLatRadSquared = Math.pow(cosOfLatRad, 2);
+        BigDecimal sinOfLatRad = BigDecimalMath.sin(changeInLongitudeRadians, MC);
+        BigDecimal cosOfLatRad = BigDecimalMath.cos(changeInLongitudeRadians, MC);
+        BigDecimal cosOfLatRadSquared = cosOfLatRad.pow(2);
         
         BigDecimal tauPrimeSquared = tauPrime.pow(2);
         
-        double sqrt = Math.sqrt(tauPrimeSquared.doubleValue() + cosOfLatRadSquared);
-        double sinOverSqrt = sinOfLatRad / sqrt;
+        BigDecimal sqrt = BigDecimalMath.sqrt(tauPrimeSquared.add(cosOfLatRadSquared), MC);
+        BigDecimal sinOverSqrt = sinOfLatRad.divide(sqrt, MC);
         
-        Asinh asinhOfSin = new Asinh();
-        etaPrime = new BigDecimal(asinhOfSin.value(sinOverSqrt));
+        BigDecimal etaPrime = BigDecimalMath.asinh(sinOverSqrt, MC);
         
         return etaPrime;
         

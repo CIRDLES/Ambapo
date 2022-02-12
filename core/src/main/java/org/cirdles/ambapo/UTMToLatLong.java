@@ -35,7 +35,6 @@ package org.cirdles.ambapo;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import org.apache.commons.math3.analysis.function.Atanh;
 import ch.obermuhlner.math.big.BigDecimalMath;
 
 /**
