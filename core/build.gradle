@@ -6,10 +6,6 @@ jar {
     enabled = true
 }
 
-// tasks.named('test') {
-//     useJUnitPlatform() 
-// }
-
 test {
     useJUnit()
     maxHeapSize = '1G'

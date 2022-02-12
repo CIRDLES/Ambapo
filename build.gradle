@@ -30,8 +30,8 @@ allprojects {
     // description = """Ambapo is a conversion tool that bulk converts CSV files with 
     // Latitude, Longitude coordinates to UTM and vice versa."""
 
-    sourceCompatibility = 11
-    targetCompatibility = 11
+    sourceCompatibility = 14
+    targetCompatibility = 14
 
     repositories {
         mavenCentral()
